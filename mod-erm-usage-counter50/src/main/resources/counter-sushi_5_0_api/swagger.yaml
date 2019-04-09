@@ -8,7 +8,7 @@ info:
   contact:
     name: Project COUNTER
     url: 'https://www.projectcounter.org/'
-    email: lorraine.estelle@counterusage.org 
+    email: lorraine.estelle@counterusage.org
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -203,7 +203,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/pr_p1:
     get:
-      operationId: getReportsPR1
+      operationId: getReportsPRP1
       description: >-
         This resource returns COUNTER 'Platform Usage' [pr_p1]. This is a Standard View of the Package Master Report that presents usage for the overall Platform broken down by Metric_Type.
       produces:
@@ -241,7 +241,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/dr:
     get:
-      operationId: getReportsDRx
+      operationId: getReportsDR
       description: 'This resource returns COUNTER ''Database Master Report'' [DR]. A customizable report detailing activity by database that allows the user to apply filters and select other configuration options for the report.'
       produces:
         - application/json
@@ -317,7 +317,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/dr_d1:
     get:
-      operationId: getReportsDR1
+      operationId: getReportsDRD1
       description: 'This resource returns COUNTER ''Database Search and Item Usage'' [DR_D1], a Standard View of Database Master Report. Reports on key search and request metrics needed to evaluate a database.'
       produces:
         - application/json
@@ -354,7 +354,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/dr_d2:
     get:
-      operationId: getReportsDR2
+      operationId: getReportsDRD2
       description: 'This resource returns COUNTER ''Database Access Denied'' [DR_D2], a Standard View of Database Master Report. Reports on Access Denied activity for databases where users were denied access because simultaneous use licenses were exceeded or their institution did not have a license for the database.'
       produces:
         - application/json
