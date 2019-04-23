@@ -83,8 +83,7 @@ public class JournalReport1Mapper {
             bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_HTML, null)),
             bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_PDF, null)));
     Stream<String> rest =
-        YEAR_MONTHS
-            .stream()
+        YEAR_MONTHS.stream()
             .map(ym -> bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_TOTAL, ym)));
     return Stream.concat(first.stream(), rest).toArray(String[]::new);
   }
@@ -105,7 +104,8 @@ public class JournalReport1Mapper {
             new Optional(new ReportingPeriodProcessor(MetricType.FT_PDF)) // Reporting Period PDF
             );
     Stream<Optional> rest =
-        YEAR_MONTHS.stream().map(ym -> new Optional(new MonthPerformanceProcessor(ym)));
+        YEAR_MONTHS.stream()
+            .map(ym -> new Optional(new MonthPerformanceProcessor(ym, MetricType.FT_TOTAL)));
     return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
 
@@ -127,11 +127,7 @@ public class JournalReport1Mapper {
 
   private String getSinglePublisher() {
     List<String> uniquePublishers =
-        report
-            .getCustomer()
-            .get(0)
-            .getReportItems()
-            .stream()
+        report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPublisher)
             .distinct()
             .collect(Collectors.toList());
@@ -141,11 +137,7 @@ public class JournalReport1Mapper {
 
   private String getSinglePlatform() {
     List<String> uniquePlatforms =
-        report
-            .getCustomer()
-            .get(0)
-            .getReportItems()
-            .stream()
+        report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPlatform)
             .distinct()
             .collect(Collectors.toList());
@@ -154,11 +146,7 @@ public class JournalReport1Mapper {
   }
 
   private BigInteger getPeriodMetricTotal(MetricType metricType, YearMonth month) {
-    return report
-        .getCustomer()
-        .get(0)
-        .getReportItems()
-        .stream()
+    return report.getCustomer().get(0).getReportItems().stream()
         .flatMap(ri -> ri.getItemPerformance().stream())
         .filter(
             ip ->
