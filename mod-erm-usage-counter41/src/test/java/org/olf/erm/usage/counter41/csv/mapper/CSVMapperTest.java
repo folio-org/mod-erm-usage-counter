@@ -26,7 +26,7 @@ public class CSVMapperTest {
 
   @Parameters(name = "{0}")
   public static Collection params() {
-    return Arrays.asList("JR1", "DB1", "BR2", "PR1");
+    return Arrays.asList("JR1", "DB1", "BR2", "PR1", "BR1");
   }
 
   public CSVMapperTest(String reportName) {
