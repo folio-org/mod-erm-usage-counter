@@ -62,7 +62,7 @@ public class JR1 extends AbstractCounterReport {
 
   @Override
   public String getTitle() {
-    return "Journal Report 1(R4)";
+    return "Journal Report 1 (R4)";
   }
 
   @Override
