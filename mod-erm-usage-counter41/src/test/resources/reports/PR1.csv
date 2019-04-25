@@ -1,0 +1,16 @@
+Platform Report 1 (R4),"Total Searches, Result Clicks and Record Views by Month and Platform"
+custId123
+
+Period covered by Report
+2018-01-01 to 2018-03-31
+Date run
+$$$date_run$$$
+Platform,Publisher,User Activity,Reporting Period Total,Jan-2018,Feb-2018,Mar-2018
+Platform Z,Publisher A,Regular Searches,56197,16567,18643,20987
+Platform Z,Publisher A,Searches-federated and automated,201185,56037,68945,76203
+Platform Z,Publisher A,Result Clicks,98222,32009,41226,24987
+Platform Z,Publisher A,Record Views,106450,21999,28443,56008
+Platform Z,Publisher B,Regular Searches,11827,2099,4296,5432
+Platform Z,Publisher B,Searches-federated and automated,33261,6197,12988,14076
+Platform Z,Publisher B,Result Clicks,10870,3117,4432,3321
+Platform Z,Publisher B,Record Views,10515,2332,3117,5066
