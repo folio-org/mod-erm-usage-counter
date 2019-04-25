@@ -3,7 +3,6 @@ package org.olf.erm.usage.counter41.csv.mapper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Stream;
-import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
 import org.olf.erm.usage.counter41.csv.cellprocessor.MonthPerformanceProcessor;
@@ -49,29 +48,6 @@ public class DB1 extends AbstractCounterReport {
       for (Activity a : Activity.values()) {
         writer.write(item, getProcessors(a));
       }
-    }
-  }
-
-  enum Activity {
-    SEARCH_REG("Regular Searches", MetricType.SEARCH_REG),
-    SEARCH_FED("Searches-federated and automated", MetricType.SEARCH_FED),
-    RESULT_CLICK("Result Clicks", MetricType.RESULT_CLICK),
-    RECORD_VIEW("Record Views", MetricType.RECORD_VIEW);
-
-    private String text;
-    private MetricType metricType;
-
-    Activity(String text, MetricType metricType) {
-      this.text = text;
-      this.metricType = metricType;
-    }
-
-    public String getText() {
-      return text;
-    }
-
-    public MetricType getMetricType() {
-      return metricType;
     }
   }
 
