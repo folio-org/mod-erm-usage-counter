@@ -27,7 +27,10 @@ public class CSVMapperTest {
   @Parameters(name = "{0}")
   public static Collection params() {
     return Arrays.asList(
-        new Object[][] {{"JR1/NSSReport2018-01-2018-03.xml", "JR1/NSSReport2018-01-2018-03.csv"}});
+        new Object[][] {
+          {"JR1/NSSReport2018-01-2018-03.xml", "JR1/NSSReport2018-01-2018-03.csv"},
+          {"DB1/DB1.xml", "DB1/DB1.csv"}
+        });
   }
 
   public CSVMapperTest(String input, String expected) {
@@ -46,5 +49,14 @@ public class CSVMapperTest {
 
     String result = CSVMapper.toCSV(report);
     assertThat(result).isEqualToIgnoringNewLines(expectedString);
+  }
+
+  @Test
+  public void testNoTitle() {
+    Report report = new Report();
+    report.setVersion("4");
+    report.setTitle("Report XYZ");
+    String result = CSVMapper.toCSV(report);
+    assertThat(result).isNull();
   }
 }
