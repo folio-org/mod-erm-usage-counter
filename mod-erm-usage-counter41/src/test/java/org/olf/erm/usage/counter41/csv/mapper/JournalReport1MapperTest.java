@@ -1,6 +1,8 @@
 package org.olf.erm.usage.counter41.csv.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,7 +11,6 @@ import javax.xml.bind.JAXB;
 import org.junit.Test;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
-import com.google.common.io.Resources;
 
 public class JournalReport1MapperTest {
 
@@ -21,9 +22,8 @@ public class JournalReport1MapperTest {
             .replace("$$$date_run$$$", LocalDate.now().toString());
     Report report =
         JAXB.unmarshal(file, CounterReportResponse.class).getReport().getReport().get(0);
-    JournalReport1Mapper journalReport1Mapper = new JournalReport1Mapper(report);
 
-    String result = journalReport1Mapper.toCsv();
+    String result = new JR1(report).toCSV();
     assertThat(result).isEqualToIgnoringNewLines(expected);
   }
 }
