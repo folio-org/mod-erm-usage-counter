@@ -1,7 +1,6 @@
 package org.olf.erm.usage.counter41.csv.mapper;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import org.niso.schemas.counter.MetricType;
@@ -11,9 +10,7 @@ import org.olf.erm.usage.counter41.csv.cellprocessor.MonthPerformanceProcessor;
 import org.olf.erm.usage.counter41.csv.cellprocessor.ReportingPeriodProcessor;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
-import org.supercsv.prefs.CsvPreference;
 import org.supercsv.util.CsvContext;
 
 public class DB1 extends AbstractCounterReport {
@@ -44,6 +41,15 @@ public class DB1 extends AbstractCounterReport {
   @Override
   public String getDescription() {
     return "Total Searches, Result Clicks and Record Views by Month and Database";
+  }
+
+  @Override
+  public void writeItems(ICsvDozerBeanWriter writer) throws IOException {
+    for (final ReportItem item : report.getCustomer().get(0).getReportItems()) {
+      for (Activity a : Activity.values()) {
+        writer.write(item, getProcessors(a));
+      }
+    }
   }
 
   enum Activity {
@@ -88,36 +94,5 @@ public class DB1 extends AbstractCounterReport {
         yearMonths.stream()
             .map(ym -> new Optional(new MonthPerformanceProcessor(ym, activity.getMetricType())));
     return Stream.concat(Arrays.stream(first), rest).toArray(CellProcessor[]::new);
-  }
-
-  @Override
-  public String toCSV() {
-    StringWriter stringWriter = new StringWriter();
-
-    stringWriter.append(createReportHeader());
-
-    // and the formatted stuff with CsvDozerBeanWriter
-    try (ICsvDozerBeanWriter beanWriter =
-        new CsvDozerBeanWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
-
-      // configure the mapping from the fields to the CSV columns
-      beanWriter.configureBeanMapping(ReportItem.class, createFieldMapping());
-
-      // write the header
-      beanWriter.writeHeader(createHeader());
-
-      // write items
-      for (final ReportItem item : report.getCustomer().get(0).getReportItems()) {
-        for (Activity a : Activity.values()) {
-          beanWriter.write(item, getProcessors(a));
-        }
-      }
-
-      beanWriter.flush();
-      return stringWriter.toString();
-    } catch (IOException e) {
-      LOG.error(e.getMessage(), e);
-      return null;
-    }
   }
 }
