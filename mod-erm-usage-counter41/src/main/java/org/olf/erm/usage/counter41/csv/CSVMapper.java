@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import org.niso.schemas.counter.Report;
 import org.olf.erm.usage.counter41.csv.mapper.AbstractCounterReport;
+import org.olf.erm.usage.counter41.csv.mapper.BR2;
 import org.olf.erm.usage.counter41.csv.mapper.DB1;
 import org.olf.erm.usage.counter41.csv.mapper.JR1;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ public class CSVMapper {
   private static final Logger LOG = LoggerFactory.getLogger(CSVMapper.class);
   private static final String[] JR1 = new String[] {"JR1", "Journal Report 1"};
   private static final String[] DB1 = new String[] {"DB1", "Database Report 1"};
+  private static final String[] BR2 = new String[] {"BR2", "Book Report 2"};
 
   private static AbstractCounterReport getType(Report report) {
     Objects.requireNonNull(report.getVersion());
@@ -26,6 +28,9 @@ public class CSVMapper {
       }
       if (Stream.of(DB1).anyMatch(title::contains)) {
         return new DB1(report);
+      }
+      if (Stream.of(BR2).anyMatch(title::contains)) {
+        return new BR2(report);
       }
     }
     return null;
