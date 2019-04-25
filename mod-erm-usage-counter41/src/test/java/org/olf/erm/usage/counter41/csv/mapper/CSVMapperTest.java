@@ -26,16 +26,12 @@ public class CSVMapperTest {
 
   @Parameters(name = "{0}")
   public static Collection params() {
-    return Arrays.asList(
-        new Object[][] {
-          {"JR1/NSSReport2018-01-2018-03.xml", "JR1/NSSReport2018-01-2018-03.csv"},
-          {"DB1/DB1.xml", "DB1/DB1.csv"}
-        });
+    return Arrays.asList("JR1", "DB1");
   }
 
-  public CSVMapperTest(String input, String expected) {
-    this.input = input;
-    this.expected = expected;
+  public CSVMapperTest(String reportName) {
+    this.input = "reports/" + reportName + ".xml";
+    this.expected = "reports/" + reportName + ".csv";
   }
 
   @Test
