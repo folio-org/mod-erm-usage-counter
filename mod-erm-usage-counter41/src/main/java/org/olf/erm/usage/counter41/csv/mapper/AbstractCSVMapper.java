@@ -26,7 +26,7 @@ import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-public abstract class AbstractCounterReport {
+public abstract class AbstractCSVMapper {
 
   public Report report;
   public List<YearMonth> yearMonths;
@@ -166,7 +166,7 @@ public abstract class AbstractCounterReport {
       LOG.error(e.getMessage(), e);
       return null;
     }
-  };
+  }
 
   /**
    * Returns a seamless list of every month that falls within the reporting period.
@@ -187,7 +187,7 @@ public abstract class AbstractCounterReport {
     }
   }
 
-  public AbstractCounterReport(Report report) {
+  public AbstractCSVMapper(Report report) {
     this.report = report;
     this.yearMonths = getYearMonths();
   }

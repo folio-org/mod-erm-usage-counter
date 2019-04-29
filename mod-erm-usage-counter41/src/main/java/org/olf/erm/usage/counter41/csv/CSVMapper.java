@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
-import org.olf.erm.usage.counter41.csv.mapper.AbstractCounterReport;
+import org.olf.erm.usage.counter41.csv.mapper.AbstractCSVMapper;
 import org.olf.erm.usage.counter41.csv.mapper.BR1;
 import org.olf.erm.usage.counter41.csv.mapper.BR2;
 import org.olf.erm.usage.counter41.csv.mapper.DB1;
@@ -22,7 +22,7 @@ public class CSVMapper {
   private static final String[] JR1 = new String[] {"JR1", "Journal Report 1"};
   private static final String[] PR1 = new String[] {"PR1", "Platform Report 1"};
 
-  private static AbstractCounterReport getType(Report report) {
+  private static AbstractCSVMapper getType(Report report) {
     Objects.requireNonNull(report.getVersion());
     String title = ObjectUtils.firstNonNull(report.getTitle(), report.getName(), report.getID());
     Objects.requireNonNull(title);
@@ -48,7 +48,7 @@ public class CSVMapper {
   }
 
   public static String toCSV(Report report) {
-    AbstractCounterReport type = getType(report);
+    AbstractCSVMapper type = getType(report);
     if (type != null) {
       return type.toCSV();
     } else {

@@ -12,7 +12,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 import org.supercsv.util.CsvContext;
 
-public class PR1 extends AbstractCounterReport {
+public class PR1 extends AbstractCSVMapper {
 
   public PR1(Report report) {
     super(report);
