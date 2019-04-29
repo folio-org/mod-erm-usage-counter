@@ -26,6 +26,7 @@ public class BR2 extends AbstractCSVMapper {
     return new String[] {
       "",
       "Publisher",
+      "Platform",
       "Book DOI",
       "Proprietary Identifier",
       "ISBN",
