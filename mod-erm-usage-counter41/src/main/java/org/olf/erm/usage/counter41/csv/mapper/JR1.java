@@ -79,7 +79,7 @@ public class JR1 extends AbstractCSVMapper {
             new Optional(new ReportingPeriodProcessor(MetricType.FT_PDF)) // Reporting Period PDF
             );
     Stream<Optional> rest =
-        yearMonths.stream()
+        getYearMonths().stream()
             .map(ym -> new Optional(new MonthPerformanceProcessor(ym, MetricType.FT_TOTAL)));
     return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
@@ -87,7 +87,7 @@ public class JR1 extends AbstractCSVMapper {
   @Override
   public void writeItems(ICsvDozerBeanWriter writer) throws IOException {
     CellProcessor[] processors = createProcessors();
-    for (final ReportItem item : report.getCustomer().get(0).getReportItems()) {
+    for (final ReportItem item : getReport().getCustomer().get(0).getReportItems()) {
       writer.write(item, processors);
     }
   }
@@ -107,7 +107,7 @@ public class JR1 extends AbstractCSVMapper {
             bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_HTML, null)),
             bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_PDF, null)));
     Stream<String> rest =
-        yearMonths.stream()
+        getYearMonths().stream()
             .map(ym -> bigIntToStringOrNull(getPeriodMetricTotal(MetricType.FT_TOTAL, ym)));
     return Stream.concat(first.stream(), rest).toArray(String[]::new);
   }

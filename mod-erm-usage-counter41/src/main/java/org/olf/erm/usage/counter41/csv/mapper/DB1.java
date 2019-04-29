@@ -44,7 +44,7 @@ public class DB1 extends AbstractCSVMapper {
 
   @Override
   public void writeItems(ICsvDozerBeanWriter writer) throws IOException {
-    for (final ReportItem item : report.getCustomer().get(0).getReportItems()) {
+    for (final ReportItem item : getReport().getCustomer().get(0).getReportItems()) {
       for (Activity a : Activity.values()) {
         writer.write(item, getProcessors(a));
       }
@@ -67,7 +67,7 @@ public class DB1 extends AbstractCSVMapper {
           new ReportingPeriodProcessor(activity.getMetricType()) // Reporting Period Total
         };
     Stream<Optional> rest =
-        yearMonths.stream()
+        getYearMonths().stream()
             .map(ym -> new Optional(new MonthPerformanceProcessor(ym, activity.getMetricType())));
     return Stream.concat(Arrays.stream(first), rest).toArray(CellProcessor[]::new);
   }

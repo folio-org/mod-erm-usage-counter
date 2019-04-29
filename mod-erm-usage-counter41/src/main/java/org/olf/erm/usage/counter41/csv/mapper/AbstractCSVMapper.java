@@ -28,8 +28,8 @@ import org.supercsv.prefs.CsvPreference;
 
 public abstract class AbstractCSVMapper {
 
-  public Report report;
-  public List<YearMonth> yearMonths;
+  private Report report;
+  private List<YearMonth> yearMonths;
   final Logger LOG = LoggerFactory.getLogger(this.getClass());
   private static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
@@ -41,6 +41,14 @@ public abstract class AbstractCSVMapper {
   public abstract String getTitle();
 
   public abstract String getDescription();
+
+  public List<YearMonth> getYearMonths() {
+    return yearMonths;
+  }
+
+  public Report getReport() {
+    return report;
+  }
 
   private String[] createHeader() {
     Stream<String> header = Arrays.stream(getHeader());
@@ -173,7 +181,7 @@ public abstract class AbstractCSVMapper {
    *
    * @return list of {@code YearMonth}
    */
-  private List<YearMonth> getYearMonths() {
+  private List<YearMonth> createYearMonths() {
     List<YearMonth> uniqueSortedYearMonths = Counter4Utils.getYearMonthsFromReport(report);
     if (uniqueSortedYearMonths.isEmpty()) {
       return uniqueSortedYearMonths;
@@ -189,6 +197,6 @@ public abstract class AbstractCSVMapper {
 
   public AbstractCSVMapper(Report report) {
     this.report = report;
-    this.yearMonths = getYearMonths();
+    this.yearMonths = createYearMonths();
   }
 }
