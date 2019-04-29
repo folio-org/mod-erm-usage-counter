@@ -1,0 +1,16 @@
+Database Report 1 (R4),"Total Searches, Result Clicks and Record Views by Month and Database"
+custId123
+
+Period covered by Report
+2018-01-01 to 2018-03-31
+Date run
+$$$date_run$$$
+Database,Publisher,Platform,User Activity,Reporting Period Total,Jan-2018,Feb-2018,Mar-2018
+Database AA,Publisher X,Platform Z,Regular Searches,7814,2543,2267,3004
+Database AA,Publisher X,Platform Z,Searches-federated and automated,4889,1689,1589,1611
+Database AA,Publisher X,Platform Z,Result Clicks,12745,4022,3392,5331
+Database AA,Publisher X,Platform Z,Record Views,9585,3032,2777,3776
+Database BB,Publisher Y,Platform Z,Regular Searches,3478,1098,1066,1314
+Database BB,Publisher Y,Platform Z,Searches-federated and automated,2613,887,814,912
+Database BB,Publisher Y,Platform Z,Result Clicks,5350,1776,1759,1815
+Database BB,Publisher Y,Platform Z,Record Views,3595,1215,1066,1314
