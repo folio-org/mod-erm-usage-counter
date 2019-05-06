@@ -1,4 +1,7 @@
-## 1.0.0
+## 1.1.0
+* Add COP4 CSV mappings for reports BR1, BR2, DB1, PR1
+* Add model and client for COUNTER/SUSHI 5.0
 
+## 1.0.0
 * generated model and client for COUNTER/SUSHI 4.1
 * utility functions for working with reports, e.g. XML/JSON/CSV conversion
