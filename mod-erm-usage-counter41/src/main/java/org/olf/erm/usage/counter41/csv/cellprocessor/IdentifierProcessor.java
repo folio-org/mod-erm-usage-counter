@@ -7,7 +7,7 @@ import org.supercsv.util.CsvContext;
 
 public class IdentifierProcessor extends CellProcessorAdaptor {
 
-  private String identifier;
+  private final String identifier;
 
   public IdentifierProcessor(String identifier) {
     super();
@@ -19,9 +19,9 @@ public class IdentifierProcessor extends CellProcessorAdaptor {
   public String execute(Object value, CsvContext csvContext) {
     return ((ArrayList<Identifier>) value)
         .stream()
-        .filter(id -> identifier.equals(id.getType().value()))
-        .findFirst()
-        .map(Identifier::getValue)
-        .orElse(null);
+            .filter(id -> identifier.equals(id.getType().value()))
+            .findFirst()
+            .map(Identifier::getValue)
+            .orElse(null);
   }
 }

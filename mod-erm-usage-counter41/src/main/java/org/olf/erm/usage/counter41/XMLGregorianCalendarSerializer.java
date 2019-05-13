@@ -1,20 +1,20 @@
 package org.olf.erm.usage.counter41;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class XMLGregorianCalendarSerializer extends StdSerializer<XMLGregorianCalendar> {
 
   private static final long serialVersionUID = 1L;
 
-  protected XMLGregorianCalendarSerializer(Class<XMLGregorianCalendar> t) {
-    super(t);
+  XMLGregorianCalendarSerializer() {
+    super(XMLGregorianCalendar.class);
   }
 
   @Override

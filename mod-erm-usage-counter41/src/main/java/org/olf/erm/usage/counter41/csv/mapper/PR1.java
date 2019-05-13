@@ -43,7 +43,8 @@ public class PR1 extends AbstractCSVMapper {
         new CellProcessor[] {
           new Optional(), // Publisher
           new Optional(), // Platform
-          new CellProcessor() {
+          new CellProcessor() { // NOSONAR
+            @SuppressWarnings("unchecked")
             @Override
             public String execute(Object value, CsvContext context) {
               return activity.getText();

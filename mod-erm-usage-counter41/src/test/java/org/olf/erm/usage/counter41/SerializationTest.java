@@ -2,22 +2,24 @@ package org.olf.erm.usage.counter41;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Resources;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.xml.bind.JAXB;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.Test;
 import org.niso.schemas.counter.Report;
-import org.olf.erm.usage.counter41.Counter4Utils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SerializationTest {
 
-  private static ObjectMapper mapper = Counter4Utils.createObjectMapper();
+  private static final ObjectMapper mapper = Counter4Utils.createObjectMapper();
 
-  public void testXMLGregCalString(String datetime) {
+  private void testXMLGregCalString(String datetime) {
     try {
       XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(datetime);
       String str = mapper.writeValueAsString(date);
@@ -40,9 +42,9 @@ public class SerializationTest {
   }
 
   @Test
-  public void testSampleReport() throws IOException {
-    InputStream is = this.getClass().getClassLoader().getResource("reportJSTOR.xml").openStream();
-    Report report = JAXB.unmarshal(is, Report.class);
+  public void testSampleReport() throws URISyntaxException {
+    URI uri = Resources.getResource("reportJSTOR.xml").toURI();
+    Report report = JAXB.unmarshal(uri, Report.class);
 
     String json = Counter4Utils.toJSON(report);
     Report fromJSON = Counter4Utils.fromJSON(json);

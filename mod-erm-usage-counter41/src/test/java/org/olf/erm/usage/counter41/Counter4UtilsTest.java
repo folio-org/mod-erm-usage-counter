@@ -2,9 +2,12 @@ package org.olf.erm.usage.counter41;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.google.common.io.Files;
+import com.google.common.io.Resources;
+import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -15,9 +18,6 @@ import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.Report.Customer;
 import org.niso.schemas.counter.ReportItem;
 import org.olf.erm.usage.counter41.Counter4Utils.ReportMergeException;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
-import io.vertx.core.json.JsonObject;
 
 public class Counter4UtilsTest {
 
@@ -31,7 +31,7 @@ public class Counter4UtilsTest {
   }
 
   @Test
-  public void testConversions() throws IOException, URISyntaxException {
+  public void testConversions() throws IOException {
     File file = new File(Resources.getResource("reportJSTOR.xml").getFile());
 
     Report fromXML = JAXB.unmarshal(file, Report.class);
