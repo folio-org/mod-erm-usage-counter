@@ -1,3 +1,6 @@
+## 1.2.0
+* Add Counter5Utils
+
 ## 1.1.0
 * Add COP4 CSV mappings for reports BR1, BR2, DB1, PR1
 * Add model and client for COUNTER/SUSHI 5.0
