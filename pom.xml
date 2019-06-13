@@ -5,7 +5,7 @@
   <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter</artifactId>
   <packaging>pom</packaging>
-  <version>1.2.0</version>
+  <version>1.2.1-SNAPSHOT</version>
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
