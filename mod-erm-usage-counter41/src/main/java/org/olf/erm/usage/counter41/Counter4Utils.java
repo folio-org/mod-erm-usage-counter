@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.YearMonth;
@@ -122,7 +123,7 @@ public class Counter4Utils {
                 if (n != null && !n.getTextContent().isEmpty()) data = n.getTextContent();
               }
               String helpUrl =
-                  (e.getHelpUrl() == null || e.getHelpUrl().getValue().isEmpty())
+                  (e.getHelpUrl() == null || Strings.isNullOrEmpty(e.getHelpUrl().getValue()))
                       ? null
                       : e.getHelpUrl().getValue();
               return toStringHelper(e)
