@@ -40,8 +40,8 @@ public class MonthPerformanceProcessor extends CellProcessorAdaptor {
                             .equals(yearMonth.atEndOfMonth()))
             .flatMap(m -> m.getInstance().stream())
             .filter(pc -> pc.getMetricType().equals(metricType))
-            .findFirst()
             .map(PerformanceCounter::getCount)
+            .reduce(BigInteger::add)
             .orElse(null);
   }
 }

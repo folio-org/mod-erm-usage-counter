@@ -1,6 +1,12 @@
 package org.olf.erm.usage.counter41;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.YearMonth;
@@ -23,10 +29,6 @@ import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.csv.CSVMapper;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class Counter4Utils {
 
@@ -42,9 +44,7 @@ public class Counter4Utils {
   }
 
   public static String getNameForReportTitle(String title) {
-    return mappingEntries
-        .entrySet()
-        .stream()
+    return mappingEntries.entrySet().stream()
         .filter(e -> e.getValue().stream().anyMatch(title::contains))
         .findFirst()
         .map(Entry::getKey)
@@ -105,9 +105,7 @@ public class Counter4Utils {
   }
 
   public static List<Exception> getExceptions(CounterReportResponse response) {
-    return response
-        .getException()
-        .stream()
+    return response.getException().stream()
         .filter(
             e ->
                 e.getSeverity().equals(ExceptionSeverity.ERROR)
@@ -125,7 +123,7 @@ public class Counter4Utils {
                 if (n != null && !n.getTextContent().isEmpty()) data = n.getTextContent();
               }
               String helpUrl =
-                  (e.getHelpUrl() == null || e.getHelpUrl().getValue().isEmpty())
+                  (e.getHelpUrl() == null || Strings.isNullOrEmpty(e.getHelpUrl().getValue()))
                       ? null
                       : e.getHelpUrl().getValue();
               return toStringHelper(e)
@@ -141,11 +139,7 @@ public class Counter4Utils {
   }
 
   public static List<YearMonth> getYearMonthsFromReport(Report report) {
-    return report
-        .getCustomer()
-        .get(0)
-        .getReportItems()
-        .stream()
+    return report.getCustomer().get(0).getReportItems().stream()
         .flatMap(ri -> ri.getItemPerformance().stream())
         .flatMap(
             m ->
@@ -197,8 +191,7 @@ public class Counter4Utils {
         != 1) throw new ReportMergeException("Report attributes do not match");
 
     List<ReportItem> sortedCombinedReportItems =
-        Stream.of(reports)
-            .flatMap(r -> r.getCustomer().get(0).getReportItems().stream())
+        Stream.of(reports).flatMap(r -> r.getCustomer().get(0).getReportItems().stream())
             .collect(
                 Collectors.toMap(
                     ReportItem::getItemIdentifier,
@@ -207,8 +200,7 @@ public class Counter4Utils {
                       a.getItemPerformance().addAll(b.getItemPerformance());
                       return a;
                     }))
-            .values()
-            .stream()
+            .values().stream()
             .sorted((r1, r2) -> r1.getItemName().compareTo(r2.getItemName()))
             .collect(Collectors.toList());
 
