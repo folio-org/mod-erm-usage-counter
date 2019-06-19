@@ -1,3 +1,7 @@
+## 1.2.1
+* counter41: Fix counting in MonthPerformanceProcessor
+* counter41: Fix possible NPE when getting error messages
+
 ## 1.2.0
 * Add Counter5Utils
 
