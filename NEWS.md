@@ -1,3 +1,6 @@
+## 1.2.2
+* Update jackson-databind to 2.9.9.1 CVE-2019-12814
+
 ## 1.2.1
 * counter41: Fix counting in MonthPerformanceProcessor
 * counter41: Fix possible NPE when getting error messages
