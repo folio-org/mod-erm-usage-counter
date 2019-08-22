@@ -1,3 +1,6 @@
+## 1.2.3
+* Update jackson-databind to 2.9.9.3 CVE-2019-14379, CVE-2019-14439
+
 ## 1.2.2
 * Update jackson-databind to 2.9.9.1 CVE-2019-12814
 
