@@ -28,7 +28,8 @@
         <ID>Nature Publishing Group</ID>
       </Vendor>
       <Customer>
-        <ID>Library ABC</ID>
+        <ID>custId123</ID>
+        <Name>Library ABC</Name>
         <ReportItems>
           <ItemIdentifier>
             <Type>DOI</Type>

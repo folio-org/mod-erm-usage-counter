@@ -68,9 +68,9 @@ public abstract class AbstractCSVMapper {
     try (CsvListWriter csvListWriter =
         new CsvListWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
       csvListWriter.write(getTitle(), getDescription());
-      csvListWriter.write(report.getCustomer().get(0).getID());
-      csvListWriter.write(
-          ""); // FIXME: Cell A3 contains the “Institutional Identifier” as defined in Appendix A,
+      csvListWriter.write(report.getCustomer().get(0).getID(), null);
+      csvListWriter.write(report.getCustomer().get(0).getName(), null);
+      // FIXME: Cell A3 contains the “Institutional Identifier” as defined in Appendix A,
       // but may be left blank if the vendor does not use Institutional Identifiers
       csvListWriter.write("Period covered by Report");
       csvListWriter.write(
