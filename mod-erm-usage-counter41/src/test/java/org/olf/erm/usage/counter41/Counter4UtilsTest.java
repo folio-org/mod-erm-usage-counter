@@ -9,11 +9,16 @@ import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.chrono.HijrahDate;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.JAXB;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.niso.schemas.counter.DateRange;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.Report.Customer;
 import org.niso.schemas.counter.ReportItem;
@@ -97,5 +102,35 @@ public class Counter4UtilsTest {
     assertThatThrownBy(() -> Counter4Utils.merge(rep1, rep2))
         .isInstanceOf(ReportMergeException.class)
         .hasMessageContaining("invalid customer definitions");
+  }
+
+  @Test
+  public void testToXMLGregorianCalendar() {
+    YearMonth ym = YearMonth.of(2018, 7);
+    XMLGregorianCalendar ymResult = Counter4Utils.toXMLGregorianCalendar(ym);
+    assertThat(ymResult).isNotNull();
+    assertThat(ymResult.toString()).isEqualTo("2018-07");
+
+    LocalDate ld = LocalDate.of(2018, 7, 14);
+    XMLGregorianCalendar ldResult = Counter4Utils.toXMLGregorianCalendar(ld);
+    assertThat(ldResult).isNotNull();
+    assertThat(ldResult.toString()).isEqualTo("2018-07-14");
+
+    assertThat(Counter4Utils.toXMLGregorianCalendar(HijrahDate.now())).isNull();
+  }
+
+  @Test
+  public void testGetDateRangeFromYearMonth() {
+    DateRange dr = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 2));
+    assertThat(dr.getBegin())
+        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 1)));
+    assertThat(dr.getEnd())
+        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 29)));
+
+    DateRange dr2 = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 3));
+    assertThat(dr2.getBegin())
+        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 1)));
+    assertThat(dr2.getEnd())
+        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 31)));
   }
 }

@@ -10,6 +10,7 @@ import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
 import java.time.YearMonth;
+import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -20,8 +21,10 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.SerializationUtils;
+import org.niso.schemas.counter.DateRange;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
 import org.niso.schemas.sushi.Exception;
@@ -37,7 +40,7 @@ public class Counter4Utils {
 
   public static final ObjectMapper mapper = createObjectMapper();
   private static final Map<String, List<String>> mappingEntries = new HashMap<>();
-  private static final Logger LOG = LoggerFactory.getLogger(Counter4Utils.class);
+  private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
 
   static {
     mappingEntries.put("JR1", Arrays.asList("JR1", "Journal Report 1"));
@@ -70,7 +73,7 @@ public class Counter4Utils {
     try {
       str = mapper.writeValueAsString(report);
     } catch (JsonProcessingException e) {
-      LOG.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
     }
     return str;
   }
@@ -80,7 +83,7 @@ public class Counter4Utils {
     try {
       result = mapper.readValue(json, Report.class);
     } catch (IOException e) {
-      LOG.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
     }
     return result;
   }
@@ -164,10 +167,18 @@ public class Counter4Utils {
     }
   }
 
+  /** Same as {@link Counter4Utils#merge(Report...)} */
   public static Report merge(Collection<Report> c) throws ReportMergeException {
     return merge(c.toArray(new Report[0]));
   }
 
+  /**
+   * Merges multiple {@link Report} objects into a single {@link Report}.
+   *
+   * @param reports varArgs of {@link Report}
+   * @return {@link Report}
+   * @throws ReportMergeException
+   */
   public static Report merge(Report... reports) throws ReportMergeException {
     Report[] clonedReports = SerializationUtils.clone(reports);
 
@@ -205,6 +216,35 @@ public class Counter4Utils {
 
     clonedReports[0].getCustomer().get(0).getReportItems().addAll(sortedCombinedReportItems);
     return clonedReports[0];
+  }
+
+  /**
+   * Converts a {@link Temporal} into {@link XMLGregorianCalendar}.
+   *
+   * @param temporal {@link Temporal}
+   * @return {@link XMLGregorianCalendar}
+   */
+  public static XMLGregorianCalendar toXMLGregorianCalendar(Temporal temporal) {
+    try {
+      return DatatypeFactory.newInstance().newXMLGregorianCalendar(temporal.toString());
+    } catch (java.lang.Exception e) {
+      log.error("Error creating XMLGregorianCalendar from Temporal: {}", e.getMessage(), e);
+      return null;
+    }
+  }
+
+  /**
+   * Creates a {@link DateRange} object with begin at first and end at last day from supplied {@link
+   * YearMonth}.
+   *
+   * @param yearMonth {@link YearMonth}
+   * @return {@link DateRange} or {@code null} on error
+   */
+  public static DateRange getDateRangeForYearMonth(YearMonth yearMonth) {
+    DateRange dateRange = new DateRange();
+    dateRange.setBegin(toXMLGregorianCalendar(yearMonth.atDay(1)));
+    dateRange.setEnd(toXMLGregorianCalendar(yearMonth.atEndOfMonth()));
+    return dateRange;
   }
 
   private Counter4Utils() {}
