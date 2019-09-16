@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.olf</groupId>
@@ -55,12 +57,10 @@
       <artifactId>jaxb2-basics</artifactId>
       <version>1.11.1</version>
     </dependency>
-
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.6</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
@@ -68,6 +68,7 @@
       <version>3.5.4</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
@@ -102,6 +103,7 @@
                 <arg>-xjc-XtoString</arg>
                 <arg>-xjc-Xequals</arg>
                 <arg>-xjc-XhashCode</arg>
+                <arg>-xjc-Xsetters</arg>
               </extraargs>
               <bindingFiles>
                 <bindingFile>${basedir}/src/main/resources/binding.xml</bindingFile>
