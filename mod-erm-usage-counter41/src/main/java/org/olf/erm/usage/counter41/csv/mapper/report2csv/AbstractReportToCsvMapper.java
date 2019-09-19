@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter41.csv.mapper;
+package org.olf.erm.usage.counter41.csv.mapper.report2csv;
 
 import com.google.common.collect.Iterables;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import org.supercsv.io.dozer.CsvDozerBeanWriter;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-public abstract class AbstractCSVMapper {
+public abstract class AbstractReportToCsvMapper implements ReportToCsvMapper {
 
   private final Report report;
   private final List<YearMonth> yearMonths;
@@ -195,7 +195,7 @@ public abstract class AbstractCSVMapper {
     }
   }
 
-  AbstractCSVMapper(Report report) {
+  AbstractReportToCsvMapper(Report report) {
     this.report = report;
     this.yearMonths = createYearMonths();
   }

@@ -16,10 +16,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
-import org.olf.erm.usage.counter41.csv.CSVMapper;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.ReportToCsvMapperFactory;
 
 @RunWith(Parameterized.class)
-public class CSVMapperTest {
+public class ReportToCsvMapperTest {
 
   private final String input;
   private final String expected;
@@ -29,7 +29,7 @@ public class CSVMapperTest {
     return Arrays.asList("JR1", "DB1", "BR2", "PR1", "BR1");
   }
 
-  public CSVMapperTest(String reportName) {
+  public ReportToCsvMapperTest(String reportName) {
     this.input = "reports/" + reportName + ".xml";
     this.expected = "reports/" + reportName + ".csv";
   }
@@ -43,16 +43,15 @@ public class CSVMapperTest {
     Report report =
         JAXB.unmarshal(file, CounterReportResponse.class).getReport().getReport().get(0);
 
-    String result = CSVMapper.toCSV(report);
+    String result = ReportToCsvMapperFactory.createCSVMapper(report).toCSV();
     assertThat(result).isEqualToIgnoringNewLines(expectedString);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testNoTitle() {
     Report report = new Report();
     report.setVersion("4");
     report.setTitle("Report XYZ");
-    String result = CSVMapper.toCSV(report);
-    assertThat(result).isNull();
+    ReportToCsvMapperFactory.createCSVMapper(report).toCSV();
   }
 }

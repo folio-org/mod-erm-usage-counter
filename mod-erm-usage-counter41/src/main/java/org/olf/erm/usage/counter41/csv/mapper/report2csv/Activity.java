@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter41.csv.mapper;
+package org.olf.erm.usage.counter41.csv.mapper.report2csv;
 
 import org.niso.schemas.counter.MetricType;
 

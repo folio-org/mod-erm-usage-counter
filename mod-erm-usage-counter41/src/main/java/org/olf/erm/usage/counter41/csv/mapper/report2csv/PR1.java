@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter41.csv.mapper;
+package org.olf.erm.usage.counter41.csv.mapper.report2csv;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -12,50 +12,35 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 import org.supercsv.util.CsvContext;
 
-public class DB1 extends AbstractCSVMapper {
+public class PR1 extends AbstractReportToCsvMapper {
 
-  public DB1(Report report) {
+  public PR1(Report report) {
     super(report);
   }
 
   @Override
   public String[] getHeader() {
-    return new String[] {
-      "Database", "Publisher", "Platform", "User Activity", "Reporting Period Total"
-    };
+    return new String[] {"Platform", "Publisher", "User Activity", "Reporting Period Total"};
   }
 
   @Override
   public String[] getFieldMapping() {
-    return new String[] {
-      "itemName", "itemPublisher", "itemPlatform", "itemPlatform", "itemPerformance"
-    };
+    return new String[] {"itemPlatform", "itemPublisher", "itemPublisher", "itemPerformance"};
   }
 
   @Override
   public String getTitle() {
-    return "Database Report 1 (R4)";
+    return "Platform Report 1 (R4)";
   }
 
   @Override
   public String getDescription() {
-    return "Total Searches, Result Clicks and Record Views by Month and Database";
-  }
-
-  @Override
-  public void writeItems(ICsvDozerBeanWriter writer) throws IOException {
-    for (final ReportItem item : getReport().getCustomer().get(0).getReportItems()) {
-      for (Activity a : Activity.values()) {
-        writer.write(item, getProcessors(a));
-      }
-    }
+    return "Total Searches, Result Clicks and Record Views by Month and Platform";
   }
 
   private CellProcessor[] getProcessors(Activity activity) {
-
     CellProcessor[] first =
         new CellProcessor[] {
-          new Optional(), // Database
           new Optional(), // Publisher
           new Optional(), // Platform
           new CellProcessor() { // NOSONAR
@@ -71,5 +56,14 @@ public class DB1 extends AbstractCSVMapper {
         getYearMonths().stream()
             .map(ym -> new Optional(new MonthPerformanceProcessor(ym, activity.getMetricType())));
     return Stream.concat(Arrays.stream(first), rest).toArray(CellProcessor[]::new);
+  }
+
+  @Override
+  public void writeItems(ICsvDozerBeanWriter writer) throws IOException {
+    for (final ReportItem item : getReport().getCustomer().get(0).getReportItems()) {
+      for (Activity a : Activity.values()) {
+        writer.write(item, getProcessors(a));
+      }
+    }
   }
 }
