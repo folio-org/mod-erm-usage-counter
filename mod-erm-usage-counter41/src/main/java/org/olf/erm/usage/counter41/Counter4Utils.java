@@ -30,6 +30,7 @@ import org.niso.schemas.counter.ReportItem;
 import org.niso.schemas.sushi.Exception;
 import org.niso.schemas.sushi.ExceptionSeverity;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
+import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 import org.olf.erm.usage.counter41.csv.mapper.report2csv.ReportToCsvMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,12 @@ public class Counter4Utils {
   }
 
   public static String toCSV(Report report) {
-    return ReportToCsvMapperFactory.createCSVMapper(report).toCSV();
+    try {
+      return ReportToCsvMapperFactory.createCSVMapper(report).toCSV();
+    } catch (MapperException e) {
+      log.error(e.getMessage());
+      return null;
+    }
   }
 
   // TODO: check that report includes one month only for now

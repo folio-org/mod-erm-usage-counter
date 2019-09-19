@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
+import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 
 public class ReportToCsvMapperFactory {
   private static final String[] BR1 = new String[] {"BR1", "Book Report 1"};
@@ -12,7 +13,7 @@ public class ReportToCsvMapperFactory {
   private static final String[] JR1 = new String[] {"JR1", "Journal Report 1"};
   private static final String[] PR1 = new String[] {"PR1", "Platform Report 1"};
 
-  public static ReportToCsvMapper createCSVMapper(Report report) {
+  public static ReportToCsvMapper createCSVMapper(Report report) throws MapperException {
     Objects.requireNonNull(report.getVersion());
     String title = ObjectUtils.firstNonNull(report.getTitle(), report.getName(), report.getID());
     Objects.requireNonNull(title);
@@ -34,9 +35,11 @@ public class ReportToCsvMapperFactory {
         return new BR1(report);
       }
     }
-    throw new IllegalArgumentException(
+    throw new MapperException(
         String.format(
             "No mapping found for report title '%s' and version '%s'",
             report.getTitle(), report.getVersion()));
   }
+
+  private ReportToCsvMapperFactory() {}
 }
