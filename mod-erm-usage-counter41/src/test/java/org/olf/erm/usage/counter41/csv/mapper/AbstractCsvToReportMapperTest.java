@@ -19,12 +19,11 @@ import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
-import org.olf.erm.usage.counter41.csv.mapper.csv2report.ReportParser;
-import org.olf.erm.usage.counter41.csv.mapper.csv2report.ReportParser.ReportMapperException;
+import org.olf.erm.usage.counter41.csv.mapper.csv2report.CsvToReportMapperFactory;
 
 @Ignore
 @RunWith(Parameterized.class)
-public class ReportParserTest {
+public class AbstractCsvToReportMapperTest {
 
   private final String input;
   private final String expected;
@@ -34,7 +33,7 @@ public class ReportParserTest {
     return Arrays.asList("JR1");
   }
 
-  public ReportParserTest(String reportName) {
+  public AbstractCsvToReportMapperTest(String reportName) {
     this.input = "reports/" + reportName + ".csv";
     this.expected = "reports/" + reportName + ".xml";
   }
@@ -55,7 +54,7 @@ public class ReportParserTest {
   }
 
   @Test
-  public void testFromCSV() throws URISyntaxException, IOException, ReportMapperException {
+  public void testFromCSV() throws URISyntaxException, IOException, MapperException {
     String csvString = Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8);
 
     File file = new File(Resources.getResource(expected).toURI());
@@ -63,7 +62,7 @@ public class ReportParserTest {
         JAXB.unmarshal(file, CounterReportResponse.class).getReport().getReport().get(0);
     removeAttributes(expectedReport);
 
-    Report parsedReport = new ReportParser().fromCSV(csvString);
+    Report parsedReport = CsvToReportMapperFactory.createCsvToReportMapper(csvString).toReport();
     assertThat(parsedReport).isEqualToComparingFieldByFieldRecursively(expectedReport);
   }
 }

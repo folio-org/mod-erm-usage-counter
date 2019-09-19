@@ -28,9 +28,13 @@ import org.supercsv.io.dozer.CsvDozerBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-public class JR1Mapper {
+public class JR1Mapper extends AbstractCsvToReportMapper {
 
   private static final Logger log = LoggerFactory.getLogger(JR1Mapper.class);
+
+  public JR1Mapper(String csvString) {
+    super(csvString);
+  }
 
   private String[] createFieldMapping(List<YearMonth> yearMonths) {
     String[] mapping =

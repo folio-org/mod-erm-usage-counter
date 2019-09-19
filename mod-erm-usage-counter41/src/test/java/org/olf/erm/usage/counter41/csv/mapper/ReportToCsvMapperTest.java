@@ -35,7 +35,7 @@ public class ReportToCsvMapperTest {
   }
 
   @Test
-  public void testToCSV() throws URISyntaxException, IOException {
+  public void testToCSV() throws URISyntaxException, IOException, MapperException {
     File file = new File(Resources.getResource(input).toURI());
     String expectedString =
         new String(Resources.toByteArray(Resources.getResource(expected)))
@@ -47,8 +47,8 @@ public class ReportToCsvMapperTest {
     assertThat(result).isEqualToIgnoringNewLines(expectedString);
   }
 
-  @Test(expected = IllegalArgumentException.class)
-  public void testNoTitle() {
+  @Test(expected = MapperException.class)
+  public void testNoTitle() throws MapperException {
     Report report = new Report();
     report.setVersion("4");
     report.setTitle("Report XYZ");

@@ -17,26 +17,29 @@ import org.apache.commons.lang3.StringUtils;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.Report.Customer;
 import org.niso.schemas.counter.ReportItem;
+import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
-public class ReportParser {
+public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
-  private static final Logger log = LoggerFactory.getLogger(ReportParser.class);
+  private static final Logger log = LoggerFactory.getLogger(AbstractCsvToReportMapper.class);
+  private final String csvString;
 
-  public Report fromCSV(String csvString) throws IOException, ReportMapperException {
+  @Override
+  public Report toReport() throws MapperException, IOException {
     StringReader stringReader = new StringReader(csvString);
     List<String> lines = IOUtils.readLines(stringReader);
 
     if (lines.size() < 10) {
-      throw new ReportMapperException("Invalid report supplied");
+      throw new MapperException("Invalid report supplied");
     }
 
     List<String> headerColumn = getHeaderColumn(lines.subList(0, 9));
     if (!headerColumn.get(0).equals("Journal Report 1 (R4)")) {
-      throw new ReportMapperException("Report type not supported");
+      throw new MapperException("Report type not supported");
     }
 
     Report report = new Report();
@@ -52,13 +55,13 @@ public class ReportParser {
     customer.setName(headerColumn.get(2));
 
     if (!hasValidDates(headerColumn.get(4))) {
-      throw new ReportMapperException("Invalid date range");
+      throw new MapperException("Invalid date range");
     }
 
     List<YearMonth> yearMonths = getYearMonths(headerColumn.get(4));
 
     List<ReportItem> reportItems =
-        new JR1Mapper().getReportItems(lines.subList(9, lines.size()), yearMonths);
+        new JR1Mapper(csvString).getReportItems(lines.subList(9, lines.size()), yearMonths);
     customer.getReportItems().addAll(reportItems);
     return report;
   }
@@ -107,9 +110,7 @@ public class ReportParser {
         .collect(Collectors.toList());
   }
 
-  public class ReportMapperException extends Exception {
-    ReportMapperException(String message) {
-      super(message);
-    }
+  public AbstractCsvToReportMapper(String csvString) {
+    this.csvString = csvString;
   }
 }
