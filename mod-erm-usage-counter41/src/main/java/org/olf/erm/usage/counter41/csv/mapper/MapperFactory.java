@@ -1,12 +1,19 @@
-package org.olf.erm.usage.counter41.csv.mapper.report2csv;
+package org.olf.erm.usage.counter41.csv.mapper;
 
 import java.util.Objects;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
-import org.olf.erm.usage.counter41.csv.mapper.MapperException;
+import org.olf.erm.usage.counter41.csv.mapper.csv2report.CsvToReportMapper;
+import org.olf.erm.usage.counter41.csv.mapper.csv2report.JR1Mapper;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.BR1;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.BR2;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.DB1;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.JR1;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.PR1;
+import org.olf.erm.usage.counter41.csv.mapper.report2csv.ReportToCsvMapper;
 
-public class ReportToCsvMapperFactory {
+public class MapperFactory {
   private static final String[] BR1 = new String[] {"BR1", "Book Report 1"};
   private static final String[] BR2 = new String[] {"BR2", "Book Report 2"};
   private static final String[] DB1 = new String[] {"DB1", "Database Report 1"};
@@ -41,5 +48,14 @@ public class ReportToCsvMapperFactory {
             report.getTitle(), report.getVersion()));
   }
 
-  private ReportToCsvMapperFactory() {}
+  public static CsvToReportMapper createCsvToReportMapper(String csvString) throws MapperException {
+
+    if (csvString.startsWith("Journal Report 1 (R4)")) {
+      return new JR1Mapper(csvString);
+    } else {
+      throw new MapperException("Report type not supported");
+    }
+  }
+
+  private MapperFactory() {}
 }

@@ -31,7 +31,7 @@ import org.niso.schemas.sushi.Exception;
 import org.niso.schemas.sushi.ExceptionSeverity;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.csv.mapper.MapperException;
-import org.olf.erm.usage.counter41.csv.mapper.report2csv.ReportToCsvMapperFactory;
+import org.olf.erm.usage.counter41.csv.mapper.MapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -91,7 +91,7 @@ public class Counter4Utils {
 
   public static String toCSV(Report report) {
     try {
-      return ReportToCsvMapperFactory.createCSVMapper(report).toCSV();
+      return MapperFactory.createCSVMapper(report).toCSV();
     } catch (MapperException e) {
       log.error(e.getMessage());
       return null;
