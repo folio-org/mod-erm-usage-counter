@@ -28,11 +28,42 @@ import org.supercsv.io.dozer.CsvDozerBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-public class JR1Mapper extends AbstractCsvToReportMapper {
+public class JR1ToReport extends AbstractCsvToReportMapper {
+  private static final Logger log = LoggerFactory.getLogger(JR1ToReport.class);
 
-  private static final Logger log = LoggerFactory.getLogger(JR1Mapper.class);
+  @Override
+  String getTitle() {
+    return "Journal Report 1";
+  }
 
-  public JR1Mapper(String csvString) {
+  @Override
+  String getName() {
+    return "JR1";
+  }
+
+  @Override
+  public List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths) {
+    try (ICsvDozerBeanReader beanReader =
+        new CsvDozerBeanReader(
+            new StringReader(StringUtils.join(contentLines, System.lineSeparator())),
+            CsvPreference.STANDARD_PREFERENCE)) {
+      beanReader.configureBeanMapping(
+          ReportItem.class, createFieldMapping(yearMonths), createHintTypes(yearMonths));
+      List<ReportItem> reportItems = new ArrayList<>();
+      ReportItem reportItem;
+      while ((reportItem = beanReader.read(ReportItem.class, createProcessors(yearMonths)))
+          != null) {
+        reportItem.setItemDataType(DataType.JOURNAL);
+        reportItems.add(reportItem);
+      }
+      return reportItems;
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+      return Collections.emptyList();
+    }
+  }
+
+  public JR1ToReport(String csvString) {
     super(csvString);
   }
 
@@ -95,26 +126,5 @@ public class JR1Mapper extends AbstractCsvToReportMapper {
                     new Optional(
                         new MonthPerformanceParser(ym, MetricType.FT_TOTAL, Category.REQUESTS)));
     return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
-  }
-
-  public List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths) {
-    try (ICsvDozerBeanReader beanReader =
-        new CsvDozerBeanReader(
-            new StringReader(StringUtils.join(contentLines, System.lineSeparator())),
-            CsvPreference.STANDARD_PREFERENCE)) {
-      beanReader.configureBeanMapping(
-          ReportItem.class, createFieldMapping(yearMonths), createHintTypes(yearMonths));
-      List<ReportItem> reportItems = new ArrayList<>();
-      ReportItem reportItem;
-      while ((reportItem = beanReader.read(ReportItem.class, createProcessors(yearMonths)))
-          != null) {
-        reportItem.setItemDataType(DataType.JOURNAL);
-        reportItems.add(reportItem);
-      }
-      return reportItems;
-    } catch (IOException e) {
-      log.error(e.getMessage(), e);
-      return Collections.emptyList();
-    }
   }
 }

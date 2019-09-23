@@ -25,8 +25,14 @@ import org.supercsv.prefs.CsvPreference;
 
 public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
-  private static final Logger log = LoggerFactory.getLogger(AbstractCsvToReportMapper.class);
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private final String csvString;
+
+  abstract String getTitle();
+
+  abstract String getName();
+
+  abstract List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths);
 
   @Override
   public Report toReport() throws MapperException, IOException {
@@ -36,17 +42,13 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     if (lines.size() < 10) {
       throw new MapperException("Invalid report supplied");
     }
-
     List<String> headerColumn = getHeaderColumn(lines.subList(0, 9));
-    if (!headerColumn.get(0).equals("Journal Report 1 (R4)")) {
-      throw new MapperException("Report type not supported");
-    }
 
     Report report = new Report();
     Customer customer = new Customer();
     report.getCustomer().add(customer);
-    report.setTitle("Journal Report 1");
-    report.setName("JR1");
+    report.setTitle(getTitle());
+    report.setName(getName());
     report.setVersion("4");
     // report.setID("");
     // report.setCreated("");
@@ -60,8 +62,7 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
     List<YearMonth> yearMonths = getYearMonths(headerColumn.get(4));
 
-    List<ReportItem> reportItems =
-        new JR1Mapper(csvString).getReportItems(lines.subList(9, lines.size()), yearMonths);
+    List<ReportItem> reportItems = getReportItems(lines.subList(9, lines.size()), yearMonths);
     customer.getReportItems().addAll(reportItems);
     return report;
   }
