@@ -32,6 +32,8 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
   abstract String getName();
 
+  abstract int getContentIndex();
+
   abstract List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths);
 
   @Override
@@ -39,7 +41,7 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     StringReader stringReader = new StringReader(csvString);
     List<String> lines = IOUtils.readLines(stringReader);
 
-    if (lines.size() < 10) {
+    if (lines.size() < getContentIndex() + 1) {
       throw new MapperException("Invalid report supplied");
     }
     List<String> headerColumn = getHeaderColumn(lines.subList(0, 9));
@@ -62,7 +64,8 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
     List<YearMonth> yearMonths = getYearMonths(headerColumn.get(4));
 
-    List<ReportItem> reportItems = getReportItems(lines.subList(9, lines.size()), yearMonths);
+    List<ReportItem> reportItems =
+        getReportItems(lines.subList(getContentIndex(), lines.size()), yearMonths);
     customer.getReportItems().addAll(reportItems);
     return report;
   }

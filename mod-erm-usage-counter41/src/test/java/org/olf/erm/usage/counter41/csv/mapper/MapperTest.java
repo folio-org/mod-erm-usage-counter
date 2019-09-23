@@ -52,46 +52,40 @@ public class MapperTest {
     assertThat(result).isEqualToIgnoringNewLines(expectedString);
   }
 
-  @Test(expected = MapperException.class)
-  public void testNoMappingForReport() throws MapperException {
-    Report report = new Report();
-    report.setVersion("4");
-    report.setTitle("Report XYZ");
-    MapperFactory.createCSVMapper(report).toCSV();
-  }
-
-  @Test(expected = MapperException.class)
-  public void testNoMappingForCsv() throws IOException, MapperException {
-    String s = "Journal Report 4 (R4)";
-    MapperFactory.createCsvToReportMapper(s).toReport();
-  }
-
   private void removeAttributes(Report report) {
-    report.setVendor(null);
-    report.setCreated(null);
-    report.setID(null);
     report.getCustomer().get(0).getReportItems().stream()
+        .peek(
+            ri -> {
+              if (reportName.equals("PR1")) ri.setItemName(null);
+            })
         .flatMap(ri -> ri.getItemPerformance().stream())
         .map(Metric::getInstance)
         .forEach(
-            list ->
-                list.removeIf(
+            list -> {
+              if (reportName.equals("JR1"))
+                list.removeIf( // JR1 only
                     pc ->
                         pc.getMetricType().equals(MetricType.FT_HTML)
-                            || pc.getMetricType().equals(MetricType.FT_PDF)));
+                            || pc.getMetricType().equals(MetricType.FT_PDF));
+            });
   }
 
   @Test
   public void testToReport() throws IOException, URISyntaxException, MapperException {
-    Assume.assumeTrue(reportName.equals("JR1"));
+    Assume.assumeTrue(Arrays.asList("JR1", "PR1").contains(reportName));
     String csvString = Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
 
     File file = new File(Resources.getResource(input).toURI());
     Report expectedReport =
         JAXB.unmarshal(file, CounterReportResponse.class).getReport().getReport().get(0);
+
     removeAttributes(expectedReport);
 
     Report parsedReport = MapperFactory.createCsvToReportMapper(csvString).toReport();
-    assertThat(parsedReport).isEqualToComparingFieldByFieldRecursively(expectedReport);
+    assertThat(parsedReport)
+        .usingRecursiveComparison()
+        .ignoringCollectionOrder()
+        .ignoringFields("vendor", "created", "id", "customer.webSiteUrl")
+        .isEqualTo(expectedReport);
   }
 }
