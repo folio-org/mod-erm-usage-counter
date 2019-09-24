@@ -47,6 +47,11 @@ public class JR1ToReport extends AbstractCsvToReportMapper {
   }
 
   @Override
+  DataType getDataType() {
+    return DataType.JOURNAL;
+  }
+
+  @Override
   public List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths) {
     try (ICsvDozerBeanReader beanReader =
         new CsvDozerBeanReader(
@@ -72,7 +77,8 @@ public class JR1ToReport extends AbstractCsvToReportMapper {
     super(csvString);
   }
 
-  private String[] createFieldMapping(List<YearMonth> yearMonths) {
+  @Override
+  String[] createFieldMapping(List<YearMonth> yearMonths) {
     String[] mapping =
         new String[] {
           "itemName",
@@ -93,7 +99,8 @@ public class JR1ToReport extends AbstractCsvToReportMapper {
     return Stream.concat(Arrays.stream(mapping), rest).toArray(String[]::new);
   }
 
-  private Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
+  @Override
+  Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
     Class<?>[] first =
         new Class<?>[] {
           null,
@@ -111,7 +118,8 @@ public class JR1ToReport extends AbstractCsvToReportMapper {
     return Stream.concat(Arrays.stream(first), rest).toArray(Class<?>[]::new);
   }
 
-  private CellProcessor[] createProcessors(List<YearMonth> yearMonths) {
+  @Override
+  CellProcessor[] createProcessors(List<YearMonth> yearMonths) {
     List<CellProcessor> first =
         Arrays.asList(
             new NotNull(),

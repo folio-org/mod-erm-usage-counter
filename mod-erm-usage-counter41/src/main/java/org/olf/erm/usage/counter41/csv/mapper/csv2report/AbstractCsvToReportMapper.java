@@ -8,19 +8,29 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.niso.schemas.counter.DataType;
+import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.Report.Customer;
 import org.niso.schemas.counter.ReportItem;
+import org.olf.erm.usage.counter41.csv.cellprocessor.MonthPerformanceByActivityParser;
 import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.supercsv.cellprocessor.Optional;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListReader;
+import org.supercsv.io.dozer.CsvDozerBeanReader;
+import org.supercsv.io.dozer.ICsvDozerBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
 public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
@@ -34,7 +44,11 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
   abstract int getContentIndex();
 
-  abstract List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths);
+  abstract DataType getDataType();
+
+  List<ReportItem> processReportItems(List<ReportItem> reportItems) {
+    return reportItems;
+  }
 
   @Override
   public Report toReport() throws MapperException, IOException {
@@ -68,6 +82,52 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
         getReportItems(lines.subList(getContentIndex(), lines.size()), yearMonths);
     customer.getReportItems().addAll(reportItems);
     return report;
+  }
+
+  public List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths) {
+    try (ICsvDozerBeanReader beanReader =
+        new CsvDozerBeanReader(
+            new StringReader(StringUtils.join(contentLines, System.lineSeparator())),
+            CsvPreference.STANDARD_PREFERENCE)) {
+      beanReader.configureBeanMapping(
+          ReportItem.class, createFieldMapping(yearMonths), createHintTypes(yearMonths));
+      List<ReportItem> reportItems = new ArrayList<>();
+      ReportItem reportItem;
+      while ((reportItem = beanReader.read(ReportItem.class, createProcessors(yearMonths)))
+          != null) {
+        reportItem.setItemDataType(getDataType());
+        reportItems.add(reportItem);
+      }
+
+      return processReportItems(reportItems);
+    } catch (IOException e) {
+      log.error(e.getMessage(), e);
+      return Collections.emptyList();
+    }
+  }
+
+  String[] createFieldMapping(List<YearMonth> yearMonths) {
+    String[] mapping = new String[] {"itemPlatform", "itemPublisher", null, null};
+    AtomicInteger atomicInt = new AtomicInteger(0);
+    Stream<String> rest =
+        yearMonths.stream()
+            .map(ym -> String.format("itemPerformance[%d]", atomicInt.getAndIncrement()));
+    return Stream.concat(Arrays.stream(mapping), rest).toArray(String[]::new);
+  }
+
+  Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
+    Class<?>[] first = new Class<?>[] {null, null, null, null};
+    Stream<Class<Metric>> rest = yearMonths.stream().map(ym -> Metric.class);
+    return Stream.concat(Arrays.stream(first), rest).toArray(Class<?>[]::new);
+  }
+
+  CellProcessor[] createProcessors(List<YearMonth> yearMonths) {
+    List<CellProcessor> first =
+        Arrays.asList(new NotNull(), new NotNull(), new NotNull(), new Optional());
+
+    Stream<Optional> rest =
+        yearMonths.stream().map(ym -> new Optional(new MonthPerformanceByActivityParser(ym, 2)));
+    return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
 
   private List<String> getHeaderColumn(List<String> header) {
