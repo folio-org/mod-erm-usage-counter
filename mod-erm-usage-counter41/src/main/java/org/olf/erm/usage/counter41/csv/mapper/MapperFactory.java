@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
 import org.olf.erm.usage.counter41.csv.mapper.csv2report.CsvToReportMapper;
+import org.olf.erm.usage.counter41.csv.mapper.csv2report.DB1ToReport;
 import org.olf.erm.usage.counter41.csv.mapper.csv2report.JR1ToReport;
 import org.olf.erm.usage.counter41.csv.mapper.csv2report.PR1ToReport;
 import org.olf.erm.usage.counter41.csv.mapper.report2csv.BR1;
@@ -55,6 +56,8 @@ public class MapperFactory {
       return new JR1ToReport(csvString);
     } else if (csvString.startsWith("Platform Report 1 (R4)")) {
       return new PR1ToReport(csvString);
+    } else if (csvString.startsWith("Database Report 1 (R4)")) {
+      return new DB1ToReport(csvString);
     } else {
       throw new MapperException("Report type not supported");
     }

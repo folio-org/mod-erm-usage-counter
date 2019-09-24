@@ -52,11 +52,17 @@ public class MapperTest {
     assertThat(result).isEqualToIgnoringNewLines(expectedString);
   }
 
+  /**
+   * removes attributes from report that cannot be mapped from csv
+   *
+   * @param report
+   */
   private void removeAttributes(Report report) {
     report.getCustomer().get(0).getReportItems().stream()
         .peek(
             ri -> {
               if (reportName.equals("PR1")) ri.setItemName(null);
+              if (reportName.equals("DB1")) ri.setItemIdentifier(null);
             })
         .flatMap(ri -> ri.getItemPerformance().stream())
         .map(Metric::getInstance)
@@ -72,7 +78,7 @@ public class MapperTest {
 
   @Test
   public void testToReport() throws IOException, URISyntaxException, MapperException {
-    Assume.assumeTrue(Arrays.asList("JR1", "PR1").contains(reportName));
+    Assume.assumeTrue(Arrays.asList("JR1", "PR1", "DB1").contains(reportName));
     String csvString = Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
 
     File file = new File(Resources.getResource(input).toURI());
