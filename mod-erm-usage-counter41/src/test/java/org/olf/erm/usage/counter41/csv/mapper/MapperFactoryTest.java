@@ -15,6 +15,20 @@ public class MapperFactoryTest {
   }
 
   @Test(expected = MapperException.class)
+  public void testNoTitle() throws MapperException {
+    Report report = new Report();
+    report.setVersion("4");
+    MapperFactory.createCSVMapper(report).toCSV();
+  }
+
+  @Test(expected = MapperException.class)
+  public void testNoVersion() throws MapperException {
+    Report report = new Report();
+    report.setTitle("Journal Report 1");
+    MapperFactory.createCSVMapper(report).toCSV();
+  }
+
+  @Test(expected = MapperException.class)
   public void testNoMappingForCsv() throws IOException, MapperException {
     String s = "Journal Report 4 (R4)";
     MapperFactory.createCsvToReportMapper(s).toReport();

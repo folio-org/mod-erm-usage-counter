@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter41.csv.mapper;
 
-import java.util.Objects;
+import com.google.common.base.Strings;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
@@ -25,11 +25,12 @@ public class MapperFactory {
   private static final String[] PR1 = new String[] {"PR1", "Platform Report 1"};
 
   public static ReportToCsvMapper createCSVMapper(Report report) throws MapperException {
-    Objects.requireNonNull(report.getVersion());
     String title = ObjectUtils.firstNonNull(report.getTitle(), report.getName(), report.getID());
-    Objects.requireNonNull(title);
-
-    if (report.getVersion().equals("4")) {
+    String version = report.getVersion();
+    if (Strings.isNullOrEmpty(version) || Strings.isNullOrEmpty(title)) {
+      throw new MapperException("Report missing report version and/or title");
+    }
+    if (version.equals("4")) {
       if (Stream.of(JR1).anyMatch(title::contains)) {
         return new JR1(report);
       }
@@ -47,13 +48,10 @@ public class MapperFactory {
       }
     }
     throw new MapperException(
-        String.format(
-            "No mapping found for report title '%s' and version '%s'",
-            report.getTitle(), report.getVersion()));
+        String.format("No mapping found for report title '%s' and version '%s'", title, version));
   }
 
   public static CsvToReportMapper createCsvToReportMapper(String csvString) throws MapperException {
-
     if (csvString.startsWith("Journal Report 1 (R4)")) {
       return new JR1ToReport(csvString);
     } else if (csvString.startsWith("Platform Report 1 (R4)")) {
@@ -64,9 +62,8 @@ public class MapperFactory {
       return new BR1ToReport(csvString);
     } else if (csvString.startsWith("Book Report 2 (R4)")) {
       return new BR2ToReport(csvString);
-    } else {
-      throw new MapperException("Report type not supported");
     }
+    throw new MapperException("Report type not supported");
   }
 
   private MapperFactory() {}
