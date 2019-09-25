@@ -4,6 +4,7 @@ import static org.apache.cxf.common.util.StringUtils.getFound;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.xml.bind.JAXB;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.niso.schemas.counter.DataType;
@@ -81,7 +83,11 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     List<ReportItem> reportItems =
         getReportItems(lines.subList(getContentIndex(), lines.size()), yearMonths);
     customer.getReportItems().addAll(reportItems);
-    return report;
+
+    // marshal and unmarshal to get rid of null entries
+    StringWriter sw = new StringWriter();
+    JAXB.marshal(report, sw);
+    return JAXB.unmarshal(new StringReader(sw.toString()), Report.class);
   }
 
   public List<ReportItem> getReportItems(List<String> contentLines, List<YearMonth> yearMonths) {

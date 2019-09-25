@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+import org.niso.schemas.counter.IdentifierType;
 import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.Report;
@@ -63,13 +64,16 @@ public class MapperTest {
             ri -> {
               if (reportName.equals("PR1")) ri.setItemName(null);
               if (reportName.equals("DB1")) ri.setItemIdentifier(null);
+              if (reportName.equals("BR1"))
+                ri.getItemIdentifier()
+                    .removeIf(id -> id.getType().equals(IdentifierType.ONLINE_ISBN));
             })
         .flatMap(ri -> ri.getItemPerformance().stream())
         .map(Metric::getInstance)
         .forEach(
             list -> {
-              if (reportName.equals("JR1"))
-                list.removeIf( // JR1 only
+              if (Arrays.asList("JR1", "BR1").contains(reportName))
+                list.removeIf(
                     pc ->
                         pc.getMetricType().equals(MetricType.FT_HTML)
                             || pc.getMetricType().equals(MetricType.FT_PDF));
@@ -78,20 +82,19 @@ public class MapperTest {
 
   @Test
   public void testToReport() throws IOException, URISyntaxException, MapperException {
-    Assume.assumeTrue(Arrays.asList("JR1", "PR1", "DB1").contains(reportName));
+    Assume.assumeTrue(Arrays.asList("JR1", "PR1", "DB1", "BR1").contains(reportName));
     String csvString = Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
 
     File file = new File(Resources.getResource(input).toURI());
     Report expectedReport =
         JAXB.unmarshal(file, CounterReportResponse.class).getReport().getReport().get(0);
-
     removeAttributes(expectedReport);
 
     Report parsedReport = MapperFactory.createCsvToReportMapper(csvString).toReport();
     assertThat(parsedReport)
         .usingRecursiveComparison()
         .ignoringCollectionOrder()
-        .ignoringFields("vendor", "created", "id", "customer.webSiteUrl")
+        .ignoringFields("vendor", "created", "id", "customer.webSiteUrl", "title")
         .isEqualTo(expectedReport);
   }
 }
