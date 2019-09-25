@@ -11,8 +11,8 @@ import org.supercsv.util.CsvContext;
 
 public class MonthPerformanceProcessor extends CellProcessorAdaptor {
 
-  YearMonth yearMonth;
-  MetricType metricType;
+  private final YearMonth yearMonth;
+  private final MetricType metricType;
 
   public MonthPerformanceProcessor(YearMonth yearMonth, MetricType metricType) {
     this.yearMonth = yearMonth;

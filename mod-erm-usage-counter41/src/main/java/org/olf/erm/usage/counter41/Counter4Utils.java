@@ -12,6 +12,7 @@ import java.io.StringReader;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +28,16 @@ import org.niso.schemas.sushi.Exception;
 import org.niso.schemas.sushi.ExceptionSeverity;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.csv.CSVMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class Counter4Utils {
 
   public static final ObjectMapper mapper = createObjectMapper();
-  private static Map<String, List<String>> mappingEntries = new HashMap<>();
+  private static final Map<String, List<String>> mappingEntries = new HashMap<>();
+  private static final Logger LOG = LoggerFactory.getLogger(Counter4Utils.class);
 
   static {
     mappingEntries.put("JR1", Arrays.asList("JR1", "Journal Report 1"));
@@ -54,10 +58,8 @@ public class Counter4Utils {
   public static ObjectMapper createObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
-    module.addSerializer(new XMLGregorianCalendarSerializer(XMLGregorianCalendar.class));
-    module.addDeserializer(
-        XMLGregorianCalendar.class,
-        new XMLGregorianCalendarDeserializer(XMLGregorianCalendar.class));
+    module.addSerializer(new XMLGregorianCalendarSerializer());
+    module.addDeserializer(XMLGregorianCalendar.class, new XMLGregorianCalendarDeserializer());
     mapper.registerModule(module);
     mapper.setSerializationInclusion(Include.NON_NULL);
     return mapper;
@@ -68,8 +70,7 @@ public class Counter4Utils {
     try {
       str = mapper.writeValueAsString(report);
     } catch (JsonProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error(e.getMessage(), e);
     }
     return str;
   }
@@ -79,8 +80,7 @@ public class Counter4Utils {
     try {
       result = mapper.readValue(json, Report.class);
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error(e.getMessage(), e);
     }
     return result;
   }
@@ -143,7 +143,7 @@ public class Counter4Utils {
         .flatMap(ri -> ri.getItemPerformance().stream())
         .flatMap(
             m ->
-                Stream.<YearMonth>of(
+                Stream.of(
                     YearMonth.of(
                         m.getPeriod().getBegin().getYear(), m.getPeriod().getBegin().getMonth()),
                     YearMonth.of(
@@ -178,13 +178,12 @@ public class Counter4Utils {
 
     // check that provided reports have the same attributes
     if (Stream.of(clonedReports)
-            .map(
+            .peek(
                 r -> {
                   // reset some attributes for equals() check
                   r.getCustomer().get(0).getReportItems().clear();
                   r.getCreated().clear();
                   r.setID(null);
-                  return r;
                 })
             .distinct()
             .count()
@@ -201,7 +200,7 @@ public class Counter4Utils {
                       return a;
                     }))
             .values().stream()
-            .sorted((r1, r2) -> r1.getItemName().compareTo(r2.getItemName()))
+            .sorted(Comparator.comparing(ReportItem::getItemName))
             .collect(Collectors.toList());
 
     clonedReports[0].getCustomer().get(0).getReportItems().addAll(sortedCombinedReportItems);

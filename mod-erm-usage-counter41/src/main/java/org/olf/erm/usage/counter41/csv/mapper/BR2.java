@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import org.niso.schemas.counter.IdentifierType;
 import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
@@ -65,10 +66,15 @@ public class BR2 extends AbstractCSVMapper {
             new Optional(), // Title
             new Optional(), // Publisher
             new Optional(), // Platform
-            new Optional(new IdentifierProcessor("DOI")), // Book DOI
-            new Optional(new IdentifierProcessor("Proprietary")), // Proprietary Identifier
-            new Optional(new IdentifierProcessor("Print_ISBN")), // ISBN // FIXME: print or online?
-            new Optional(new IdentifierProcessor("Print_ISSN")), // ISSN // FIXME: print or online?
+            new Optional(new IdentifierProcessor(IdentifierType.DOI)), // Book DOI
+            new Optional(
+                new IdentifierProcessor(IdentifierType.PROPRIETARY)), // Proprietary Identifier
+            new Optional(
+                new IdentifierProcessor(
+                    IdentifierType.PRINT_ISBN)), // ISBN // FIXME: print or online?
+            new Optional(
+                new IdentifierProcessor(
+                    IdentifierType.PRINT_ISSN)), // ISSN // FIXME: print or online?
             new Optional(
                 new ReportingPeriodProcessor(MetricType.FT_TOTAL)) // Reporting Period Total
             );

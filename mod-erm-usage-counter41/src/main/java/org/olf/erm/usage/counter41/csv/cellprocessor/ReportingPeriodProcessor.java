@@ -10,7 +10,7 @@ import org.supercsv.util.CsvContext;
 
 public class ReportingPeriodProcessor extends CellProcessorAdaptor {
 
-  private MetricType metricType;
+  private final MetricType metricType;
 
   public ReportingPeriodProcessor(MetricType metricType) {
     super();
@@ -22,10 +22,10 @@ public class ReportingPeriodProcessor extends CellProcessorAdaptor {
   public BigInteger execute(Object value, CsvContext csvContext) {
     return ((ArrayList<Metric>) value)
         .stream()
-        .flatMap(m -> m.getInstance().stream())
-        .filter(pc -> pc.getMetricType().equals(metricType))
-        .map(PerformanceCounter::getCount)
-        .reduce((a, b) -> a.add(b))
-        .orElse(null);
+            .flatMap(m -> m.getInstance().stream())
+            .filter(pc -> pc.getMetricType().equals(metricType))
+            .map(PerformanceCounter::getCount)
+            .reduce(BigInteger::add)
+            .orElse(null);
   }
 }

@@ -21,8 +21,8 @@ import org.olf.erm.usage.counter41.csv.CSVMapper;
 @RunWith(Parameterized.class)
 public class CSVMapperTest {
 
-  private String input;
-  private String expected;
+  private final String input;
+  private final String expected;
 
   @Parameters(name = "{0}")
   public static Collection params() {

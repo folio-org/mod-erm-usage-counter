@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import org.niso.schemas.counter.IdentifierType;
 import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
@@ -43,8 +44,8 @@ public class JR1 extends AbstractCSVMapper {
       "itemName",
       "itemPublisher",
       "itemPlatform",
-      "itemPlatform",
-      "itemPlatform",
+      "itemIdentifier",
+      "itemIdentifier",
       "itemIdentifier",
       "itemIdentifier",
       "itemPerformance",
@@ -69,10 +70,11 @@ public class JR1 extends AbstractCSVMapper {
             new Optional(), // Journal
             new Optional(), // Publisher
             new Optional(), // Platform
-            new Optional(), // Journal DOI
-            new Optional(), // Proprietary Identifier
-            new Optional(new IdentifierProcessor("Print_ISSN")), // Print ISSN
-            new Optional(new IdentifierProcessor("Online_ISSN")), // Online ISSN
+            new Optional(new IdentifierProcessor(IdentifierType.DOI)), // Journal DOI
+            new Optional(
+                new IdentifierProcessor(IdentifierType.PROPRIETARY)), // Proprietary Identifier
+            new Optional(new IdentifierProcessor(IdentifierType.PRINT_ISSN)), // Print ISSN
+            new Optional(new IdentifierProcessor(IdentifierType.ONLINE_ISSN)), // Online ISSN
             new Optional(
                 new ReportingPeriodProcessor(MetricType.FT_TOTAL)), // Reporting Period Total
             new Optional(new ReportingPeriodProcessor(MetricType.FT_HTML)), // Reporting Period HTML

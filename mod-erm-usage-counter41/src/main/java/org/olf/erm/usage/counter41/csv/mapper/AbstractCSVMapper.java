@@ -28,25 +28,25 @@ import org.supercsv.prefs.CsvPreference;
 
 public abstract class AbstractCSVMapper {
 
-  private Report report;
-  private List<YearMonth> yearMonths;
-  final Logger LOG = LoggerFactory.getLogger(this.getClass());
+  private final Report report;
+  private final List<YearMonth> yearMonths;
+  private final Logger log = LoggerFactory.getLogger(this.getClass());
   private static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
 
-  public abstract String[] getHeader();
+  protected abstract String[] getHeader();
 
-  public abstract String[] getFieldMapping();
+  protected abstract String[] getFieldMapping();
 
-  public abstract String getTitle();
+  protected abstract String getTitle();
 
-  public abstract String getDescription();
+  protected abstract String getDescription();
 
-  public List<YearMonth> getYearMonths() {
+  List<YearMonth> getYearMonths() {
     return yearMonths;
   }
 
-  public Report getReport() {
+  Report getReport() {
     return report;
   }
 
@@ -68,56 +68,56 @@ public abstract class AbstractCSVMapper {
     try (CsvListWriter csvListWriter =
         new CsvListWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
       csvListWriter.write(getTitle(), getDescription());
-      csvListWriter.write(report.getCustomer().get(0).getID());
-      csvListWriter.write(
-          ""); // FIXME: Cell A3 contains the “Institutional Identifier” as defined in Appendix A,
+      csvListWriter.write(report.getCustomer().get(0).getID(), null);
+      csvListWriter.write(report.getCustomer().get(0).getName(), null);
+      // FIXME: Cell A3 contains the “Institutional Identifier” as defined in Appendix A,
       // but may be left blank if the vendor does not use Institutional Identifiers
       csvListWriter.write("Period covered by Report");
       csvListWriter.write(
-          Iterables.getFirst(yearMonths, null).atDay(1).toString()
+          yearMonths.get(0).atDay(1).toString()
               + " to "
               + Iterables.getLast(yearMonths).atEndOfMonth().toString());
       csvListWriter.write("Date run");
       csvListWriter.write(LocalDate.now());
       csvListWriter.flush();
     } catch (IOException e) {
-      LOG.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return "";
     }
     return stringWriter.toString();
   }
 
-  public String[] createTotals() {
+  String[] createTotals() {
     return null;
   }
 
-  public abstract void writeItems(ICsvDozerBeanWriter writer) throws IOException;
+  protected abstract void writeItems(ICsvDozerBeanWriter writer) throws IOException;
 
-  public final String getSinglePublisher() {
+  final String getSinglePublisher() {
     List<String> uniquePublishers =
         report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPublisher)
             .distinct()
             .collect(Collectors.toList());
-    LOG.info("Found {} publishers: {}", uniquePublishers.size(), uniquePublishers);
+    log.info("Found {} publishers: {}", uniquePublishers.size(), uniquePublishers);
     return (uniquePublishers.size() == 1) ? uniquePublishers.get(0) : null;
   }
 
-  public final String getSinglePlatform() {
+  final String getSinglePlatform() {
     List<String> uniquePlatforms =
         report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPlatform)
             .distinct()
             .collect(Collectors.toList());
-    LOG.info("Found {} platforms: {}", uniquePlatforms.size(), uniquePlatforms);
+    log.info("Found {} platforms: {}", uniquePlatforms.size(), uniquePlatforms);
     return (uniquePlatforms.size() == 1) ? uniquePlatforms.get(0) : null;
   }
 
-  public final String bigIntToStringOrNull(BigInteger bigint) {
+  final String bigIntToStringOrNull(BigInteger bigint) {
     return (bigint == null) ? null : String.valueOf(bigint);
   }
 
-  public final BigInteger getPeriodMetricTotal(MetricType metricType, YearMonth month) {
+  final BigInteger getPeriodMetricTotal(MetricType metricType, YearMonth month) {
     return report.getCustomer().get(0).getReportItems().stream()
         .flatMap(ri -> ri.getItemPerformance().stream())
         .filter(
@@ -171,7 +171,7 @@ public abstract class AbstractCSVMapper {
       beanWriter.flush();
       return stringWriter.toString();
     } catch (IOException e) {
-      LOG.error(e.getMessage(), e);
+      log.error(e.getMessage(), e);
       return null;
     }
   }
@@ -195,7 +195,7 @@ public abstract class AbstractCSVMapper {
     }
   }
 
-  public AbstractCSVMapper(Report report) {
+  AbstractCSVMapper(Report report) {
     this.report = report;
     this.yearMonths = createYearMonths();
   }

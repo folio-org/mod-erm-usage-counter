@@ -8,8 +8,8 @@ public enum Activity {
   RESULT_CLICK("Result Clicks", MetricType.RESULT_CLICK),
   RECORD_VIEW("Record Views", MetricType.RECORD_VIEW);
 
-  private String text;
-  private MetricType metricType;
+  private final String text;
+  private final MetricType metricType;
 
   Activity(String text, MetricType metricType) {
     this.text = text;
