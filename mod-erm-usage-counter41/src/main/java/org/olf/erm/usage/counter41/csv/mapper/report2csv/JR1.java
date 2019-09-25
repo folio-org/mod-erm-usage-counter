@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter41.csv.mapper;
+package org.olf.erm.usage.counter41.csv.mapper.report2csv;
 
 import com.google.common.base.Strings;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 
-public class JR1 extends AbstractCSVMapper {
+public class JR1 extends AbstractReportToCsvMapper {
 
   public JR1(Report report) {
     super(report);

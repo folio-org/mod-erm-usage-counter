@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter41.csv.mapper;
+package org.olf.erm.usage.counter41.csv.mapper.report2csv;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -7,12 +7,13 @@ import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
 import org.olf.erm.usage.counter41.csv.cellprocessor.MonthPerformanceProcessor;
 import org.olf.erm.usage.counter41.csv.cellprocessor.ReportingPeriodProcessor;
+import org.olf.erm.usage.counter41.csv.mapper.Activity;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.dozer.ICsvDozerBeanWriter;
 import org.supercsv.util.CsvContext;
 
-public class PR1 extends AbstractCSVMapper {
+public class PR1 extends AbstractReportToCsvMapper {
 
   public PR1(Report report) {
     super(report);
