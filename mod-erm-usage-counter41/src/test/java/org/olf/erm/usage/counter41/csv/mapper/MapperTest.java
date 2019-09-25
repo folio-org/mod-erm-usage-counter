@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import javax.xml.bind.JAXB;
-import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -64,7 +63,7 @@ public class MapperTest {
             ri -> {
               if (reportName.equals("PR1")) ri.setItemName(null);
               if (reportName.equals("DB1")) ri.setItemIdentifier(null);
-              if (reportName.equals("BR1"))
+              if (Arrays.asList("BR1", "BR2").contains(reportName))
                 ri.getItemIdentifier()
                     .removeIf(id -> id.getType().equals(IdentifierType.ONLINE_ISBN));
             })
@@ -82,7 +81,6 @@ public class MapperTest {
 
   @Test
   public void testToReport() throws IOException, URISyntaxException, MapperException {
-    Assume.assumeTrue(Arrays.asList("JR1", "PR1", "DB1", "BR1").contains(reportName));
     String csvString = Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
 
     File file = new File(Resources.getResource(input).toURI());
