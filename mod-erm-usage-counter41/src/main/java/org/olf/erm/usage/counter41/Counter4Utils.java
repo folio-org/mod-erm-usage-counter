@@ -93,7 +93,22 @@ public class Counter4Utils {
     try {
       return MapperFactory.createCSVMapper(report).toCSV();
     } catch (MapperException e) {
-      log.error(e.getMessage());
+      log.error("Error mapping from Report to CSV: {}", e.getMessage());
+      return null;
+    }
+  }
+
+  /**
+   * Creates a {@link Report} object from a csv string representation.
+   *
+   * @param csvString report data as csv string
+   * @return {@link Report}, or null on error
+   */
+  public static Report toReport(String csvString) {
+    try {
+      return MapperFactory.createCsvToReportMapper(csvString).toReport();
+    } catch (IOException | MapperException e) {
+      log.error("Error mapping from CSV to String: {}", e.getMessage());
       return null;
     }
   }
