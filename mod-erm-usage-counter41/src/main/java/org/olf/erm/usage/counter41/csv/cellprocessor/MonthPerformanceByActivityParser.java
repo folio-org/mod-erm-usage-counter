@@ -7,7 +7,7 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.PerformanceCounter;
-import org.olf.erm.usage.counter41.csv.mapper.report2csv.Activity;
+import org.olf.erm.usage.counter41.csv.mapper.Activity;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 
@@ -21,6 +21,7 @@ public class MonthPerformanceByActivityParser extends CellProcessorAdaptor {
     this.activityColumn = activityColumn;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Metric execute(Object value, CsvContext context) {
     if (value == null) {

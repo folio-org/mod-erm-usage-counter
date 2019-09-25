@@ -68,8 +68,6 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     report.setTitle(getTitle());
     report.setName(getName());
     report.setVersion("4");
-    // report.setID("");
-    // report.setCreated("");
 
     customer.setID(headerColumn.get(1));
     customer.setName(headerColumn.get(2));

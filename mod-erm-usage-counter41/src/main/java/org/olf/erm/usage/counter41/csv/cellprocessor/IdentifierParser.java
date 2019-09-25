@@ -13,6 +13,7 @@ public class IdentifierParser extends CellProcessorAdaptor {
     this.type = type;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Identifier execute(Object value, CsvContext context) {
     if (value == null) {

@@ -113,7 +113,6 @@ public class Counter4Utils {
     }
   }
 
-  // TODO: check that report includes one month only for now
   public static Report fromString(String content) {
     try {
       CounterReportResponse crr =
@@ -177,13 +176,11 @@ public class Counter4Utils {
         .collect(Collectors.toList());
   }
 
-  public static class ReportMergeException extends java.lang.Exception {
+  static class ReportMergeException extends java.lang.Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public ReportMergeException() {}
-
-    public ReportMergeException(String message) {
+    ReportMergeException(String message) {
       super(message);
     }
   }
@@ -198,7 +195,7 @@ public class Counter4Utils {
    *
    * @param reports varArgs of {@link Report}
    * @return {@link Report}
-   * @throws ReportMergeException
+   * @throws ReportMergeException if reports cannot be merged
    */
   public static Report merge(Report... reports) throws ReportMergeException {
     Report[] clonedReports = SerializationUtils.clone(reports);

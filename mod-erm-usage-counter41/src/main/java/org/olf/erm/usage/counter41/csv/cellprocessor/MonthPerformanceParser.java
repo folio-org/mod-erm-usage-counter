@@ -23,6 +23,7 @@ public class MonthPerformanceParser extends CellProcessorAdaptor {
     this.category = category;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Metric execute(Object value, CsvContext context) {
     if (value == null) {
