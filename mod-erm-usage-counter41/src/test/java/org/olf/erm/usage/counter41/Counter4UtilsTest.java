@@ -19,10 +19,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.niso.schemas.counter.DateRange;
+import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.Report.Customer;
 import org.niso.schemas.counter.ReportItem;
+import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.Counter4Utils.ReportMergeException;
+import org.olf.erm.usage.counter41.Counter4Utils.ReportSplitException;
 
 public class Counter4UtilsTest {
 
@@ -102,6 +105,46 @@ public class Counter4UtilsTest {
     assertThatThrownBy(() -> Counter4Utils.merge(rep1, rep2))
         .isInstanceOf(ReportMergeException.class)
         .hasMessageContaining("invalid customer definitions");
+  }
+
+  @Test
+  public void testSplitReports() throws ReportSplitException {
+    Report report =
+        JAXB.unmarshal(
+                Resources.getResource("split/reportJSTOR-JR1-2018.xml"),
+                CounterReportResponse.class)
+            .getReport()
+            .getReport()
+            .get(0);
+
+    List<Report> split = Counter4Utils.split(report);
+    assertThat(split.size()).isEqualTo(4);
+
+    assertThat(split)
+        .allSatisfy(
+            r -> {
+              assertThat(r)
+                  .usingRecursiveComparison()
+                  .ignoringCollectionOrder()
+                  .ignoringFields("customer.reportItems")
+                  .isEqualTo(split.get(0));
+              assertThat(
+                      r.getCustomer().get(0).getReportItems().stream()
+                          .flatMap(ri -> ri.getItemPerformance().stream())
+                          .map(Metric::getPeriod)
+                          .distinct()
+                          .count())
+                  .isEqualTo(1);
+            });
+
+    Metric metric =
+        split.get(2).getCustomer().get(0).getReportItems().get(1).getItemPerformance().get(0);
+    assertThat(metric.getPeriod().getBegin().toString()).isEqualTo("2018-03-01");
+    assertThat(metric.getInstance().get(2).getCount()).isEqualTo(8);
+    Metric metric2 =
+        split.get(3).getCustomer().get(0).getReportItems().get(1).getItemPerformance().get(0);
+    assertThat(metric2.getPeriod().getEnd().toString()).isEqualTo("2018-04-30");
+    assertThat(metric2.getInstance().get(2).getCount()).isEqualTo(2);
   }
 
   @Test
