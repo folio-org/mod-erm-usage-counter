@@ -1,3 +1,12 @@
+## 1.3.0
+* counter41: Do not check vendor attributes when merging reports
+* counter41: When splitting a report, do not include a ReportItem in a month when there is no ItemPerformance for this month
+* counter41: Add method for splitting a report into separate months
+* Update jackson-databind to 2.10.0
+* counter41: Add report mappings for csv (JR1, PR1, DB1, BR1, BR2)
+* counter41: Fix JR1 mapping incorrect DOI and PROPRIETARY ItemIdentifiers
+* counter41: Dont create empty lines in csv
+
 ## 1.2.3
 * Update jackson-databind to 2.9.9.3 CVE-2019-14379, CVE-2019-14439
 
