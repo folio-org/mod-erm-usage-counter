@@ -195,7 +195,6 @@ public class Counter4Utils {
    *
    * @param reports varArgs of {@link Report}
    * @return {@link Report}
-   * @throws ReportMergeException if reports cannot be merged
    */
   public static Report merge(Report... reports) throws ReportMergeException {
     Report[] clonedReports = SerializationUtils.clone(reports);
