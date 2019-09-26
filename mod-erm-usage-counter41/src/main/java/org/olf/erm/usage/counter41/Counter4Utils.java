@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.time.YearMonth;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -176,15 +177,6 @@ public class Counter4Utils {
         .collect(Collectors.toList());
   }
 
-  static class ReportMergeException extends java.lang.Exception {
-
-    private static final long serialVersionUID = 1L;
-
-    ReportMergeException(String message) {
-      super(message);
-    }
-  }
-
   /** Same as {@link Counter4Utils#merge(Report...)} */
   public static Report merge(Collection<Report> c) throws ReportMergeException {
     return merge(c.toArray(new Report[0]));
@@ -236,6 +228,40 @@ public class Counter4Utils {
   }
 
   /**
+   * Splits a report that spans multiple months into a list of reports spanning one month each
+   *
+   * @param report Report with multiple months
+   * @return List of Reports with one month only
+   */
+  public static List<Report> split(Report report) throws ReportSplitException {
+    if (report.getCustomer().isEmpty()) {
+      throw new ReportSplitException("Report contains no customer");
+    }
+    if (report.getCustomer().size() > 1) {
+      throw new ReportSplitException("Report contains multiple customer entries");
+    }
+
+    List<YearMonth> yearMonths = getYearMonthsFromReport(report);
+    ArrayList<Report> resultList = new ArrayList<>();
+    yearMonths.forEach(
+        ym -> {
+          Report clone = SerializationUtils.clone(report);
+          XMLGregorianCalendar begin = toXMLGregorianCalendar(ym.atDay(1));
+          XMLGregorianCalendar end = toXMLGregorianCalendar(ym.atEndOfMonth());
+          clone.getCustomer().get(0).getReportItems().stream()
+              .map(ReportItem::getItemPerformance)
+              .forEach(
+                  list ->
+                      list.removeIf(
+                          metric ->
+                              !metric.getPeriod().getBegin().equals(begin)
+                                  && !metric.getPeriod().getEnd().equals(end)));
+          resultList.add(clone);
+        });
+    return resultList;
+  }
+
+  /**
    * Converts a {@link Temporal} into {@link XMLGregorianCalendar}.
    *
    * @param temporal {@link Temporal}
@@ -265,4 +291,19 @@ public class Counter4Utils {
   }
 
   private Counter4Utils() {}
+
+  public static class ReportMergeException extends java.lang.Exception {
+    private static final long serialVersionUID = 1L;
+
+    public ReportMergeException(String message) {
+      super(message);
+    }
+  }
+
+  public static class ReportSplitException extends java.lang.Exception {
+
+    public ReportSplitException(String message) {
+      super(message);
+    }
+  }
 }
