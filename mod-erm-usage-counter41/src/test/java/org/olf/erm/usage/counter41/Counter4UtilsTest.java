@@ -148,6 +148,26 @@ public class Counter4UtilsTest {
   }
 
   @Test
+  public void testSplitAndMergeReport() throws ReportSplitException, ReportMergeException {
+    Report report =
+        JAXB.unmarshal(
+                Resources.getResource("split/reportJSTOR-JR1-2018.xml"),
+                CounterReportResponse.class)
+            .getReport()
+            .getReport()
+            .get(0);
+
+    List<Report> splitReports = Counter4Utils.split(report);
+    Report mergedReport = Counter4Utils.merge(splitReports);
+    assertThat(report)
+        .usingRecursiveComparison()
+        .ignoringCollectionOrder()
+        .ignoringFields("id")
+        .ignoringFields("created")
+        .isEqualTo(mergedReport);
+  }
+
+  @Test
   public void testToXMLGregorianCalendar() {
     YearMonth ym = YearMonth.of(2018, 7);
     XMLGregorianCalendar ymResult = Counter4Utils.toXMLGregorianCalendar(ym);
