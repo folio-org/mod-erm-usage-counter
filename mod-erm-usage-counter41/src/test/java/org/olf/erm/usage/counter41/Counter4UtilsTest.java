@@ -48,9 +48,9 @@ public class Counter4UtilsTest {
     Report fromJSON = Counter4Utils.fromJSON(Counter4Utils.toJSON(fromXML));
     Report fromJSON2 = Counter4Utils.fromJSON(Counter4Utils.mapper.writeValueAsString(fromXML));
 
-    assertThat(fromJSON).isEqualToComparingFieldByFieldRecursively(fromXML);
-    assertThat(fromJSON).isEqualToComparingFieldByFieldRecursively(fromJSON2);
-    assertThat(fromJSON).isEqualToComparingFieldByFieldRecursively(fromXML2);
+    assertThat(fromJSON).usingRecursiveComparison().isEqualTo(fromXML);
+    assertThat(fromJSON).usingRecursiveComparison().isEqualTo(fromJSON2);
+    assertThat(fromJSON).usingRecursiveComparison().isEqualTo(fromXML2);
   }
 
   @Test
