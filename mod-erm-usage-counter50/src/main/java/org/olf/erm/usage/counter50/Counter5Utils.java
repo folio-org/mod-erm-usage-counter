@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter50;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +30,23 @@ public class Counter5Utils {
 
   private Counter5Utils() {}
 
+  public static SUSHIReportHeader getSushiReportHeader(String content)
+      throws Counter5UtilsException {
+    try {
+      JsonObject jsonObject = parser.parse(content).getAsJsonObject();
+      return gson.fromJson(jsonObject.getAsJsonObject("Report_Header"), SUSHIReportHeader.class);
+    } catch (JsonParseException | IllegalStateException e) {
+      throw new Counter5UtilsException(
+          String.format("Error parsing SushiReportHeader: %s", e.getMessage()), e);
+    }
+  }
+
+  /**
+   * @param content
+   * @return
+   * @deprecated As of 1.3.0, use {@link #getSushiReportHeader(String)} instead
+   */
+  @Deprecated
   public static SUSHIReportHeader getReportHeader(String content) {
     SUSHIReportHeader reportHeader;
     try {
@@ -87,5 +105,12 @@ public class Counter5Utils {
                           .collect(Collectors.toList());
                     }))
         .orElse(Collections.emptyList());
+  }
+
+  public static class Counter5UtilsException extends Exception {
+
+    public Counter5UtilsException(String message, Throwable cause) {
+      super(message, cause);
+    }
   }
 }

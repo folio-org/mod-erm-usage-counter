@@ -49,6 +49,6 @@ public class SerializationTest {
     String json = Counter4Utils.toJSON(report);
     Report fromJSON = Counter4Utils.fromJSON(json);
 
-    assertThat(report).isEqualToComparingFieldByFieldRecursively(fromJSON);
+    assertThat(report).usingRecursiveComparison().isEqualTo(fromJSON);
   }
 }
