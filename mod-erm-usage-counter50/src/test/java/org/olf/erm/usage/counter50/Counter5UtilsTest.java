@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 
@@ -52,6 +53,17 @@ public class Counter5UtilsTest {
     @Test
     public void testIsValidReport() {
       SUSHIReportHeader header = Counter5Utils.getReportHeader(s);
+      assertThat(Counter5Utils.isValidReportHeader(header)).isEqualTo(ex);
+    }
+
+    @Test
+    public void testIsValidReport2() {
+      SUSHIReportHeader header = null;
+      try {
+        header = Counter5Utils.getSushiReportHeader(s);
+      } catch (Counter5UtilsException e) {
+        // ignore -> header == null
+      }
       assertThat(Counter5Utils.isValidReportHeader(header)).isEqualTo(ex);
     }
   }
