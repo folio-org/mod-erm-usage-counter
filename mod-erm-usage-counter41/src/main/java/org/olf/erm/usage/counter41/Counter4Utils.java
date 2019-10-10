@@ -103,15 +103,10 @@ public class Counter4Utils {
    * Creates a {@link Report} object from a csv string representation.
    *
    * @param csvString report data as csv string
-   * @return {@link Report}, or null on error
+   * @return {@link Report}
    */
-  public static Report toReport(String csvString) {
-    try {
-      return MapperFactory.createCsvToReportMapper(csvString).toReport();
-    } catch (IOException | MapperException e) {
-      log.error("Error mapping from CSV to String: {}", e.getMessage());
-      return null;
-    }
+  public static Report fromCsvString(String csvString) throws MapperException, IOException {
+    return MapperFactory.createCsvToReportMapper(csvString).toReport();
   }
 
   public static Report fromString(String content) {
