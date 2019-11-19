@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
@@ -145,6 +146,19 @@ public class Counter4UtilsTest {
         split.get(3).getCustomer().get(0).getReportItems().get(1).getItemPerformance().get(0);
     assertThat(metric2.getPeriod().getEnd().toString()).isEqualTo("2018-04-30");
     assertThat(metric2.getInstance().get(2).getCount()).isEqualTo(2);
+  }
+
+  @Test
+  public void testSplitReports2() throws ReportSplitException {
+    Report report =
+        JAXB.unmarshal(Resources.getResource("split/reportJSTORMultiMonth.xml"), Report.class);
+
+    List<Report> split = Counter4Utils.split(report);
+    System.out.println(Json.encodePrettily(split.get(0)));
+    assertThat(split).hasSize(2);
+
+    assertThat(split)
+        .allSatisfy(r -> assertThat(r.getCustomer().get(0).getReportItems()).hasSize(1));
   }
 
   @Test
