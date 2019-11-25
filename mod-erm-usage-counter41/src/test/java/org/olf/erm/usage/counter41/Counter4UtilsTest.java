@@ -176,8 +176,7 @@ public class Counter4UtilsTest {
     assertThat(report)
         .usingRecursiveComparison()
         .ignoringCollectionOrder()
-        .ignoringFields("id")
-        .ignoringFields("created")
+        .ignoringFields("id", "created", "vendor")
         .isEqualTo(mergedReport);
   }
 

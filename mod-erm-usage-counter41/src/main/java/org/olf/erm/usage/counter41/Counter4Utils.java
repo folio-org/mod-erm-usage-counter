@@ -198,6 +198,7 @@ public class Counter4Utils {
                 r -> {
                   // reset some attributes for equals() check
                   r.getCustomer().get(0).getReportItems().clear();
+                  r.setVendor(null);
                   r.setCreated(null);
                   r.setID(null);
                 })
