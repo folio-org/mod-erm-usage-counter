@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
@@ -148,6 +149,19 @@ public class Counter4UtilsTest {
   }
 
   @Test
+  public void testSplitReports2() throws ReportSplitException {
+    Report report =
+        JAXB.unmarshal(Resources.getResource("split/reportJSTORMultiMonth.xml"), Report.class);
+
+    List<Report> split = Counter4Utils.split(report);
+    System.out.println(Json.encodePrettily(split.get(0)));
+    assertThat(split).hasSize(2);
+
+    assertThat(split)
+        .allSatisfy(r -> assertThat(r.getCustomer().get(0).getReportItems()).hasSize(1));
+  }
+
+  @Test
   public void testSplitAndMergeReport() throws ReportSplitException, ReportMergeException {
     Report report =
         JAXB.unmarshal(
@@ -162,8 +176,7 @@ public class Counter4UtilsTest {
     assertThat(report)
         .usingRecursiveComparison()
         .ignoringCollectionOrder()
-        .ignoringFields("id")
-        .ignoringFields("created")
+        .ignoringFields("id", "created", "vendor")
         .isEqualTo(mergedReport);
   }
 

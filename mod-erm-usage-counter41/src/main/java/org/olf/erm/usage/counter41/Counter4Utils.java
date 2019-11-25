@@ -26,6 +26,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.SerializationUtils;
 import org.niso.schemas.counter.DateRange;
+import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
 import org.niso.schemas.sushi.Exception;
@@ -197,6 +198,7 @@ public class Counter4Utils {
                 r -> {
                   // reset some attributes for equals() check
                   r.getCustomer().get(0).getReportItems().clear();
+                  r.setVendor(null);
                   r.setCreated(null);
                   r.setID(null);
                 })
@@ -241,16 +243,21 @@ public class Counter4Utils {
     yearMonths.forEach(
         ym -> {
           Report clone = SerializationUtils.clone(report);
-          XMLGregorianCalendar begin = toXMLGregorianCalendar(ym.atDay(1));
-          XMLGregorianCalendar end = toXMLGregorianCalendar(ym.atEndOfMonth());
-          clone.getCustomer().get(0).getReportItems().stream()
+          DateRange dateRange = new DateRange();
+          dateRange.setBegin(toXMLGregorianCalendar(ym.atDay(1)));
+          dateRange.setEnd(toXMLGregorianCalendar(ym.atEndOfMonth()));
+
+          List<ReportItem> reportItems = clone.getCustomer().get(0).getReportItems();
+          reportItems.removeIf(
+              ri ->
+                  ri.getItemPerformance().stream()
+                      .map(Metric::getPeriod)
+                      .noneMatch(dr -> dr.equals(dateRange)));
+
+          reportItems.stream()
               .map(ReportItem::getItemPerformance)
-              .forEach(
-                  list ->
-                      list.removeIf(
-                          metric ->
-                              !metric.getPeriod().getBegin().equals(begin)
-                                  && !metric.getPeriod().getEnd().equals(end)));
+              .forEach(list -> list.removeIf(metric -> !metric.getPeriod().equals(dateRange)));
+
           resultList.add(clone);
         });
     return resultList;
