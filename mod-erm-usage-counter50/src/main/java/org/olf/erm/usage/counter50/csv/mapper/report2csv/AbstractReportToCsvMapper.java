@@ -67,7 +67,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
       csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS, getReportFilters());
       csvListWriter.write(
           SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES, getReportAttributes());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS, "");
+      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS, getExceptions());
       String reportingPeriod =
           String.format(
               "Begin_Date=%s; End_Date=%s",
@@ -104,6 +104,16 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .map(
             reportFilter ->
                 String.format(FORMAT_EQUALS, reportFilter.getName(), reportFilter.getValue()))
+        .collect(Collectors.joining("; "));
+  }
+
+  private String getExceptions() {
+    return this.header.getExceptions().stream()
+        .map(
+            e ->
+                String.format(
+                    "%s - %s - %s - %s - %s",
+                    e.getSeverity(), e.getCode(), e.getMessage(), e.getData(), e.getHelpURL()))
         .collect(Collectors.joining("; "));
   }
 
