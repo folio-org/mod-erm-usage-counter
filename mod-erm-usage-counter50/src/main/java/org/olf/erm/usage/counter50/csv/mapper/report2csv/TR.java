@@ -11,17 +11,22 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
+import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers;
 import org.openapitools.client.model.COUNTERTitleReport;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
 
+  private COUNTERTitleReport report;
+
   public TR(COUNTERTitleReport report) {
-    super(report, Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader()));
+    super(
+        report.getReportHeader(),
+        Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader()));
+    this.report = report;
   }
 
   @Override
@@ -48,6 +53,11 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
   }
 
   @Override
+  protected COUNTERTitleReport getReport() {
+    return this.report;
+  }
+
+  @Override
   protected String getMetricTypes() {
     return report.getReportItems().stream()
         .flatMap(
@@ -60,12 +70,6 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
                                     counterItemPerformanceInstance ->
                                         counterItemPerformanceInstance.getMetricType().getValue())))
         .distinct()
-        .collect(Collectors.joining("; "));
-  }
-
-  private String getPublisherID(List<COUNTERPublisherIdentifiers> identifiers) {
-    return identifiers.stream()
-        .map(id -> String.format("%s=%s", id.getType(), id.getValue()))
         .collect(Collectors.joining("; "));
   }
 
@@ -112,7 +116,9 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
                         final Map<String, Object> itemMap = new HashMap<>();
                         itemMap.put(header[0], reportItem.getTitle());
                         itemMap.put(header[1], reportItem.getPublisher());
-                        itemMap.put(header[2], getPublisherID(reportItem.getPublisherID()));
+                        itemMap.put(
+                            header[2],
+                            PublisherIDProcessor.getPublisherID(reportItem.getPublisherID()));
                         itemMap.put(header[3], reportItem.getPlatform());
                         itemMap.put(
                             header[4],

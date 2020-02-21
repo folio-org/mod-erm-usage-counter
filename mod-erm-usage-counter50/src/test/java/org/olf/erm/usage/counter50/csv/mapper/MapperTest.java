@@ -28,7 +28,7 @@ public class MapperTest {
 
   @Parameters(name = "{0}")
   public static Collection params() {
-    return Arrays.asList("PR", "TR");
+    return Arrays.asList("IR", "PR", "TR");
   }
 
   @Test

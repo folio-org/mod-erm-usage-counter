@@ -1,0 +1,216 @@
+{
+  "Report_Header": {
+    "Created": "2020-02-19T14:15:08Z",
+    "Release": "5",
+    "Report_ID": "IR",
+    "Created_By": "Item Report Creator",
+    "Exceptions": [
+    ],
+    "Customer_ID": "123456",
+    "Report_Name": "Item Master Report",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "foo:bar"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2019-02-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2019-02-28"
+      }
+    ],
+    "Institution_Name": "My Institution",
+    "Report_Attributes": [
+    ]
+  },
+  "Report_Items": [
+    {
+      "Item": "Item 1",
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "12.3456/abc.12345"
+        }
+      ],
+      "Platform": "Foo Platform",
+      "Publisher": "Foo Publisher",
+      "Item_Dates": [
+        {
+          "Type": "Publication_Date",
+          "Value": "12/1/2015"
+        }
+      ],
+      "Item_Parent": [
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-02-28",
+            "Begin_Date": "2019-02-01"
+          },
+          "Instance": [
+            {
+              "Count": 1,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 1,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 1,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 1,
+              "Metric_Type": "Unique_Item_Requests"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "foo:bar"
+        }
+      ],
+      "Item_Component": [
+      ],
+      "Item_Attributes": [
+      ],
+      "Item_Contributors": [
+        {
+          "Name": "Doe, John",
+          "Type": "Author"
+        }
+      ]
+    },
+    {
+      "Item": "Item 2",
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "00.1234/a.1234-5678.9999.00000.a"
+        }
+      ],
+      "Platform": "Foo Platform",
+      "Publisher": "Foo Publisher",
+      "Item_Dates": [
+        {
+          "Type": "Publication_Date",
+          "Value": "2/1/2013"
+        }
+      ],
+      "Item_Parent": [
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-02-28",
+            "Begin_Date": "2019-02-01"
+          },
+          "Instance": [
+            {
+              "Count": 2,
+              "Metric_Type": "Unique_Item_Requests"
+            },
+            {
+              "Count": 2,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 3,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 3,
+              "Metric_Type": "Total_Item_Investigations"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "foo:bar"
+        }
+      ],
+      "Item_Component": [
+      ],
+      "Item_Attributes": [
+      ],
+      "Item_Contributors": [
+        {
+          "Name": "Doe, Jane",
+          "Type": "Author"
+        }
+      ]
+    },
+    {
+      "Item": "Item 3",
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "00.1234/a.1234-5678.9999.00000.a"
+        }
+      ],
+      "Platform": "Foo Platform",
+      "Publisher": "Foo Publisher",
+      "Item_Dates": [
+        {
+          "Type": "Publication_Date",
+          "Value": "10/1/2016"
+        }
+      ],
+      "Item_Parent": [
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-02-28",
+            "Begin_Date": "2019-02-01"
+          },
+          "Instance": [
+            {
+              "Count": 3,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 3,
+              "Metric_Type": "Unique_Item_Requests"
+            },
+            {
+              "Count": 5,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 5,
+              "Metric_Type": "Total_Item_Investigations"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "foo:bar"
+        }
+      ],
+      "Item_Component": [
+      ],
+      "Item_Attributes": [
+      ],
+      "Item_Contributors": [
+        {
+          "Name": "Mustermann, Max",
+          "Type": "Author"
+        }
+      ]
+    }
+  ]
+}

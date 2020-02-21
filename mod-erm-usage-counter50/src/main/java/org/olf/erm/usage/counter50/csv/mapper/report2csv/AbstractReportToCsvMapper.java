@@ -12,8 +12,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,40 +26,30 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   protected static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
   private static final String FORMAT_EQUALS = "%s=%s";
-  protected final T report;
   protected final List<YearMonth> yearMonths;
   protected final SUSHIReportHeader header;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  AbstractReportToCsvMapper(T report, List<YearMonth> yearMonths) {
-    if (!(report instanceof COUNTERTitleReport) && !(report instanceof COUNTERPlatformReport)) {
+  AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
+    if (!("TR".equals(header.getReportID()))
+        && !("PR".equals(header.getReportID()))
+        && !("IR".equals(header.getReportID()))) {
       throw new IllegalArgumentException(
-          "Invalid report type. Possible types are COUNTERTitleReport and COUNTERPlatformReport");
+          "Invalid report type. Possible types are COUNTERTitleReport, COUNTERPlatformReport, COUNTERItemReport");
     }
-    this.report = report;
     this.yearMonths = yearMonths;
-    if (report instanceof COUNTERTitleReport) {
-      this.header = getHeader((COUNTERTitleReport) report);
-    } else if (report instanceof COUNTERPlatformReport) {
-      this.header = getHeader((COUNTERPlatformReport) report);
-    } else {
-      header = null;
-    }
-  }
-
-  SUSHIReportHeader getHeader(IGetHeader parameter) {
-    return parameter.getHeader();
-  }
-
-  SUSHIReportHeader getHeader(COUNTERTitleReport parameter) {
-    return getHeader(parameter::getReportHeader);
-  }
-
-  SUSHIReportHeader getHeader(COUNTERPlatformReport parameter) {
-    return getHeader(parameter::getReportHeader);
+    this.header = header;
   }
 
   protected abstract String[] getHeader();
+
+  protected abstract T getReport();
+
+  protected abstract String getMetricTypes();
+
+  protected abstract CellProcessor[] createProcessors();
+
+  protected abstract List<Map<String, Object>> toMap(T report);
 
   protected String createReportHeader() {
     StringWriter stringWriter = new StringWriter();
@@ -102,8 +90,6 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .collect(Collectors.joining("; "));
   }
 
-  protected abstract String getMetricTypes();
-
   private String getReportFilters() {
     return this.header.getReportFilters().stream()
         .map(
@@ -130,13 +116,9 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     return Stream.concat(h, months).toArray(String[]::new);
   }
 
-  protected abstract CellProcessor[] createProcessors();
-
-  protected abstract List<Map<String, Object>> toMap(T report);
-
   private void writeItems(ICsvMapWriter writer) throws IOException {
     CellProcessor[] processors = createProcessors();
-    List<Map<String, Object>> entries = toMap(report);
+    List<Map<String, Object>> entries = toMap(getReport());
     List<String> h = Arrays.asList(getHeader());
     List<String> ym =
         getYearMonths().stream()
@@ -171,9 +153,5 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
       logger.error(e.getMessage(), e);
       return null;
     }
-  }
-
-  interface IGetHeader {
-    SUSHIReportHeader getHeader();
   }
 }
