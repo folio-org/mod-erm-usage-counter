@@ -33,9 +33,10 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
     if (!("TR".equals(header.getReportID()))
         && !("PR".equals(header.getReportID()))
-        && !("IR".equals(header.getReportID()))) {
+        && !("IR".equals(header.getReportID()))
+        && !("DR".equals(header.getReportID()))) {
       throw new IllegalArgumentException(
-          "Invalid report type. Possible types are COUNTERTitleReport, COUNTERPlatformReport, COUNTERItemReport");
+          "Invalid report type. Possible types are COUNTERTitleReport, COUNTERPlatformReport, COUNTERItemReport, COUNTERPDatabaseReport");
     }
     this.yearMonths = yearMonths;
     this.header = header;

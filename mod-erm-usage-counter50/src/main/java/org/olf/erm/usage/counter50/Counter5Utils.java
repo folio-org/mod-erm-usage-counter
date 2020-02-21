@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.MapperFactory;
+import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERPlatformReport;
 import org.openapitools.client.model.COUNTERTitleReport;
@@ -134,6 +135,8 @@ public class Counter5Utils {
       result = gson.fromJson(json, COUNTERPlatformReport.class);
     } else if (reportID.startsWith("IR")) {
       result = gson.fromJson(json, COUNTERItemReport.class);
+    } else if (reportID.startsWith("DR")) {
+      result = gson.fromJson(json, COUNTERDatabaseReport.class);
     } else {
       LOG.error("Cannot cast given json to COUNTER 5 report");
     }

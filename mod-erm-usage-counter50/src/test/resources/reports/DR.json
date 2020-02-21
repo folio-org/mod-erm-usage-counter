@@ -1,0 +1,82 @@
+{
+  "Report_Header": {
+    "Created": "2020-02-19T12:55:34Z",
+    "Release": "5",
+    "Report_ID": "DR",
+    "Created_By": "JSTOR",
+    "Exceptions": [
+    ],
+    "Customer_ID": "My customer",
+    "Report_Name": "Database Master Report",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "foo:bar"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2019-12-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2019-12-31"
+      }
+    ],
+    "Institution_Name": "My Institution",
+    "Report_Attributes": [
+    ]
+  },
+  "Report_Items": [
+    {
+      "Database": "Foo Database",
+      "Platform": "Foo Platform",
+      "Publisher": "Foo Publisher",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-12-31",
+            "Begin_Date": "2019-12-01"
+          },
+          "Instance": [
+            {
+              "Count": 257,
+              "Metric_Type": "Unique_Title_Investigations"
+            },
+            {
+              "Count": 12938,
+              "Metric_Type": "Unique_Item_Requests"
+            },
+            {
+              "Count": 257,
+              "Metric_Type": "Unique_Title_Requests"
+            },
+            {
+              "Count": 2117,
+              "Metric_Type": "No_License"
+            },
+            {
+              "Count": 8697,
+              "Metric_Type": "Searches_Regular"
+            },
+            {
+              "Count": 18085,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 14308,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 19771,
+              "Metric_Type": "Total_Item_Investigations"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": [
+      ]
+    }
+  ]
+}
