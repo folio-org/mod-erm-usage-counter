@@ -23,6 +23,7 @@
     <rxjava-version>2.1.1</rxjava-version>
     <oltu-version>1.0.1</oltu-version>
     <junit-version>4.12</junit-version>
+    <super-csv.version>2.4.0</super-csv.version>
   </properties>
 
   <dependencies>
@@ -83,7 +84,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit-version}</version>
-      <scope>test</scope>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.supercsv</groupId>
+      <artifactId>super-csv-dozer</artifactId>
+      <version>${super-csv.version}</version>
     </dependency>
   </dependencies>
 

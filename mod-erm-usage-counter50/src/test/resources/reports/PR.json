@@ -1,0 +1,66 @@
+{
+  "Report_Header": {
+    "Created": "2020-02-19T12:57:08Z",
+    "Release": "5",
+    "Report_ID": "PR",
+    "Created_By": "Platform Report Creator",
+    "Exceptions": [
+    ],
+    "Customer_ID": "123456",
+    "Report_Name": "Platform Master Report",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "foo:bar"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2018-09-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2018-09-30"
+      }
+    ],
+    "Institution_Name": "My Institution",
+    "Report_Attributes": [
+    ]
+  },
+  "Report_Items": [
+    {
+      "Platform": "Foo Platform",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2018-09-30",
+            "Begin_Date": "2018-09-01"
+          },
+          "Instance": [
+            {
+              "Count": 194,
+              "Metric_Type": "Searches_Platform"
+            },
+            {
+              "Count": 5164,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 3241,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 3137,
+              "Metric_Type": "Unique_Item_Requests"
+            },
+            {
+              "Count": 4990,
+              "Metric_Type": "Total_Item_Requests"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

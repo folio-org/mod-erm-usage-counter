@@ -14,6 +14,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.olf.erm.usage.counter50.csv.mapper.MapperException;
+import org.olf.erm.usage.counter50.csv.mapper.MapperFactory;
+import org.openapitools.client.model.COUNTERDatabaseReport;
+import org.openapitools.client.model.COUNTERItemReport;
+import org.openapitools.client.model.COUNTERPlatformReport;
+import org.openapitools.client.model.COUNTERTitleReport;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
@@ -27,6 +33,7 @@ public class Counter5Utils {
       Collections.unmodifiableList(Arrays.asList("PR", "DR", "TR", "IR"));
   private static final Gson gson = new Gson();
   private static final JsonParser parser = new JsonParser();
+  private static final String REPORT_HEADER = "Report_Header";
 
   private Counter5Utils() {}
 
@@ -34,7 +41,7 @@ public class Counter5Utils {
       throws Counter5UtilsException {
     try {
       JsonObject jsonObject = parser.parse(content).getAsJsonObject();
-      return gson.fromJson(jsonObject.getAsJsonObject("Report_Header"), SUSHIReportHeader.class);
+      return gson.fromJson(jsonObject.getAsJsonObject(REPORT_HEADER), SUSHIReportHeader.class);
     } catch (JsonParseException | IllegalStateException e) {
       throw new Counter5UtilsException(
           String.format("Error parsing SushiReportHeader: %s", e.getMessage()), e);
@@ -52,7 +59,7 @@ public class Counter5Utils {
     try {
       JsonObject jsonObject = parser.parse(content).getAsJsonObject();
       reportHeader =
-          gson.fromJson(jsonObject.getAsJsonObject("Report_Header"), SUSHIReportHeader.class);
+          gson.fromJson(jsonObject.getAsJsonObject(REPORT_HEADER), SUSHIReportHeader.class);
     } catch (Exception e) {
       LOG.error(e.getMessage(), e);
       return null;
@@ -105,6 +112,35 @@ public class Counter5Utils {
                           .collect(Collectors.toList());
                     }))
         .orElse(Collections.emptyList());
+  }
+
+  public static String toCSV(Object report) {
+    try {
+      return MapperFactory.createCSVMapper(report).toCSV();
+    } catch (MapperException e) {
+      LOG.error("Error mapping from Report to CSV: {}", e.getMessage());
+      return null;
+    }
+  }
+
+  public static Object fromJSON(String json) {
+    Object result = null;
+    Gson gson = new Gson();
+    JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+    String reportID =
+        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString();
+    if (reportID.startsWith("TR")) {
+      result = gson.fromJson(json, COUNTERTitleReport.class);
+    } else if (reportID.startsWith("PR")) {
+      result = gson.fromJson(json, COUNTERPlatformReport.class);
+    } else if (reportID.startsWith("IR")) {
+      result = gson.fromJson(json, COUNTERItemReport.class);
+    } else if (reportID.startsWith("DR")) {
+      result = gson.fromJson(json, COUNTERDatabaseReport.class);
+    } else {
+      LOG.error("Cannot cast given json to COUNTER 5 report");
+    }
+    return result;
   }
 
   public static class Counter5UtilsException extends Exception {
