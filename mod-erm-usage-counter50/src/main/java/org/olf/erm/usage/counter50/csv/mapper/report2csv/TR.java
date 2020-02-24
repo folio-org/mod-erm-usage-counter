@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
+import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
@@ -148,19 +149,17 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
                         itemMap.put(header[14], reportItem.getAccessMethod());
                         itemMap.put(header[15], metricTypeEnum);
 
-                        int sum =
-                            performancesPerMetricType.get(metricTypeEnum).values().stream()
-                                .mapToInt(x -> x)
-                                .sum();
-                        itemMap.put(header[16], sum);
+                        itemMap.put(
+                            header[16],
+                            PerformanceProcessor.calculateSum(
+                                performancesPerMetricType, metricTypeEnum));
 
-                        getYearMonths().stream()
-                            .forEach(
-                                yearMonth -> {
-                                  Integer count =
-                                      performancesPerMetricType.get(metricTypeEnum).get(yearMonth);
-                                  itemMap.put(yearMonth.format(formatter), count);
-                                });
+                        itemMap.putAll(
+                            PerformanceProcessor.getPerformancePerMonth(
+                                performancesPerMetricType,
+                                metricTypeEnum,
+                                getYearMonths(),
+                                formatter));
 
                         result.add(itemMap);
                       });

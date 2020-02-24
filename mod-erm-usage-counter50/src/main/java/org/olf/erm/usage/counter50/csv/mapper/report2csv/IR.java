@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
+import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemAttributes;
 import org.openapitools.client.model.COUNTERItemComponent;
@@ -276,20 +277,16 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
                         itemMap.put(header[36], reportItem.getAccessType());
                         itemMap.put(header[37], reportItem.getAccessMethod());
                         itemMap.put(header[38], metricTypeEnum);
-
-                        int sum =
-                            performancesPerMetricType.get(metricTypeEnum).values().stream()
-                                .mapToInt(x -> x)
-                                .sum();
-                        itemMap.put(header[39], sum);
-                        getYearMonths().stream()
-                            .forEach(
-                                yearMonth -> {
-                                  Integer count =
-                                      performancesPerMetricType.get(metricTypeEnum).get(yearMonth);
-                                  itemMap.put(yearMonth.format(formatter), count);
-                                });
-
+                        itemMap.put(
+                            header[39],
+                            PerformanceProcessor.calculateSum(
+                                performancesPerMetricType, metricTypeEnum));
+                        itemMap.putAll(
+                            PerformanceProcessor.getPerformancePerMonth(
+                                performancesPerMetricType,
+                                metricTypeEnum,
+                                getYearMonths(),
+                                formatter));
                         result.add(itemMap);
                       });
             });

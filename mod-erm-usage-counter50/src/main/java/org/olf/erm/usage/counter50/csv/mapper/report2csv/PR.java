@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
+import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.openapitools.client.model.COUNTERPlatformReport;
 import org.supercsv.cellprocessor.Optional;
@@ -57,20 +58,16 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
                         itemMap.put(header[1], reportItem.getDataType());
                         itemMap.put(header[2], reportItem.getAccessMethod());
                         itemMap.put(header[3], metricTypeEnum);
+                        itemMap.put(
+                            header[4],
+                            PerformanceProcessor.calculateSum(
+                                performancesPerMetricType, metricTypeEnum));
 
-                        int sum =
-                            performancesPerMetricType.get(metricTypeEnum).values().stream()
-                                .mapToInt(x -> x)
-                                .sum();
-                        itemMap.put(header[4], sum);
-
-                        getYearMonths().stream()
-                            .forEach(
-                                yearMonth -> {
-                                  Integer count =
-                                      performancesPerMetricType.get(metricTypeEnum).get(yearMonth);
-                                  itemMap.put(yearMonth.format(formatter), count);
-                                });
+                        itemMap.putAll(PerformanceProcessor.getPerformancePerMonth(
+                            performancesPerMetricType,
+                            metricTypeEnum,
+                            getYearMonths(),
+                            formatter));
 
                         result.add(itemMap);
                       });
