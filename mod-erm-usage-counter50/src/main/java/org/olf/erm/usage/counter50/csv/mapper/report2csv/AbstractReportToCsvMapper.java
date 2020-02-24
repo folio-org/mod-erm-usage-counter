@@ -129,16 +129,19 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
 
   private void writeItems(ICsvMapWriter writer) throws IOException {
     CellProcessor[] processors = createProcessors();
-    List<Map<String, Object>> entries = toMap(getReport());
-    List<String> h = Arrays.asList(getHeader());
+
     List<String> ym =
         getYearMonths().stream()
             .map(yearMonth -> yearMonth.format(formatter))
             .collect(Collectors.toList());
+    List<String> h = Arrays.asList(getHeader());
     List<String> headerList =
         Stream.of(h, ym).flatMap(Collection::stream).collect(Collectors.toList());
+
     String[] headerArray = new String[headerList.size()];
     headerArray = headerList.toArray(headerArray);
+
+    List<Map<String, Object>> entries = toMap(getReport());
     for (final Map<String, Object> item : entries) {
       writer.write(item, headerArray, processors);
     }
@@ -151,8 +154,6 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
 
     try (ICsvMapWriter mapWriter =
         new CsvMapWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
-
-      // write the header
       mapWriter.writeHeader(createHeader());
 
       writeItems(mapWriter);
