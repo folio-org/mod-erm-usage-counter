@@ -31,10 +31,10 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
-    if (!("TR".equals(header.getReportID()))
-        && !("PR".equals(header.getReportID()))
-        && !("IR".equals(header.getReportID()))
-        && !("DR".equals(header.getReportID()))) {
+    if (!("TR".equalsIgnoreCase(header.getReportID()))
+        && !("PR".equalsIgnoreCase(header.getReportID()))
+        && !("IR".equalsIgnoreCase(header.getReportID()))
+        && !("DR".equalsIgnoreCase(header.getReportID()))) {
       throw new IllegalArgumentException(
           "Invalid report type. Possible types are COUNTERTitleReport, COUNTERPlatformReport, COUNTERItemReport, COUNTERPDatabaseReport");
     }

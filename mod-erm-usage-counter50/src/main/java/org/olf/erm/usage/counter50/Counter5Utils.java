@@ -87,13 +87,13 @@ public class Counter5Utils {
 
     Optional<YearMonth> beginDate =
         reportFilters.stream()
-            .filter(f -> f.getName() != null && f.getName().equals("Begin_Date"))
+            .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("begin_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
             .map(s -> YearMonth.parse(s, DateTimeFormatter.ISO_DATE));
     Optional<YearMonth> endDate =
         reportFilters.stream()
-            .filter(f -> f.getName() != null && f.getName().equals("End_Date"))
+            .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("end_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
             .map(s -> YearMonth.parse(s, DateTimeFormatter.ISO_DATE));
@@ -128,7 +128,7 @@ public class Counter5Utils {
     Gson gson = new Gson();
     JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
     String reportID =
-        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString();
+        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString().toUpperCase();
     if (reportID.startsWith("TR")) {
       result = gson.fromJson(json, COUNTERTitleReport.class);
     } else if (reportID.startsWith("PR")) {
