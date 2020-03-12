@@ -1,3 +1,6 @@
+## 1.4.0
+* Add COP5 CSV mappings for single months (UIEUS-106)
+
 ## 1.3.0
 * counter41: Do not check vendor attributes when merging reports
 * counter41: When splitting a report, do not include a ReportItem in a month when there is no ItemPerformance for this month
