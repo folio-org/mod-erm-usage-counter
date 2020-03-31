@@ -30,22 +30,25 @@ public class Counter5UtilsTest {
     @Parameters
     public static Collection<Object[]> data() throws IOException {
       return Arrays.asList(
-          new Object[][] {
-            {
-              Resources.toString(Resources.getResource("hwire_pr.json"), StandardCharsets.UTF_8),
-              true
-            },
-            {
-              Resources.toString(Resources.getResource("hwire_trj1.json"), StandardCharsets.UTF_8),
-              true
-            },
-            {"{}", false},
-            {"[]", false},
-            {"abc", false}
+          new Object[][]{
+              {
+                  Resources.toString(Resources.getResource("hwire_pr.json"),
+                      StandardCharsets.UTF_8),
+                  true
+              },
+              {
+                  Resources.toString(Resources.getResource("hwire_trj1.json"),
+                      StandardCharsets.UTF_8),
+                  true
+              },
+              {"{}", false},
+              {"[]", false},
+              {"abc", false}
           });
     }
 
-    @Parameter public String s;
+    @Parameter
+    public String s;
 
     @Parameter(1)
     public boolean ex;
@@ -86,20 +89,21 @@ public class Counter5UtilsTest {
     @Parameters
     public static Collection<Object[]> data() {
       return Stream.of(
-              new Object[][] {
-                {createHeader("2019-01-01", "2019-12-31"), 12},
-                {createHeader("2018-12-01", "2019-01-31"), 2},
-                {createHeader("2018-12-01", "2018-12-31"), 1},
-                {createHeader("2018-12-01", "2018-12-16"), 1},
-                {createHeader("2018-12-31", "2018-01-01"), 0},
-                {createHeader("2018-12-01", null), 0},
-                {createHeader(null, "2018-12-31"), 0},
-                {createHeader(null, null), 0},
-              })
+          new Object[][]{
+              {createHeader("2019-01-01", "2019-12-31"), 12},
+              {createHeader("2018-12-01", "2019-01-31"), 2},
+              {createHeader("2018-12-01", "2018-12-31"), 1},
+              {createHeader("2018-12-01", "2018-12-16"), 1},
+              {createHeader("2018-12-31", "2018-01-01"), 0},
+              {createHeader("2018-12-01", null), 0},
+              {createHeader(null, "2018-12-31"), 0},
+              {createHeader(null, null), 0},
+          })
           .collect(Collectors.toList());
     }
 
-    @Parameter public SUSHIReportHeader header;
+    @Parameter
+    public SUSHIReportHeader header;
 
     @Parameter(1)
     public int exSize;
@@ -109,5 +113,7 @@ public class Counter5UtilsTest {
       List<YearMonth> yearMonths = Counter5Utils.getYearMonthsFromReportHeader(header);
       assertThat(yearMonths).hasSize(exSize);
     }
+
   }
+
 }
