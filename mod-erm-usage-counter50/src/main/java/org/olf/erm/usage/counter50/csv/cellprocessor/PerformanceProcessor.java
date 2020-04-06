@@ -2,9 +2,9 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 
 public final class PerformanceProcessor {
@@ -15,7 +15,8 @@ public final class PerformanceProcessor {
   public static int calculateSum(
       Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType,
       MetricTypeEnum metricTypeEnum) {
-    return performancesPerMetricType.get(metricTypeEnum).values().stream().mapToInt(x -> x).sum();
+    return performancesPerMetricType.get(metricTypeEnum).values().stream()
+        .mapToInt(x -> x == null ? 0 : x).sum();
   }
 
   public static Map<String, Integer> getPerformancePerMonth(
@@ -24,11 +25,10 @@ public final class PerformanceProcessor {
       List<YearMonth> yearMonths,
       DateTimeFormatter formatter) {
 
-    return yearMonths.stream()
-        .collect(
-            Collectors.toMap(
-                yearMonth -> yearMonth.format(formatter),
-                yearMonth -> performancesPerMetricType.get(metricTypeEnum)
-                    .getOrDefault(yearMonth, 0)));
+    Map<String, Integer> collected = new HashMap<>();
+    yearMonths.forEach(yearMonth -> collected
+        .put(yearMonth.format(formatter), performancesPerMetricType.get(metricTypeEnum)
+            .getOrDefault(yearMonth, null)));
+    return collected;
   }
 }
