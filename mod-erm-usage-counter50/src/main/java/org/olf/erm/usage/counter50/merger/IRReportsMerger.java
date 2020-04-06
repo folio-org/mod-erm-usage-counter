@@ -2,11 +2,7 @@ package org.olf.erm.usage.counter50.merger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
-import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERItemUsage;
 import org.openapitools.client.model.SUSHIReportHeader;
@@ -29,25 +25,9 @@ public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
   }
 
   private List<COUNTERItemUsage> mergeReportItemsWithSameID(List<COUNTERItemUsage> reportItems) {
-
-    Map<String, COUNTERItemUsage> collect = reportItems.stream().collect(Collectors
-        .groupingBy(this::getDOI,
-            Collectors
-                .collectingAndThen(Collectors.reducing(this::merge), Optional::get)));
-    return new ArrayList<>(collect.values());
-
-  }
-
-  private String getDOI(COUNTERItemUsage itemUsage) {
-    Optional<String> doi = itemUsage.getItemID().stream()
-        .filter(itemID -> itemID.getType() == TypeEnum.DOI).findFirst()
-        .map(COUNTERItemIdentifiers::getValue);
-    if (doi.isPresent()) {
-      return doi.get();
-    } else {
-      throw new RuntimeException(
-          String.format("DOI not present in COUNTERItemUsage of %s", itemUsage.getItem()));
-    }
+    return new ArrayList<>(reportItems.stream().collect(
+        Collectors.toMap(COUNTERItemUsage::getItemID, titleUsage -> titleUsage, this::merge))
+        .values());
   }
 
   private COUNTERItemUsage merge(COUNTERItemUsage a, COUNTERItemUsage b) {
