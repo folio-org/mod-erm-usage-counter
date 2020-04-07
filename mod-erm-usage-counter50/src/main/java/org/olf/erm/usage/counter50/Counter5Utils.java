@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.MapperFactory;
+import org.olf.erm.usage.counter50.merger.MergerFactory;
+import org.olf.erm.usage.counter50.merger.ReportsMerger;
 import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERPlatformReport;
@@ -35,7 +38,8 @@ public class Counter5Utils {
   private static final JsonParser parser = new JsonParser();
   private static final String REPORT_HEADER = "Report_Header";
 
-  private Counter5Utils() {}
+  private Counter5Utils() {
+  }
 
   public static SUSHIReportHeader getSushiReportHeader(String content)
       throws Counter5UtilsException {
@@ -83,35 +87,47 @@ public class Counter5Utils {
 
   public static List<YearMonth> getYearMonthsFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
+
+    List<LocalDate> localDateFromReportHeader = getLocalDateFromReportHeader(header);
+    if (localDateFromReportHeader.isEmpty()) {
+      return Collections.emptyList();
+    }
+
+    LocalDate beginDate = localDateFromReportHeader.get(0);
+    LocalDate endDate = localDateFromReportHeader.get(1);
+    if (beginDate.compareTo(endDate) > 0) {
+      LOG.warn("Begin_Date > End_Date");
+      return Collections.emptyList();
+    }
+
+    YearMonth begin = YearMonth.from(beginDate);
+    YearMonth end = YearMonth.from(endDate);
+    return Stream.iterate(begin, next -> next.plusMonths(1))
+        .limit(begin.until(end, ChronoUnit.MONTHS) + 1)
+        .collect(Collectors.toList());
+  }
+
+  public static List<LocalDate> getLocalDateFromReportHeader(SUSHIReportHeader header) {
+    Objects.requireNonNull(header);
     List<SUSHIReportHeaderReportFilters> reportFilters = header.getReportFilters();
 
-    Optional<YearMonth> beginDate =
+    Optional<LocalDate> beginDate =
         reportFilters.stream()
             .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("begin_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
-            .map(s -> YearMonth.parse(s, DateTimeFormatter.ISO_DATE));
-    Optional<YearMonth> endDate =
+            .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_DATE));
+    Optional<LocalDate> endDate =
         reportFilters.stream()
             .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("end_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
-            .map(s -> YearMonth.parse(s, DateTimeFormatter.ISO_DATE));
-
-    return beginDate
-        .flatMap(
-            begin ->
-                endDate.map(
-                    end -> {
-                      if (begin.compareTo(end) > 0) {
-                        LOG.warn("Begin_Date > End_Date");
-                        return Collections.<YearMonth>emptyList();
-                      }
-                      return Stream.iterate(begin, next -> next.plusMonths(1))
-                          .limit(begin.until(end, ChronoUnit.MONTHS) + 1)
-                          .collect(Collectors.toList());
-                    }))
-        .orElse(Collections.emptyList());
+            .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_DATE));
+    if (beginDate.isPresent() && endDate.isPresent()) {
+      return Arrays.asList(beginDate.get(), endDate.get());
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   public static String toCSV(Object report) {
@@ -128,7 +144,8 @@ public class Counter5Utils {
     Gson gson = new Gson();
     JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
     String reportID =
-        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString().toUpperCase();
+        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString()
+            .toUpperCase();
     if (reportID.startsWith("TR")) {
       result = gson.fromJson(json, COUNTERTitleReport.class);
     } else if (reportID.startsWith("PR")) {
@@ -143,10 +160,34 @@ public class Counter5Utils {
     return result;
   }
 
+  /**
+   * Merges COUNTER 5 reports of several months into one report. Input reports must be of same type.
+   * Valid types are {@link COUNTERTitleReport}, {@link COUNTERPlatformReport} & {@link
+   * COUNTERItemReport}. {@link COUNTERDatabaseReport} is currently not supported.
+   *
+   * @param reports
+   * @param <T>
+   * @return
+   * @throws Counter5UtilsException
+   */
+  public static <T> T merge(List<T> reports) throws Counter5UtilsException {
+    boolean allObjectsSameClass =
+        reports.stream().map(Object::getClass).distinct().limit(2).count() <= 1;
+    if (!allObjectsSameClass) {
+      throw new Counter5UtilsException("Cannot merge reports. Reports not of same class.");
+    }
+    ReportsMerger<T> merger = MergerFactory.createMerger(reports.get(0));
+    return merger.merge(reports);
+  }
+
   public static class Counter5UtilsException extends Exception {
 
     public Counter5UtilsException(String message, Throwable cause) {
       super(message, cause);
+    }
+
+    public Counter5UtilsException(String message) {
+      super(message);
     }
   }
 }

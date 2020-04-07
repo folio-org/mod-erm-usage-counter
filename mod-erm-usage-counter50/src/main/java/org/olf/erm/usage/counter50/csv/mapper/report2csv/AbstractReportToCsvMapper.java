@@ -161,7 +161,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
       mapWriter.flush();
       return stringWriter.toString();
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       logger.error(e.getMessage(), e);
       return null;
     }
