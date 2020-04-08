@@ -2,21 +2,32 @@ Report_Name,Database Master Report
 Report_ID,DR
 Release,5
 Institution_Name,My Institution
-Institution_ID,Proprietary=foo:bar
-Metric_Types,Unique_Title_Investigations; Unique_Item_Requests; Unique_Title_Requests; No_License; Searches_Regular; Total_Item_Requests; Unique_Item_Investigations; Total_Item_Investigations
-Report_Filters,Begin_Date=2019-12-01; End_Date=2019-12-31
+Institution_ID,Proprietary=ServiceMy Customer
+Metric_Types,Searches_Federated; Searches_Regular; Total_Item_Investigations; Total_Item_Requests; Unique_Item_Investigations; Unique_Item_Requests; Unique_Title_Investigations
+Report_Filters,Begin_Date=2019-01-01; End_Date=2019-01-31
 Report_Attributes,
 Exceptions,
-Reporting_Period,Begin_Date=2019-12-01; End_Date=2019-12-31
-Created,2020-02-19T12:55:34Z
-Created_By,JSTOR
+Reporting_Period,Begin_Date=2019-01-01; End_Date=2019-01-31
+Created,2020-04-08T08:23:02Z
+Created_By,My Service
 
-Database,Publisher,Publisher_ID,Platform,Proprietary_ID,Data_Type,Access_Method,Metric_Type,Reporting_Period_Total,Dec-2019
-Foo Database,Foo Publisher,,Foo Platform,,,,Searches_Regular,8697,8697
-Foo Database,Foo Publisher,,Foo Platform,,,,Total_Item_Investigations,19771,19771
-Foo Database,Foo Publisher,,Foo Platform,,,,Total_Item_Requests,18085,18085
-Foo Database,Foo Publisher,,Foo Platform,,,,Unique_Item_Investigations,14308,14308
-Foo Database,Foo Publisher,,Foo Platform,,,,Unique_Item_Requests,12938,12938
-Foo Database,Foo Publisher,,Foo Platform,,,,Unique_Title_Investigations,257,257
-Foo Database,Foo Publisher,,Foo Platform,,,,Unique_Title_Requests,257,257
-Foo Database,Foo Publisher,,Foo Platform,,,,No_License,2117,2117
+Database,Publisher,Publisher_ID,Platform,Proprietary_ID,Data_Type,Access_Method,Metric_Type,Reporting_Period_Total,Jan-2019
+Database 1,Publisher 1,,My Platform,,,,Searches_Federated,10,10
+Database 1,Publisher 1,,My Platform,,,,Searches_Regular,661,661
+Database 1,Publisher 1,,My Platform,,,,Total_Item_Investigations,1500,1500
+Database 1,Publisher 1,,My Platform,,,,Total_Item_Requests,1069,1069
+Database 1,Publisher 1,,My Platform,,,,Unique_Item_Investigations,992,992
+Database 1,Publisher 1,,My Platform,,,,Unique_Item_Requests,944,944
+Database 2,Publisher 1,,My Platform,,,,Searches_Federated,8,8
+Database 2,Publisher 1,,My Platform,,,,Searches_Regular,2228,2228
+Database 2,Publisher 1,,My Platform,,,,Total_Item_Investigations,3368,3368
+Database 2,Publisher 1,,My Platform,,,,Unique_Item_Investigations,2541,2541
+Database 2,Publisher 1,,My Platform,,,,Unique_Title_Investigations,127,127
+Database 3,My Publisher 2,,My Platform,,,,Searches_Federated,33,33
+Database 3,My Publisher 2,,My Platform,,,,Searches_Regular,2023,2023
+Database 3,My Publisher 2,,My Platform,,,,Total_Item_Investigations,4208,4208
+Database 3,My Publisher 2,,My Platform,,,,Total_Item_Requests,1166,1166
+Database 3,My Publisher 2,,My Platform,,,,Unique_Item_Investigations,3530,3530
+Database 3,My Publisher 2,,My Platform,,,,Unique_Item_Requests,1100,1100
+Database 4,My Publisher 2,,My Platform,,,,Searches_Regular,436,436
+

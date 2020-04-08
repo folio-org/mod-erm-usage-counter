@@ -1,0 +1,377 @@
+{
+    "Report_Header": {
+        "Created": "2020-04-08T08:50:17Z",
+        "Created_By": "My Service",
+        "Customer_ID": "My Customer",
+        "Report_ID": "DR",
+        "Release": "5",
+        "Report_Name": "Database Master Report",
+        "Institution_Name": "My Institution",
+        "Institution_ID": [
+            {
+                "Type": "Proprietary",
+                "Value": "ServiceMy Customer"
+            }
+        ],
+        "Report_Filters": [
+            {
+                "Name": "Begin_Date",
+                "Value": "2019-01-01"
+            },
+            {
+                "Name": "End_Date",
+                "Value": "2019-03-31"
+            }
+        ]
+    },
+    "Report_Items": [
+        {
+            "Platform": "My Platform",
+            "Database": "Database 1",
+            "Publisher": "Publisher 1",
+            "Performance": [
+                {
+                    "Period": {
+                        "Begin_Date": "2019-03-01",
+                        "End_Date": "2019-03-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 21
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 496
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 9381
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 4916
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 4944
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 4885
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-02-01",
+                        "End_Date": "2019-02-28"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 9
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 474
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 1606
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 1018
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 1003
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 976
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-01-01",
+                        "End_Date": "2019-01-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 10
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 661
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 1500
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 1069
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 992
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 944
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Platform": "My Platform",
+            "Database": "Database 2",
+            "Publisher": "Publisher 1",
+            "Performance": [
+                {
+                    "Period": {
+                        "Begin_Date": "2019-03-01",
+                        "End_Date": "2019-03-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 29
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 1560
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 5769
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 5386
+                        },
+                        {
+                            "Metric_Type": "Unique_Title_Investigations",
+                            "Count": 277
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-02-01",
+                        "End_Date": "2019-02-28"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 22
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 1125
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 2209
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 2009
+                        },
+                        {
+                            "Metric_Type": "Unique_Title_Investigations",
+                            "Count": 39
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-01-01",
+                        "End_Date": "2019-01-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 8
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 2228
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 3368
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 2541
+                        },
+                        {
+                            "Metric_Type": "Unique_Title_Investigations",
+                            "Count": 127
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Platform": "My Platform",
+            "Database": "Database 3",
+            "Publisher": "My Publisher 2",
+            "Performance": [
+                {
+                    "Period": {
+                        "Begin_Date": "2019-03-01",
+                        "End_Date": "2019-03-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 1494
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 1417
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 941
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 1261
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 868
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-02-01",
+                        "End_Date": "2019-02-28"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 20
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 1817
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 3184
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 901
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 2534
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 856
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-01-01",
+                        "End_Date": "2019-01-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 33
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 2023
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 4208
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Requests",
+                            "Count": 1166
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 3530
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Requests",
+                            "Count": 1100
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Platform": "My Platform",
+            "Database": "Database 4",
+            "Publisher": "My Publisher 2",
+            "Performance": [
+                {
+                    "Period": {
+                        "Begin_Date": "2019-03-01",
+                        "End_Date": "2019-03-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Federated",
+                            "Count": 62
+                        },
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 117
+                        },
+                        {
+                            "Metric_Type": "Total_Item_Investigations",
+                            "Count": 2
+                        },
+                        {
+                            "Metric_Type": "Unique_Item_Investigations",
+                            "Count": 2
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-02-01",
+                        "End_Date": "2019-02-28"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 291
+                        }
+                    ]
+                },
+                {
+                    "Period": {
+                        "Begin_Date": "2019-01-01",
+                        "End_Date": "2019-01-31"
+                    },
+                    "Instance": [
+                        {
+                            "Metric_Type": "Searches_Regular",
+                            "Count": 436
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
