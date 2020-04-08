@@ -19,8 +19,7 @@ public final class MergerFactory {
     } else if (report instanceof COUNTERItemReport) {
       return new IRReportsMerger();
     } else if (report instanceof COUNTERDatabaseReport) {
-      // merger = new DRReportsMerger();
-      throw new Counter5UtilsException("Merging COUNTERDatabaseReport currently not supported.");
+      return new DRReportsMerger();
     } else {
       throw new Counter5UtilsException("Cannot merge reports. Unknown report type.");
     }

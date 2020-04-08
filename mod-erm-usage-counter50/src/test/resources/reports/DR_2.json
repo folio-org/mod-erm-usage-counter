@@ -1,6 +1,6 @@
 {
     "Report_Header": {
-        "Created": "2020-04-08T08:23:02Z",
+        "Created": "2020-04-08T08:23:01Z",
         "Release": "5",
         "Report_ID": "DR",
         "Created_By": "My Service",
@@ -16,11 +16,11 @@
         "Report_Filters": [
             {
                 "Name": "Begin_Date",
-                "Value": "2019-01-01"
+                "Value": "2019-02-01"
             },
             {
                 "Name": "End_Date",
-                "Value": "2019-01-31"
+                "Value": "2019-02-28"
             }
         ],
         "Institution_Name": "My Institution",
@@ -34,32 +34,32 @@
             "Performance": [
                 {
                     "Period": {
-                        "End_Date": "2019-01-31",
-                        "Begin_Date": "2019-01-01"
+                        "End_Date": "2019-02-28",
+                        "Begin_Date": "2019-02-01"
                     },
                     "Instance": [
                         {
-                            "Count": 10,
+                            "Count": 9,
                             "Metric_Type": "Searches_Federated"
                         },
                         {
-                            "Count": 661,
+                            "Count": 474,
                             "Metric_Type": "Searches_Regular"
                         },
                         {
-                            "Count": 1500,
+                            "Count": 1606,
                             "Metric_Type": "Total_Item_Investigations"
                         },
                         {
-                            "Count": 1069,
+                            "Count": 1018,
                             "Metric_Type": "Total_Item_Requests"
                         },
                         {
-                            "Count": 992,
+                            "Count": 1003,
                             "Metric_Type": "Unique_Item_Investigations"
                         },
                         {
-                            "Count": 944,
+                            "Count": 976,
                             "Metric_Type": "Unique_Item_Requests"
                         }
                     ]
@@ -74,28 +74,28 @@
             "Performance": [
                 {
                     "Period": {
-                        "End_Date": "2019-01-31",
-                        "Begin_Date": "2019-01-01"
+                        "End_Date": "2019-02-28",
+                        "Begin_Date": "2019-02-01"
                     },
                     "Instance": [
                         {
-                            "Count": 8,
+                            "Count": 22,
                             "Metric_Type": "Searches_Federated"
                         },
                         {
-                            "Count": 2228,
+                            "Count": 1125,
                             "Metric_Type": "Searches_Regular"
                         },
                         {
-                            "Count": 3368,
+                            "Count": 2209,
                             "Metric_Type": "Total_Item_Investigations"
                         },
                         {
-                            "Count": 2541,
+                            "Count": 2009,
                             "Metric_Type": "Unique_Item_Investigations"
                         },
                         {
-                            "Count": 127,
+                            "Count": 39,
                             "Metric_Type": "Unique_Title_Investigations"
                         }
                     ]
@@ -110,32 +110,32 @@
             "Performance": [
                 {
                     "Period": {
-                        "End_Date": "2019-01-31",
-                        "Begin_Date": "2019-01-01"
+                        "End_Date": "2019-02-28",
+                        "Begin_Date": "2019-02-01"
                     },
                     "Instance": [
                         {
-                            "Count": 33,
+                            "Count": 20,
                             "Metric_Type": "Searches_Federated"
                         },
                         {
-                            "Count": 2023,
+                            "Count": 1817,
                             "Metric_Type": "Searches_Regular"
                         },
                         {
-                            "Count": 4208,
+                            "Count": 3184,
                             "Metric_Type": "Total_Item_Investigations"
                         },
                         {
-                            "Count": 1166,
+                            "Count": 901,
                             "Metric_Type": "Total_Item_Requests"
                         },
                         {
-                            "Count": 3530,
+                            "Count": 2534,
                             "Metric_Type": "Unique_Item_Investigations"
                         },
                         {
-                            "Count": 1100,
+                            "Count": 856,
                             "Metric_Type": "Unique_Item_Requests"
                         }
                     ]
@@ -150,12 +150,12 @@
             "Performance": [
                 {
                     "Period": {
-                        "End_Date": "2019-01-31",
-                        "Begin_Date": "2019-01-01"
+                        "End_Date": "2019-02-28",
+                        "Begin_Date": "2019-02-01"
                     },
                     "Instance": [
                         {
-                            "Count": 436,
+                            "Count": 291,
                             "Metric_Type": "Searches_Regular"
                         }
                     ]
