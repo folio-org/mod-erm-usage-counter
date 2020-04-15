@@ -113,13 +113,13 @@ public class Counter5Utils {
 
     Optional<LocalDate> beginDate =
         reportFilters.stream()
-            .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("begin_date"))
+            .filter(f -> f.getName() != null && f.getName().trim().equalsIgnoreCase("begin_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
             .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_DATE));
     Optional<LocalDate> endDate =
         reportFilters.stream()
-            .filter(f -> f.getName() != null && f.getName().equalsIgnoreCase("end_date"))
+            .filter(f -> f.getName() != null && f.getName().trim().equalsIgnoreCase("end_date"))
             .findFirst()
             .map(SUSHIReportHeaderReportFilters::getValue)
             .map(s -> LocalDate.parse(s, DateTimeFormatter.ISO_DATE));

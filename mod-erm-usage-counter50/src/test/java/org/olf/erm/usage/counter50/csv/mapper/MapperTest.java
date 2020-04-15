@@ -16,7 +16,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
+import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
 import org.openapitools.client.model.COUNTERPlatformReport;
+import org.openapitools.client.model.COUNTERTitleReport;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
@@ -48,6 +50,46 @@ public class MapperTest {
               .replace("$$$date_run$$$", LocalDate.now().toString());
       assertThat(result).isEqualToIgnoringNewLines(expectedString);
     }
+
+  }
+
+  @RunWith(Parameterized.class)
+  public static class TestCsvToReport {
+
+    private final String input;
+    private final String expected;
+
+    public TestCsvToReport(String reportName) {
+      this.input = "reports/" + reportName + ".json";
+      this.expected = "reports/" + reportName + ".csv";
+    }
+
+    @Parameters(name = "{0}")
+    public static Collection params() {
+      return Arrays.asList("TR_1", "TR_merged");
+    }
+
+    @Test
+    public void testToReports() throws IOException, MapperException {
+
+      URL url = Resources.getResource(input);
+      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      COUNTERTitleReport report = (COUNTERTitleReport) Counter5Utils.fromJSON(jsonString);
+
+      String csvString = Resources
+          .toString(Resources.getResource(expected), StandardCharsets.UTF_8);
+      TRCsvToReport mapper = new TRCsvToReport(csvString);
+      COUNTERTitleReport counterTitleReport = mapper.toReport();
+
+      assertThat(counterTitleReport.getReportHeader()).usingRecursiveComparison()
+          .ignoringCollectionOrder()
+          .ignoringFields("created", "customerID")
+          .isEqualTo(report.getReportHeader());
+      counterTitleReport.getReportItems().stream().forEach(ctu -> {
+        assertThat(counterTitleReport.getReportItems().contains(ctu));
+      });
+    }
+
   }
 
   public static class MultiMonthTest {
@@ -63,7 +105,8 @@ public class MapperTest {
       URL url3 = Resources.getResource("reports/PR_3.json");
       String jsonString3 = Resources.toString(url3, StandardCharsets.UTF_8);
       COUNTERPlatformReport report3 = (COUNTERPlatformReport) Counter5Utils.fromJSON(jsonString3);
-      COUNTERPlatformReport mergedPlatformReport = Counter5Utils.merge(Arrays.asList(report1, report2, report3));
+      COUNTERPlatformReport mergedPlatformReport = Counter5Utils
+          .merge(Arrays.asList(report1, report2, report3));
       String result = MapperFactory.createCSVMapper(mergedPlatformReport).toCSV();
 
       String expectedString =
