@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter50.csv.mapper;
 
 import java.io.IOException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
+import org.olf.erm.usage.counter50.csv.mapper.csv2report.DRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.IRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.PRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
@@ -42,8 +43,12 @@ public final class MapperFactory {
         return new IRCsvToReport(csvReport);
       } else if (csvReport.startsWith("Report_Name,Platform Master Report")) {
         return new PRCsvToReport(csvReport);
+      } else if (csvReport.startsWith("Report_Name,Database Master Report")) {
+        return new DRCsvToReport(csvReport);
+      } else {
+        throw new MapperException(
+            "Cannot create CsvToReportMapper. Report has unknown name.");
       }
-      return null;
     } catch (IOException | MapperException e) {
       throw new MapperException("Cannot create CsvToReportMapper. " + e.getCause());
     }
