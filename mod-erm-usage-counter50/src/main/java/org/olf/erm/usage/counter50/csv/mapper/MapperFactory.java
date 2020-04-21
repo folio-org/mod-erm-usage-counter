@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter50.csv.mapper;
 import java.io.IOException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.IRCsvToReport;
+import org.olf.erm.usage.counter50.csv.mapper.csv2report.PRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.report2csv.DR;
 import org.olf.erm.usage.counter50.csv.mapper.report2csv.IR;
@@ -39,6 +40,8 @@ public final class MapperFactory {
         return new TRCsvToReport(csvReport);
       } else if (csvReport.startsWith("Report_Name,Item Master Report")) {
         return new IRCsvToReport(csvReport);
+      } else if (csvReport.startsWith("Report_Name,Platform Master Report")) {
+        return new PRCsvToReport(csvReport);
       }
       return null;
     } catch (IOException | MapperException e) {

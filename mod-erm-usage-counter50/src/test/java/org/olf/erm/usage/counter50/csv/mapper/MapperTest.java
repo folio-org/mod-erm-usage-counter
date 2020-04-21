@@ -68,7 +68,7 @@ public class MapperTest {
 
     @Parameters(name = "{0}")
     public static Collection params() {
-      return Arrays.asList("TR_1", "TR_merged", "IR_1");
+      return Arrays.asList("TR_1", "TR_merged", "IR_1", "PR_1", "PR_merged");
     }
 
     @Test
