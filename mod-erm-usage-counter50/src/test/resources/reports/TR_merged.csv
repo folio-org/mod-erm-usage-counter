@@ -12,7 +12,7 @@ Created,2020-03-27T11:10:11Z
 Created_By,FooBar Systems
 
 Title,Publisher,Publisher_ID,Platform,DOI,Proprietary_ID,ISBN,Print_ISSN,Online_ISSN,URI,Data_Type,Section_Type,YOP,Access_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019,Oct-2019,Nov-2019
-Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,Chapter,2010,OA_Gold,Regular,Total_Item_Investigations,3,1,,2
+Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Investigations,3,1,,2
 Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Requests,2,,,2
 Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Investigations,3,1,,2
 Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Requests,2,,,2
@@ -20,11 +20,6 @@ Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,
 Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Total_Item_Requests,12,3,4,5
 Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Investigations,12,2,4,6
 Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Requests,11,2,4,5
-Artificial Life,My Press,Proprietary=my:mypress,My Journals,141516.DOI,my:abcdef,,4444-5555,0004-1115,,,,,,,Total_Item_Investigations,3,,,3
-Artificial Life,My Press,Proprietary=my:mypress,My Journals,141516.DOI,my:abcdef,,4444-5555,0004-1115,,,,,,,Total_Item_Requests,2,,,2
-Artificial Life,My Press,Proprietary=my:mypress,My Journals,141516.DOI,my:abcdef,,4444-5555,0004-1115,,,,,,,Unique_Item_Investigations,3,,,3
-Artificial Life,My Press,Proprietary=my:mypress,My Journals,141516.DOI,my:abcdef,,4444-5555,0004-1115,,,,,,,Unique_Item_Requests,2,,,2
-Artificial Life,My Press,Proprietary=my:mypress,My Journals,141516.DOI,my:abcdef,,4444-5555,0004-1115,,,,,,,No_License,1,,,1
 Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Investigations,51,6,14,31
 Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Requests,17,2,2,13
 Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Unique_Item_Investigations,31,4,11,16

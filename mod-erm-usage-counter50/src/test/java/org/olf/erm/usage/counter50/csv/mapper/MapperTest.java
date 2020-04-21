@@ -4,11 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.io.Resources;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -16,9 +19,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
-import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
+import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
 import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
@@ -66,28 +68,40 @@ public class MapperTest {
 
     @Parameters(name = "{0}")
     public static Collection params() {
-      return Arrays.asList("TR_1", "TR_merged");
+      return Arrays.asList("TR_1", "TR_merged", "IR_1");
     }
 
     @Test
     public void testToReports() throws IOException, MapperException {
 
-      URL url = Resources.getResource(input);
-      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
-      COUNTERTitleReport report = (COUNTERTitleReport) Counter5Utils.fromJSON(jsonString);
-
       String csvString = Resources
           .toString(Resources.getResource(expected), StandardCharsets.UTF_8);
-      TRCsvToReport mapper = new TRCsvToReport(csvString);
-      COUNTERTitleReport counterTitleReport = mapper.toReport();
+      CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
+      Object resultReport = mapper.toReport();
+      String resultCSV = MapperFactory.createCSVMapper(resultReport).toCSV();
 
-      assertThat(counterTitleReport.getReportHeader()).usingRecursiveComparison()
-          .ignoringCollectionOrder()
-          .ignoringFields("created", "customerID")
-          .isEqualTo(report.getReportHeader());
-      counterTitleReport.getReportItems().stream().forEach(ctu -> {
-        assertThat(counterTitleReport.getReportItems().contains(ctu));
-      });
+      StringReader stringReaderExpected = new StringReader(csvString);
+      List<String> linesExpected = IOUtils.readLines(stringReaderExpected);
+
+      StringReader stringReaderActual = new StringReader(resultCSV);
+      List<String> linesActual = IOUtils.readLines(stringReaderActual);
+
+      for (String expected : linesExpected) {
+        if (expected.startsWith("Metric_Types")) {
+          assertThatMetricTypesAreEqual(expected, linesActual);
+        } else {
+          assertThat(linesActual).contains(expected);
+        }
+      }
+    }
+
+    private void assertThatMetricTypesAreEqual(String expectedLine, List<String> actualReport) {
+      String actualLine = actualReport.stream().filter(s -> s.startsWith("Metric_Types"))
+          .findFirst().orElse("");
+      String[] split = expectedLine.replace("Metric_Types,", "").split(";");
+      for (String s : split) {
+        assertThat(actualLine).contains(s.trim());
+      }
     }
 
   }

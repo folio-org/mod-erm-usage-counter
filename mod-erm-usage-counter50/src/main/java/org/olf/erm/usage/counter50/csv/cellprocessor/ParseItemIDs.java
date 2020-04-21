@@ -7,22 +7,20 @@ import org.supercsv.util.CsvContext;
 
 public class ParseItemIDs extends CellProcessorAdaptor {
 
-  private final String[] header;
+  private final TypeEnum type;
 
-  public ParseItemIDs(String[] header) {
-    this.header = header;
+  public ParseItemIDs(TypeEnum type) {
+    this.type = type;
   }
 
   @Override
-  public COUNTERItemIdentifiers execute(Object value, CsvContext csvContext) {
+  public Object execute(Object value, CsvContext csvContext) {
     if (value == null) {
       return null;
     }
     COUNTERItemIdentifiers itemID = new COUNTERItemIdentifiers();
-    String typeString = header[csvContext.getColumnNumber()];
-    itemID.setType(TypeEnum.fromValue(typeString));
+    itemID.setType(type);
     itemID.setValue((String) value);
     return itemID;
-//    return (String) value;
   }
 }
