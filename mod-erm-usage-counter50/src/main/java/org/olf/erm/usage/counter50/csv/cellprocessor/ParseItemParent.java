@@ -25,7 +25,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
     COUNTERItemParent result = new COUNTERItemParent();
     result.setItemName((String) value);
 
-    Object parentAuthor = row.get(colNumber + 1);
+    Object parentAuthor = row.get(colNumber);
     if (parentAuthor != null) {
       COUNTERItemContributors contributors = new COUNTERItemContributors();
       contributors.setType(TypeEnum.AUTHOR);
@@ -33,7 +33,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemContributorsItem(contributors);
     }
 
-    Object pubDate = row.get(colNumber + 2);
+    Object pubDate = row.get(colNumber + 1);
     if (pubDate != null) {
       COUNTERItemDates publicationDate = new COUNTERItemDates();
       publicationDate.setType(COUNTERItemDates.TypeEnum.PUBLICATION_DATE);
@@ -41,7 +41,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemDatesItem(publicationDate);
     }
 
-    Object artV = row.get(colNumber + 3);
+    Object artV = row.get(colNumber + 2);
     if (artV != null) {
       COUNTERItemAttributes articleVersion = new COUNTERItemAttributes();
       articleVersion.setType(COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION);
@@ -49,12 +49,12 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemAttributesItem(articleVersion);
     }
 
-    Object dType = row.get(colNumber + 4);
+    Object dType = row.get(colNumber + 3);
     if (dType != null) {
       result.setDataType(DataTypeEnum.fromValue((String) dType));
     }
 
-    Object doi = row.get(colNumber + 5);
+    Object doi = row.get(colNumber + 4);
     if (doi != null) {
       COUNTERItemIdentifiers doiID = new COUNTERItemIdentifiers();
       doiID.setType(COUNTERItemIdentifiers.TypeEnum.DOI);
@@ -62,7 +62,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemIDItem(doiID);
     }
 
-    Object prop = row.get(colNumber + 6);
+    Object prop = row.get(colNumber + 5);
     if (prop != null) {
       COUNTERItemIdentifiers propID = new COUNTERItemIdentifiers();
       propID.setType(COUNTERItemIdentifiers.TypeEnum.PROPRIETARY);
@@ -70,7 +70,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemIDItem(propID);
     }
 
-    Object isbn = row.get(colNumber + 7);
+    Object isbn = row.get(colNumber + 6);
     if (isbn != null) {
       COUNTERItemIdentifiers isbnID = new COUNTERItemIdentifiers();
       isbnID.setType(COUNTERItemIdentifiers.TypeEnum.ISBN);
@@ -78,7 +78,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemIDItem(isbnID);
     }
 
-    Object printISSN = row.get(colNumber + 8);
+    Object printISSN = row.get(colNumber + 7);
     if (printISSN != null) {
       COUNTERItemIdentifiers issnID = new COUNTERItemIdentifiers();
       issnID.setType(COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN);
@@ -86,7 +86,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemIDItem(issnID);
     }
 
-    Object onlineISSN = row.get(colNumber + 9);
+    Object onlineISSN = row.get(colNumber + 8);
     if (onlineISSN != null) {
       COUNTERItemIdentifiers onlineISSNID = new COUNTERItemIdentifiers();
       onlineISSNID.setType(COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN);
@@ -94,7 +94,7 @@ public class ParseItemParent extends CellProcessorAdaptor {
       result.addItemIDItem(onlineISSNID);
     }
 
-    Object uri = row.get(colNumber + 10);
+    Object uri = row.get(colNumber + 9);
     if (uri != null) {
       COUNTERItemIdentifiers uriID = new COUNTERItemIdentifiers();
       uriID.setType(COUNTERItemIdentifiers.TypeEnum.URI);
