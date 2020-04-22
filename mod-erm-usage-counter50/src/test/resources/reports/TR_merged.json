@@ -102,7 +102,8 @@
           "Value": "my:mypress"
         }
       ],
-      "Publisher": "My Press"
+      "Publisher": "My Press",
+      "Section_Type": "Book"
     },
     {
       "Platform": "My Journals",

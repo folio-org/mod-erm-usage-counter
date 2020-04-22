@@ -314,6 +314,7 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
       return null;
     }
     return attrs.stream()
+        .filter(Objects::nonNull)
         .filter(a -> a.getType() == COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)
         .map(COUNTERItemAttributes::getValue)
         .collect(Collectors.joining("; "));

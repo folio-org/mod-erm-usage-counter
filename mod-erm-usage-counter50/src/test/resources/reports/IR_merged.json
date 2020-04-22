@@ -103,6 +103,12 @@
           "Value": "foo://item.1"
         }
       ],
+      "Item_Attributes": [
+        {
+          "Type": "Article_Version",
+          "Value": "v0"
+        }
+      ],
       "Item_Parent": [
         {
           "Item_Name": "Parent_1_ID",

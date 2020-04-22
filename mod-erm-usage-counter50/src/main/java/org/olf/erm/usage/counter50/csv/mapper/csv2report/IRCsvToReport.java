@@ -131,7 +131,7 @@ public class IRCsvToReport extends AbstractCsvToReport<COUNTERItemReport> {
         "Platform",
         "ItemContributors[0]",
         "ItemDates[0]",
-        "ItemAttributes",
+        "ItemAttributes[0]",
         "ItemID[0]",
         "ItemID[1]",
         "ItemID[2]",
