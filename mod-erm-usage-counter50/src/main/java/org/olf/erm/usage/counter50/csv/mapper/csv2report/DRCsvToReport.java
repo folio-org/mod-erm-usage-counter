@@ -28,7 +28,7 @@ import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-public class DRCsvToReport extends AbstractCsvToReport<COUNTERDatabaseReport> {
+public class DRCsvToReport extends AbstractCsvToReport {
 
   private final ItemParser<COUNTERDatabaseUsage> itemParser;
   private final Merger<COUNTERDatabaseUsage> itemsMerger;

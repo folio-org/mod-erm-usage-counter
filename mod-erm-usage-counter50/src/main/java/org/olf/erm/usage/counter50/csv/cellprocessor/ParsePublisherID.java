@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,21 +14,19 @@ public class ParsePublisherID extends CellProcessorAdaptor {
 
 
   @Override
-  public List<COUNTERPublisherIdentifiers> execute(Object value, CsvContext csvContext) {
+  public Object execute(Object value, CsvContext csvContext) {
 
     if (value == null) {
-      return null;
+      return Collections.emptyList();
     }
-
-    List<Object> rowSource = csvContext.getRowSource();
-    rowSource.toString();
 
     List<COUNTERPublisherIdentifiers> publisherIdentifiers = new ArrayList<>();
     String valueAsString = (String) value;
     String[] splitBySemicolon = valueAsString.split(";");
-    List<String> ids = Stream.of(splitBySemicolon).map(s -> s.trim())
+    List<String> ids = Stream.of(splitBySemicolon)
+        .map(String::trim)
         .collect(Collectors.toList());
-    ids.stream().forEach(id -> {
+    ids.forEach(id -> {
       String[] split = id.split("=");
       COUNTERPublisherIdentifiers cId = new COUNTERPublisherIdentifiers();
       cId.setType(TypeEnum.fromValue(split[0]));

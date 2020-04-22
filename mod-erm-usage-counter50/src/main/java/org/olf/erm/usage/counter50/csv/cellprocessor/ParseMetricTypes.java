@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Locale;
 import org.openapitools.client.model.COUNTERItemPerformance;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance;
@@ -17,7 +18,8 @@ public class ParseMetricTypes extends CellProcessorAdaptor {
   private int metricTypeIndex = -1;
 
   public ParseMetricTypes(String[] header) {
-    this.header = header;
+    this.header = Arrays.copyOf(header, header.length);
+
     for (int i = 0; i < header.length; i++) {
       String h = header[i];
       if (h.equalsIgnoreCase("Metric_Type")) {
@@ -27,7 +29,7 @@ public class ParseMetricTypes extends CellProcessorAdaptor {
   }
 
   @Override
-  public COUNTERItemPerformance execute(Object value, CsvContext csvContext) {
+  public Object execute(Object value, CsvContext csvContext) {
     if (value == null) {
       return null;
     }

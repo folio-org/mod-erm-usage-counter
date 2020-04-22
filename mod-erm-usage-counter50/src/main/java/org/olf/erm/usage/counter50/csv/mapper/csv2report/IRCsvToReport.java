@@ -41,7 +41,7 @@ import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-public class IRCsvToReport extends AbstractCsvToReport<COUNTERItemReport> {
+public class IRCsvToReport extends AbstractCsvToReport {
 
   private final ItemParser<COUNTERItemUsage> itemParser;
   private final Merger<COUNTERItemUsage> itemsMerger;

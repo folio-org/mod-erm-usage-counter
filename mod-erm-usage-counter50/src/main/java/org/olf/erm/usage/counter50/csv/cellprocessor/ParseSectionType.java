@@ -7,7 +7,7 @@ import org.supercsv.util.CsvContext;
 public class ParseSectionType extends CellProcessorAdaptor {
 
   @Override
-  public SectionTypeEnum execute(Object value, CsvContext csvContext) {
+  public Object execute(Object value, CsvContext csvContext) {
     if (value == null) {
       return null;
     }

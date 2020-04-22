@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
 
-public abstract class AbstractCsvToReport<T> implements CsvToReportMapper<T> {
+public abstract class AbstractCsvToReport implements CsvToReportMapper {
 
   public static final int CONTENT_START_LINE = 14;
   private final Logger log = LoggerFactory.getLogger(AbstractCsvToReport.class);

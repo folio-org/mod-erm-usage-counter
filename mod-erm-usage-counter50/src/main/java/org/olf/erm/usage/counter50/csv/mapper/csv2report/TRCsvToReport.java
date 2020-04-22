@@ -34,7 +34,7 @@ import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class TRCsvToReport extends
-    AbstractCsvToReport<COUNTERTitleReport> {
+    AbstractCsvToReport {
 
   private final ItemParser<COUNTERTitleUsage> itemParser;
   private final Merger<COUNTERTitleUsage> itemsMerger;

@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.List;
+import java.util.Objects;
 import org.openapitools.client.model.COUNTERItemIdentifiers;
 
 public final class IdentifierProcessor {
@@ -16,7 +17,7 @@ public final class IdentifierProcessor {
     }
 
     return itemIds.stream()
-        .filter(id -> id != null)
+        .filter(Objects::nonNull)
         .filter(id -> identifier.equals(id.getType()))
         .findFirst()
         .map(COUNTERItemIdentifiers::getValue)
