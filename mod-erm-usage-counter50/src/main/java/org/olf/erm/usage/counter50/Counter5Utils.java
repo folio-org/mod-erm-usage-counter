@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,10 @@ import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.MapperFactory;
 import org.olf.erm.usage.counter50.merger.MergerFactory;
 import org.olf.erm.usage.counter50.merger.ReportsMerger;
+import org.olf.erm.usage.counter50.splitter.DRReportsSplitter;
+import org.olf.erm.usage.counter50.splitter.IRReportsSplitter;
+import org.olf.erm.usage.counter50.splitter.PRReportsSplitter;
+import org.olf.erm.usage.counter50.splitter.TRReportsSplitter;
 import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERPlatformReport;
@@ -41,15 +46,28 @@ public class Counter5Utils {
   private Counter5Utils() {
   }
 
-  public static SUSHIReportHeader getSushiReportHeader(String content)
+  public static SUSHIReportHeader getSushiReportHeader(String jsonContent)
       throws Counter5UtilsException {
     try {
-      JsonObject jsonObject = parser.parse(content).getAsJsonObject();
+      JsonObject jsonObject = parser.parse(jsonContent).getAsJsonObject();
       return gson.fromJson(jsonObject.getAsJsonObject(REPORT_HEADER), SUSHIReportHeader.class);
     } catch (JsonParseException | IllegalStateException e) {
       throw new Counter5UtilsException(
           String.format("Error parsing SushiReportHeader: %s", e.getMessage()), e);
     }
+  }
+
+  public static SUSHIReportHeader getSushiReportHeaderFromReportObject(Object report) {
+    if (report instanceof COUNTERDatabaseReport) {
+      return ((COUNTERDatabaseReport) report).getReportHeader();
+    } else if (report instanceof COUNTERItemReport) {
+      return ((COUNTERItemReport) report).getReportHeader();
+    } else if (report instanceof COUNTERPlatformReport) {
+      return ((COUNTERPlatformReport) report).getReportHeader();
+    } else if (report instanceof COUNTERTitleReport) {
+      return ((COUNTERTitleReport) report).getReportHeader();
+    }
+    return null;
   }
 
   /**
@@ -107,6 +125,19 @@ public class Counter5Utils {
         .collect(Collectors.toList());
   }
 
+  public static List<YearMonth> getYearMonthFromReport(Object report) {
+    if (report instanceof COUNTERDatabaseReport) {
+      return getYearMonthsFromReportHeader(((COUNTERDatabaseReport) report).getReportHeader());
+    } else if (report instanceof COUNTERItemReport) {
+      return getYearMonthsFromReportHeader(((COUNTERItemReport) report).getReportHeader());
+    } else if (report instanceof COUNTERPlatformReport) {
+      return getYearMonthsFromReportHeader(((COUNTERPlatformReport) report).getReportHeader());
+    } else if (report instanceof COUNTERTitleReport) {
+      return getYearMonthsFromReportHeader(((COUNTERTitleReport) report).getReportHeader());
+    }
+    return Collections.emptyList();
+  }
+
   public static List<LocalDate> getLocalDateFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
     List<SUSHIReportHeaderReportFilters> reportFilters = header.getReportFilters();
@@ -141,23 +172,31 @@ public class Counter5Utils {
 
   public static Object fromJSON(String json) {
     Object result = null;
-    Gson gson = new Gson();
-    JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-    String reportID =
-        jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString()
-            .toUpperCase();
-    if (reportID.startsWith("TR")) {
-      result = gson.fromJson(json, COUNTERTitleReport.class);
-    } else if (reportID.startsWith("PR")) {
-      result = gson.fromJson(json, COUNTERPlatformReport.class);
-    } else if (reportID.startsWith("IR")) {
-      result = gson.fromJson(json, COUNTERItemReport.class);
-    } else if (reportID.startsWith("DR")) {
-      result = gson.fromJson(json, COUNTERDatabaseReport.class);
-    } else {
-      LOG.error("Cannot cast given json to COUNTER 5 report");
+    try {
+      Gson gson = new Gson();
+      JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+      String reportID =
+          jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString()
+              .toUpperCase();
+      if (reportID.startsWith("TR")) {
+        result = gson.fromJson(json, COUNTERTitleReport.class);
+      } else if (reportID.startsWith("PR")) {
+        result = gson.fromJson(json, COUNTERPlatformReport.class);
+      } else if (reportID.startsWith("IR")) {
+        result = gson.fromJson(json, COUNTERItemReport.class);
+      } else if (reportID.startsWith("DR")) {
+        result = gson.fromJson(json, COUNTERDatabaseReport.class);
+      } else {
+        LOG.error("Cannot cast given json to COUNTER 5 report");
+      }
+    } catch (JsonSyntaxException e) {
+      LOG.error(e.getMessage(), e);
     }
     return result;
+  }
+
+  public static Object fromCSV(String csv) throws MapperException {
+    return MapperFactory.createCsvToReportMapper(csv).toReport();
   }
 
   /**
@@ -180,6 +219,24 @@ public class Counter5Utils {
     return merger.merge(reports);
   }
 
+  public static List split(Object report) {
+    if (report instanceof COUNTERDatabaseReport) {
+      DRReportsSplitter splitter = new DRReportsSplitter();
+      return splitter.split((COUNTERDatabaseReport) report);
+    } else if (report instanceof COUNTERItemReport) {
+      IRReportsSplitter splitter = new IRReportsSplitter();
+      return splitter.split((COUNTERItemReport) report);
+    } else if (report instanceof COUNTERPlatformReport) {
+      PRReportsSplitter splitter = new PRReportsSplitter();
+      return splitter.split((COUNTERPlatformReport) report);
+    } else if (report instanceof COUNTERTitleReport) {
+      TRReportsSplitter splitter = new TRReportsSplitter();
+      return splitter.split((COUNTERTitleReport) report);
+    }
+    return Collections.emptyList();
+  }
+
+
   public static class Counter5UtilsException extends Exception {
 
     public Counter5UtilsException(String message, Throwable cause) {
@@ -190,4 +247,5 @@ public class Counter5Utils {
       super(message);
     }
   }
+
 }

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.io.Resources;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.YearMonth;
 import java.util.Arrays;
@@ -115,5 +116,35 @@ public class Counter5UtilsTest {
     }
 
   }
+
+  @RunWith(Parameterized.class)
+  public static class SplitReportsTest {
+
+    private final String input;
+
+    public SplitReportsTest(String reportName) {
+      this.input = "reports/" + reportName + ".json";
+    }
+
+    @Parameters
+    public static Collection params() {
+      return Arrays.asList("DR_merged", "IR_merged", "PR_merged", "TR_merged");
+    }
+
+    @Test
+    public void testSplitReport() throws IOException, Counter5UtilsException {
+      URL url = Resources.getResource(input);
+      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      Object report = Counter5Utils.fromJSON(jsonString);
+      List splittedReports = Counter5Utils.split(report);
+
+      SUSHIReportHeader sushiReportHeader = Counter5Utils.getSushiReportHeader(jsonString);
+      List<YearMonth> yms = Counter5Utils
+          .getYearMonthsFromReportHeader(sushiReportHeader);
+      assertThat(splittedReports.size()).isEqualTo(yms.size());
+    }
+
+  }
+
 
 }
