@@ -9,7 +9,7 @@ public abstract class AbstractReportsSplitter<T> {
   public abstract List<T> split(T report);
 
   /**
-   * Replaces headers Begin_Date and End_Date attributes. Replacing happens inline.
+   * Replaces header's Begin_Date and End_Date attributes. Replacing happens inline.
    *
    * @param reportFilters     The {@link SUSHIReportHeaderReportFilters} in which the Begin_Date and
    *                          End_Date shall be replaced

@@ -19,7 +19,7 @@ public class TRReportsSplitter extends AbstractReportsSplitter<COUNTERTitleRepor
   public List<COUNTERTitleReport> split(COUNTERTitleReport report) {
     List<YearMonth> yms = Counter5Utils.getYearMonthsFromReportHeader(
         report.getReportHeader());
-    List result = new ArrayList<>();
+    List<COUNTERTitleReport> result = new ArrayList<>();
     yms.forEach(ym -> {
       Gson gson = new Gson();
       COUNTERTitleReport clone = gson

@@ -11,7 +11,7 @@ public class DRReportsMerger extends ReportsMerger<COUNTERDatabaseReport> {
 
   @Override
   public COUNTERDatabaseReport merge(List<COUNTERDatabaseReport> reports) {
-    List<SUSHIReportHeader> headers = reports.stream().map(r -> r.getReportHeader()).collect(
+    List<SUSHIReportHeader> headers = reports.stream().map(COUNTERDatabaseReport::getReportHeader).collect(
         Collectors.toList());
     SUSHIReportHeader mergedHeader = mergeHeaders(headers);
 

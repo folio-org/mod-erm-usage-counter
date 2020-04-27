@@ -5,7 +5,6 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessMethod;
@@ -99,9 +98,7 @@ public class DRCsvToReport extends AbstractCsvToReport {
   }
 
   public String[] getHeader(List<YearMonth> yearMonths) {
-    List<String> yearMonthHeaders = yearMonths.stream().map(YearMonth::toString)
-        .collect(Collectors.toList());
-    String[] y = yearMonthHeaders.toArray(new String[yearMonthHeaders.size()]);
+    String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
     String[] baseHeader = new String[]{
         "Database",
         "Publisher",
@@ -117,9 +114,7 @@ public class DRCsvToReport extends AbstractCsvToReport {
   }
 
   public String[] createFieldMapping(List<YearMonth> yearMonths) {
-    List<String> yearMonthHeaders = yearMonths.stream().map(YearMonth::toString)
-        .collect(Collectors.toList());
-    String[] y = yearMonthHeaders.toArray(new String[yearMonthHeaders.size()]);
+    String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
     String[] baseHeader = new String[]{
         "Database",
         "Publisher",

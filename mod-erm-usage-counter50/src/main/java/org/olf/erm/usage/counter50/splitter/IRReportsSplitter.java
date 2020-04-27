@@ -19,7 +19,7 @@ public class IRReportsSplitter extends AbstractReportsSplitter<COUNTERItemReport
   public List<COUNTERItemReport> split(COUNTERItemReport report) {
     List<YearMonth> yms = Counter5Utils.getYearMonthsFromReportHeader(
         report.getReportHeader());
-    List result = new ArrayList<>();
+    List<COUNTERItemReport> result = new ArrayList<>();
     yms.forEach(ym -> {
       Gson gson = new Gson();
       COUNTERItemReport clone = gson

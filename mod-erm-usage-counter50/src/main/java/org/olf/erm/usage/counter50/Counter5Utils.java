@@ -46,6 +46,13 @@ public class Counter5Utils {
   private Counter5Utils() {
   }
 
+  /**
+   * Returns {@link SUSHIReportHeader} from json encoded counter 5 report.
+   *
+   * @param jsonContent Counter 5 reports, JSON encoded
+   * @return {@link SUSHIReportHeader} of given report
+   * @throws Counter5UtilsException
+   */
   public static SUSHIReportHeader getSushiReportHeader(String jsonContent)
       throws Counter5UtilsException {
     try {
@@ -57,7 +64,17 @@ public class Counter5Utils {
     }
   }
 
-  public static SUSHIReportHeader getSushiReportHeaderFromReportObject(Object report) {
+  /**
+   * Returns {@link SUSHIReportHeader} from the given report.
+   *
+   * @param report Counter 5 reports. Needs to be either a {@link COUNTERDatabaseReport}, {@link
+   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   * @return {@link SUSHIReportHeader} of given report.
+   * @throws Counter5UtilsException Throws exception if report is not an instance of classes
+   *                                specified above.
+   */
+  public static SUSHIReportHeader getSushiReportHeaderFromReportObject(Object report)
+      throws Counter5UtilsException {
     if (report instanceof COUNTERDatabaseReport) {
       return ((COUNTERDatabaseReport) report).getReportHeader();
     } else if (report instanceof COUNTERItemReport) {
@@ -66,8 +83,11 @@ public class Counter5Utils {
       return ((COUNTERPlatformReport) report).getReportHeader();
     } else if (report instanceof COUNTERTitleReport) {
       return ((COUNTERTitleReport) report).getReportHeader();
+    } else {
+      throw new Counter5UtilsException(
+          String.format("Error parsing SushiReportHeader. Report of unknown class: %s",
+              report.getClass().toString()));
     }
-    return null;
   }
 
   /**
@@ -103,6 +123,14 @@ public class Counter5Utils {
         && PREFIXES.stream().anyMatch(str -> reportHeader.getReportID().startsWith(str)));
   }
 
+  /**
+   * Returns {@link List} of {@link YearMonth}s as specified by "Begin_Date" and "End_Date" of given
+   * {@link SUSHIReportHeader}
+   *
+   * @param header The {@link SUSHIReportHeader}
+   * @return {@link List} of {@link YearMonth}s starting at given {@link SUSHIReportHeader}'s
+   * "Begin_Date" and ending at its "End_Date"
+   */
   public static List<YearMonth> getYearMonthsFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
 
@@ -125,6 +153,15 @@ public class Counter5Utils {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Convenience method to get {@link List} of {@link YearMonth}s from given report. For details see
+   * {@link #getYearMonthsFromReportHeader(SUSHIReportHeader header)}
+   *
+   * @param report Counter 5 reports. Needs to be either a {@link COUNTERDatabaseReport}, {@link
+   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   * @return {@link List} of {@link YearMonth}s starting at given {@link SUSHIReportHeader}'s
+   * "Begin_Date" and ending at its "End_Date"
+   */
   public static List<YearMonth> getYearMonthFromReport(Object report) {
     if (report instanceof COUNTERDatabaseReport) {
       return getYearMonthsFromReportHeader(((COUNTERDatabaseReport) report).getReportHeader());
@@ -138,6 +175,14 @@ public class Counter5Utils {
     return Collections.emptyList();
   }
 
+  /**
+   * Transforms "Begin_Date" and "End_Date" of given {@link SUSHIReportHeader} into {@link
+   * LocalDate}s.
+   *
+   * @param header {@link SUSHIReportHeader}
+   * @return {@link List} of {@link LocalDate}s containing the header's "Begin_Date" and "End_Date".
+   * Returns empty list if dates are not present.
+   */
   public static List<LocalDate> getLocalDateFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
     List<SUSHIReportHeaderReportFilters> reportFilters = header.getReportFilters();
@@ -161,16 +206,33 @@ public class Counter5Utils {
     }
   }
 
+  /**
+   * Transforms and returns given Counter 5 report as a csv
+   *
+   * @param report Counter 5 report. Needs to be either a {@link COUNTERDatabaseReport}, {@link
+   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   * @return CSV representation of given report.
+   */
   public static String toCSV(Object report) {
     try {
-      return MapperFactory.createCSVMapper(report).toCSV();
+      return MapperFactory.createReportToCsvMapper(report).toCSV();
     } catch (MapperException e) {
       LOG.error("Error mapping from Report to CSV: {}", e.getMessage());
       return null;
     }
   }
 
-  public static Object fromJSON(String json) {
+  /**
+   * Creates an object representation of given report encoded in json
+   *
+   * @param json JSON encoded report
+   * @return {@link Object} representation of given report. It is an instance of either {@link
+   * COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
+   * COUNTERTitleReport}.
+   * @throws Counter5UtilsException Throws exception if report cannot be merged to an instance of
+   *                                classes specified above.
+   */
+  public static Object fromJSON(String json) throws Counter5UtilsException {
     Object result = null;
     try {
       Gson gson = new Gson();
@@ -187,7 +249,9 @@ public class Counter5Utils {
       } else if (reportID.startsWith("DR")) {
         result = gson.fromJson(json, COUNTERDatabaseReport.class);
       } else {
-        LOG.error("Cannot cast given json to COUNTER 5 report");
+        throw new Counter5UtilsException(
+            String.format("Error converting report. Unknown report type: %s",
+                reportID));
       }
     } catch (JsonSyntaxException e) {
       LOG.error(e.getMessage(), e);
@@ -195,19 +259,29 @@ public class Counter5Utils {
     return result;
   }
 
+  /**
+   * Creates an object representation of given report encoded in csv
+   *
+   * @param csv CSV encoded report
+   * @return {@link Object} representation of given report. It is an instance of either {@link
+   * COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
+   * COUNTERTitleReport}.
+   */
   public static Object fromCSV(String csv) throws MapperException {
     return MapperFactory.createCsvToReportMapper(csv).toReport();
   }
 
   /**
-   * Merges COUNTER 5 reports of several months into one report. Input reports must be of same type.
-   * Valid types are {@link COUNTERTitleReport}, {@link COUNTERPlatformReport} & {@link
-   * COUNTERItemReport}. {@link COUNTERDatabaseReport} is currently not supported.
+   * Merges COUNTER 5 reports of several months into one report. Input reports must be of same
+   * type.
    *
-   * @param reports
-   * @param <T>
-   * @return
-   * @throws Counter5UtilsException
+   * @param reports Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport},
+   *                {@link COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   * @param <T>     Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport},
+   *                {@link COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   * @return The merged report.
+   * @throws Counter5UtilsException Throws exception if reports cannot be merged (e.g. if reports
+   *                                are not of the same class).
    */
   public static <T> T merge(List<T> reports) throws Counter5UtilsException {
     boolean allObjectsSameClass =
@@ -215,11 +289,21 @@ public class Counter5Utils {
     if (!allObjectsSameClass) {
       throw new Counter5UtilsException("Cannot merge reports. Reports not of same class.");
     }
+    //noinspection unchecked
     ReportsMerger<T> merger = MergerFactory.createMerger(reports.get(0));
     return merger.merge(reports);
   }
 
-  public static List split(Object report) {
+  /**
+   * Splits a COUNTER 5 report into reports of several months.
+   *
+   * @param report Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport}, {@link
+   *               COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   * @return {@link List} of splitted reports.
+   * @throws Counter5UtilsException Throws exception if report is not an instance of classes
+   *                                specified above.
+   */
+  public static List split(Object report) throws Counter5UtilsException {
     if (report instanceof COUNTERDatabaseReport) {
       DRReportsSplitter splitter = new DRReportsSplitter();
       return splitter.split((COUNTERDatabaseReport) report);
@@ -232,8 +316,11 @@ public class Counter5Utils {
     } else if (report instanceof COUNTERTitleReport) {
       TRReportsSplitter splitter = new TRReportsSplitter();
       return splitter.split((COUNTERTitleReport) report);
+    } else {
+      throw new Counter5UtilsException(
+          String.format("Error splitting report. Report of unknown class: %s",
+              report.getClass().toString()));
     }
-    return Collections.emptyList();
   }
 
 

@@ -18,7 +18,7 @@ public class PRReportsSplitter extends AbstractReportsSplitter<COUNTERPlatformRe
   public List<COUNTERPlatformReport> split(COUNTERPlatformReport report) {
     List<YearMonth> yms = Counter5Utils.getYearMonthsFromReportHeader(
         report.getReportHeader());
-    List result = new ArrayList<>();
+    List<COUNTERPlatformReport> result = new ArrayList<>();
     yms.forEach(ym -> {
       Gson gson = new Gson();
       COUNTERPlatformReport clone = gson

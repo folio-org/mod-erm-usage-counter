@@ -21,7 +21,7 @@ public final class MapperFactory {
   private MapperFactory() {
   }
 
-  public static ReportToCsvMapper createCSVMapper(Object report) throws MapperException {
+  public static ReportToCsvMapper createReportToCsvMapper(Object report) throws MapperException {
     if (report instanceof COUNTERTitleReport) {
       return new TR((COUNTERTitleReport) report);
     } else if (report instanceof COUNTERPlatformReport) {

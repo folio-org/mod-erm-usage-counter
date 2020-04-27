@@ -42,11 +42,11 @@ public class MapperTest {
     }
 
     @Test
-    public void testToCSV() throws IOException, MapperException {
+    public void testToCSV() throws IOException, MapperException, Counter5UtilsException {
       URL url = Resources.getResource(input);
       String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
       Object report = Counter5Utils.fromJSON(jsonString);
-      String result = MapperFactory.createCSVMapper(report).toCSV();
+      String result = MapperFactory.createReportToCsvMapper(report).toCSV();
       String expectedString =
           new String(Resources.toByteArray(Resources.getResource(expected)))
               .replace("$$$date_run$$$", LocalDate.now().toString());
@@ -78,7 +78,7 @@ public class MapperTest {
           .toString(Resources.getResource(expected), StandardCharsets.UTF_8);
       CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
       Object resultReport = mapper.toReport();
-      String resultCSV = MapperFactory.createCSVMapper(resultReport).toCSV();
+      String resultCSV = MapperFactory.createReportToCsvMapper(resultReport).toCSV();
 
       StringReader stringReaderExpected = new StringReader(csvString);
       List<String> linesExpected = IOUtils.readLines(stringReaderExpected);
@@ -121,7 +121,7 @@ public class MapperTest {
       COUNTERPlatformReport report3 = (COUNTERPlatformReport) Counter5Utils.fromJSON(jsonString3);
       COUNTERPlatformReport mergedPlatformReport = Counter5Utils
           .merge(Arrays.asList(report1, report2, report3));
-      String result = MapperFactory.createCSVMapper(mergedPlatformReport).toCSV();
+      String result = MapperFactory.createReportToCsvMapper(mergedPlatformReport).toCSV();
 
       String expectedString =
           new String(Resources.toByteArray(Resources.getResource("reports/PR_merged.csv")))

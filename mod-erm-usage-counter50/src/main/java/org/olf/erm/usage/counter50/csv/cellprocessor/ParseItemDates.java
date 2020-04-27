@@ -7,7 +7,7 @@ import org.supercsv.util.CsvContext;
 
 public class ParseItemDates extends CellProcessorAdaptor {
 
-  private TypeEnum type;
+  private final TypeEnum type;
 
   public ParseItemDates(TypeEnum type) {
     this.type = type;

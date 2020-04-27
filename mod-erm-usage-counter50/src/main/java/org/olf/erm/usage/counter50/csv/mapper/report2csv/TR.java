@@ -21,7 +21,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
 
-  private COUNTERTitleReport report;
+  private final COUNTERTitleReport report;
 
   public TR(COUNTERTitleReport report) {
     super(

@@ -7,7 +7,7 @@ import org.supercsv.util.CsvContext;
 public class ParseAccessMethod extends CellProcessorAdaptor {
 
   @Override
-  public AccessMethodEnum execute(Object value, CsvContext csvContext) {
+  public Object execute(Object value, CsvContext csvContext) {
     if (value == null) {
       return null;
     }
