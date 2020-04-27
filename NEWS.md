@@ -1,3 +1,6 @@
+## 1.5.0
+* Add COP5 CSV mappings for multiple months (json & csv) (UIEUS-162 & MODEUS-54)
+
 ## 1.4.0
 * Add COP5 CSV mappings for single months (UIEUS-106)
 
