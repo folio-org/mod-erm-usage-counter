@@ -32,9 +32,11 @@ public class CsvHeaderToReportHeader {
     sushiReportHeader
         .setInstitutionName(headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_NAME));
 
-    List<SUSHIOrgIdentifiers> orgIdentifiers = Stream
-        .of(headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D, "")
-            .split(";")).map(s -> {
+    String instID = headerColumns
+        .getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D, "");
+    String[] splittedInstID = instID == null ? new String[0] : instID.split(";");
+    List<SUSHIOrgIdentifiers> orgIdentifiers = Stream.of(splittedInstID)
+        .map(s -> {
           String[] split = s.split("=");
           SUSHIOrgIdentifiers identifiers = new SUSHIOrgIdentifiers();
           identifiers.setType(TypeEnum.fromValue(split[0]));
@@ -43,9 +45,11 @@ public class CsvHeaderToReportHeader {
         }).collect(Collectors.toList());
     sushiReportHeader.setInstitutionID(orgIdentifiers);
 
-    List<SUSHIReportHeaderReportFilters> headerReportFilters = Stream
-        .of(headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS, "")
-            .split(";"))
+    String repFilters = headerColumns
+        .getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS, "");
+    String[] splittedReportFilters =
+        repFilters == null ? new String[0] : repFilters.split(";");
+    List<SUSHIReportHeaderReportFilters> headerReportFilters = Stream.of(splittedReportFilters)
         .map(s -> {
           String[] split = s.split("=");
           SUSHIReportHeaderReportFilters reportFilters = new SUSHIReportHeaderReportFilters();
