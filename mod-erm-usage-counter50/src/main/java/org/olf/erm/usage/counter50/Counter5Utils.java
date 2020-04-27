@@ -303,6 +303,8 @@ public class Counter5Utils {
    * @throws Counter5UtilsException Throws exception if report is not an instance of classes
    *                                specified above.
    */
+  // Cannot use parameterized type as the generated report types only have Object as common super-type.
+  @SuppressWarnings("rawtypes")
   public static List split(Object report) throws Counter5UtilsException {
     if (report instanceof COUNTERDatabaseReport) {
       DRReportsSplitter splitter = new DRReportsSplitter();
