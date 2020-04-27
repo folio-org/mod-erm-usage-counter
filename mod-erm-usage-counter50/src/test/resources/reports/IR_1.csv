@@ -12,10 +12,10 @@ Created,2020-03-27T11:12:40Z
 Created_By,FooBar Systems
 
 Title,Publisher,Publisher_ID,Platform,Authors,Publication_Date,Article_Version,DOI,Proprietary_ID,ISBN,Print_ISSN,Online_ISSN,URI,Parent_Title,Parent_Authors,Parent_Publication_Date,Parent_Article_Version,Parent_Data_Type,Parent_DOI,Parent_Proprietary_ID,Parent_ISBN,Parent_Print_ISSN,Parent_Online_ISSN,Parent_URI,Component_Title,Component_Authors,Component_Publication_Date,Component_Data_Type,Component_DOI,Component_Proprietary_DOI,Component_ISBN,Component_Print_ISSN,Component_Online_ISSN,Component_URI,Data_Type,YOP,Access_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019
-Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,,123.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Total_Item_Investigations,2,2
-Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,,123.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Total_Item_Requests,1,1
-Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,,123.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Unique_Item_Investigations,1,1
-Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,,123.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Unique_Item_Requests,1,1
+Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,v0,123.DOI,PropId.1,978-3-86680-192-9,1234-5679,1234-5677,foo://item.1,Parent_1_ID,Parent 1 Author,2017-10-03,v1,Book,xx.DOI,PropId.8,988-3-86680-192-9,7234-5679,7234-5677,foo://item.1.parent,Component Title 1,Comp Authors,2017-10-03,Book,comp.DOI,CompId.3,948-3-86680-192-9,7254-5679,7234-5877,foo://item.1.comp,Book,2019,Controlled,Regular,Total_Item_Investigations,2,2
+Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,v0,123.DOI,PropId.1,978-3-86680-192-9,1234-5679,1234-5677,foo://item.1,Parent_1_ID,Parent 1 Author,2017-10-03,v1,Book,xx.DOI,PropId.8,988-3-86680-192-9,7234-5679,7234-5677,foo://item.1.parent,Component Title 1,Comp Authors,2017-10-03,Book,comp.DOI,CompId.3,948-3-86680-192-9,7254-5679,7234-5877,foo://item.1.comp,Book,2019,Controlled,Regular,Total_Item_Requests,1,1
+Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,v0,123.DOI,PropId.1,978-3-86680-192-9,1234-5679,1234-5677,foo://item.1,Parent_1_ID,Parent 1 Author,2017-10-03,v1,Book,xx.DOI,PropId.8,988-3-86680-192-9,7234-5679,7234-5677,foo://item.1.parent,Component Title 1,Comp Authors,2017-10-03,Book,comp.DOI,CompId.3,948-3-86680-192-9,7254-5679,7234-5877,foo://item.1.comp,Book,2019,Controlled,Regular,Unique_Item_Investigations,1,1
+Item 1,My Press,Proprietary=my:mypress,My Journals,Author 1,2019-10-03,v0,123.DOI,PropId.1,978-3-86680-192-9,1234-5679,1234-5677,foo://item.1,Parent_1_ID,Parent 1 Author,2017-10-03,v1,Book,xx.DOI,PropId.8,988-3-86680-192-9,7234-5679,7234-5677,foo://item.1.parent,Component Title 1,Comp Authors,2017-10-03,Book,comp.DOI,CompId.3,948-3-86680-192-9,7254-5679,7234-5877,foo://item.1.comp,Book,2019,Controlled,Regular,Unique_Item_Requests,1,1
 Item 2,My Press,Proprietary=my:mypress,My Journals,Author 2,2017-09-01,,234.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Total_Item_Investigations,2,2
 Item 2,My Press,Proprietary=my:mypress,My Journals,Author 2,2017-09-01,,234.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Total_Item_Requests,1,1
 Item 2,My Press,Proprietary=my:mypress,My Journals,Author 2,2017-09-01,,234.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Unique_Item_Investigations,1,1
@@ -30,4 +30,3 @@ Item 5,My Press,Proprietary=my:mypress,My Journals,Author 5,2019-05-07,,567.DOI,
 Item 5,My Press,Proprietary=my:mypress,My Journals,Author 5,2019-05-07,,567.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Total_Item_Requests,1,1
 Item 5,My Press,Proprietary=my:mypress,My Journals,Author 5,2019-05-07,,567.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Unique_Item_Investigations,1,1
 Item 5,My Press,Proprietary=my:mypress,My Journals,Author 5,2019-05-07,,567.DOI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Unique_Item_Requests,1,1
-

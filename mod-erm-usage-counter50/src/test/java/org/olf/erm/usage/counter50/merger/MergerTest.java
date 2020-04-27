@@ -7,12 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.olf.erm.usage.counter50.Counter5Utils;
+import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
 
 public abstract class MergerTest<T> {
 
   protected String prefix;
 
-  public List<T> readData() throws IOException {
+  public List<T> readData() throws IOException, Counter5UtilsException {
     String input1 = "reports/" + prefix + "_1.json";
     String input2 = "reports/" + prefix + "_2.json";
     String input3 = "reports/" + prefix + "_3.json";

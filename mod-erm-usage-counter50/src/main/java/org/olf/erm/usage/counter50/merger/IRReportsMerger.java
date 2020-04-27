@@ -24,7 +24,7 @@ public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
     return result;
   }
 
-  private List<COUNTERItemUsage> mergeReportItemsWithSameID(List<COUNTERItemUsage> reportItems) {
+  public List<COUNTERItemUsage> mergeReportItemsWithSameID(List<COUNTERItemUsage> reportItems) {
     return new ArrayList<>(reportItems.stream().collect(
         Collectors.toMap(COUNTERItemUsage::getItemID, titleUsage -> titleUsage, this::merge))
         .values());
