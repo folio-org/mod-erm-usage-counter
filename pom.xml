@@ -9,6 +9,7 @@
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
+    <module>mod-erm-usage-counter-common</module>
   </modules>
 
   <properties>
