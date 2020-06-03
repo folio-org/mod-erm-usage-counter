@@ -1,3 +1,6 @@
+## 1.6.0
+* Add functions for converting csv to xlsx and vice versa (MODEUS-60)
+
 ## 1.5.0
 * Add COP5 CSV mappings for multiple months (json & csv) (UIEUS-162 & MODEUS-54)
 
