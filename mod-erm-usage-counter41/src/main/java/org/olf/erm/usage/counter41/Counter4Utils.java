@@ -211,13 +211,14 @@ public class Counter4Utils {
 
     // check that provided reports have the same attributes
     if (Stream.of(clonedReports)
-            .peek(
+            .map(
                 r -> {
                   // reset some attributes for equals() check
                   r.getCustomer().get(0).getReportItems().clear();
                   r.setVendor(null);
                   r.setCreated(null);
                   r.setID(null);
+                  return r;
                 })
             .distinct()
             .count()
