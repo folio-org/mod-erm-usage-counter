@@ -40,6 +40,22 @@ public class Counter4UtilsTest {
   }
 
   @Test
+  public void testToXML() throws IOException {
+    File file = new File(Resources.getResource("reportJSTOR.xml").getFile());
+    Report fromXML = JAXB.unmarshal(file, Report.class);
+    String toJSON = Counter4Utils.toJSON(fromXML);
+
+    String read = Files.asCharSource(file, StandardCharsets.UTF_8).read();
+    assertThat(Counter4Utils.toXML(fromXML)).isEqualToIgnoringWhitespace(read);
+    assertThat(Counter4Utils.toXML(toJSON)).isEqualToIgnoringWhitespace(read);
+
+    String invalidReport = "<tag>text</tag>";
+    assertThat(Counter4Utils.toXML(invalidReport)).isNull();
+    assertThat(Counter4Utils.toXML((Report) null)).isNull();
+    assertThat(Counter4Utils.toXML((String) null)).isNull();
+  }
+
+  @Test
   public void testConversions() throws IOException {
     File file = new File(Resources.getResource("reportJSTOR.xml").getFile());
 
