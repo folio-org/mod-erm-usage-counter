@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.time.YearMonth;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
@@ -81,11 +83,26 @@ public class Counter4Utils {
     return str;
   }
 
+  public static String toXML(Report report) {
+    StringWriter sw = new StringWriter();
+    try {
+      JAXB.marshal(report, sw);
+    } catch (java.lang.Exception e) {
+      log.error(e.getMessage(), e);
+      return null;
+    }
+    return sw.toString();
+  }
+
+  public static String toXML(String report) {
+    return Optional.ofNullable(fromJSON(report)).map(Counter4Utils::toXML).orElse(null);
+  }
+
   public static Report fromJSON(String json) {
     Report result = null;
     try {
       result = mapper.readValue(json, Report.class);
-    } catch (IOException e) {
+    } catch (java.lang.Exception e) {
       log.error(e.getMessage(), e);
     }
     return result;
@@ -194,20 +211,22 @@ public class Counter4Utils {
 
     // check that provided reports have the same attributes
     if (Stream.of(clonedReports)
-            .peek(
+            .map(
                 r -> {
                   // reset some attributes for equals() check
                   r.getCustomer().get(0).getReportItems().clear();
                   r.setVendor(null);
                   r.setCreated(null);
                   r.setID(null);
+                  return r;
                 })
             .distinct()
             .count()
         != 1) throw new ReportMergeException("Report attributes do not match");
 
     List<ReportItem> sortedCombinedReportItems =
-        Stream.of(reports).flatMap(r -> r.getCustomer().get(0).getReportItems().stream())
+        Stream.of(reports)
+            .flatMap(r -> r.getCustomer().get(0).getReportItems().stream())
             .collect(
                 Collectors.toMap(
                     ReportItem::getItemIdentifier,
@@ -216,7 +235,8 @@ public class Counter4Utils {
                       a.getItemPerformance().addAll(b.getItemPerformance());
                       return a;
                     }))
-            .values().stream()
+            .values()
+            .stream()
             .sorted(Comparator.comparing(ReportItem::getItemName))
             .collect(Collectors.toList());
 

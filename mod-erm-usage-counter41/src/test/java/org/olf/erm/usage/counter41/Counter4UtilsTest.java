@@ -40,6 +40,22 @@ public class Counter4UtilsTest {
   }
 
   @Test
+  public void testToXML() throws IOException {
+    File file = new File(Resources.getResource("reportJSTOR.xml").getFile());
+    Report fromXML = JAXB.unmarshal(file, Report.class);
+    String toJSON = Counter4Utils.toJSON(fromXML);
+
+    String read = Files.asCharSource(file, StandardCharsets.UTF_8).read();
+    assertThat(Counter4Utils.toXML(fromXML)).isEqualToIgnoringWhitespace(read);
+    assertThat(Counter4Utils.toXML(toJSON)).isEqualToIgnoringWhitespace(read);
+
+    String invalidReport = "<tag>text</tag>";
+    assertThat(Counter4Utils.toXML(invalidReport)).isNull();
+    assertThat(Counter4Utils.toXML((Report) null)).isNull();
+    assertThat(Counter4Utils.toXML((String) null)).isNull();
+  }
+
+  @Test
   public void testConversions() throws IOException {
     File file = new File(Resources.getResource("reportJSTOR.xml").getFile());
 
@@ -60,17 +76,16 @@ public class Counter4UtilsTest {
     assertThat(Counter4Utils.getNameForReportTitle("Journal Report 1)")).isEqualTo("JR1");
     assertThat(Counter4Utils.getNameForReportTitle("JR1")).isEqualTo("JR1");
     assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isEqualTo("JR1");
-    assertThat(Counter4Utils.getNameForReportTitle("")).isEqualTo(null);
-    assertThat(Counter4Utils.getNameForReportTitle("a title that does not exist")).isEqualTo(null);
+    assertThat(Counter4Utils.getNameForReportTitle("")).isNull();
+    assertThat(Counter4Utils.getNameForReportTitle("a title that does not exist")).isNull();
   }
 
   @Test
   public void testGetTitlesForReportName() {
     assertThat(Counter4Utils.getTitlesForReportName("JR1"))
         .isEqualTo(Arrays.asList("JR1", "Journal Report 1"));
-    assertThat(Counter4Utils.getTitlesForReportName("")).isEqualTo(null);
-    assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist"))
-        .isEqualTo(null);
+    assertThat(Counter4Utils.getTitlesForReportName("")).isNull();
+    assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist")).isNull();
   }
 
   @Test
@@ -140,12 +155,12 @@ public class Counter4UtilsTest {
 
     Metric metric =
         split.get(2).getCustomer().get(0).getReportItems().get(1).getItemPerformance().get(0);
-    assertThat(metric.getPeriod().getBegin().toString()).isEqualTo("2018-03-01");
-    assertThat(metric.getInstance().get(2).getCount()).isEqualTo(8);
+    assertThat(metric.getPeriod().getBegin()).hasToString("2018-03-01");
+    assertThat(metric.getInstance().get(2).getCount().intValue()).isEqualTo(8);
     Metric metric2 =
         split.get(3).getCustomer().get(0).getReportItems().get(1).getItemPerformance().get(0);
-    assertThat(metric2.getPeriod().getEnd().toString()).isEqualTo("2018-04-30");
-    assertThat(metric2.getInstance().get(2).getCount()).isEqualTo(2);
+    assertThat(metric2.getPeriod().getEnd()).hasToString("2018-04-30");
+    assertThat(metric2.getInstance().get(2).getCount().intValue()).isEqualTo(2);
   }
 
   @Test
@@ -155,9 +170,9 @@ public class Counter4UtilsTest {
 
     List<Report> split = Counter4Utils.split(report);
     System.out.println(Json.encodePrettily(split.get(0)));
-    assertThat(split).hasSize(2);
 
     assertThat(split)
+        .hasSize(2)
         .allSatisfy(r -> assertThat(r.getCustomer().get(0).getReportItems()).hasSize(1));
   }
 
@@ -184,13 +199,11 @@ public class Counter4UtilsTest {
   public void testToXMLGregorianCalendar() {
     YearMonth ym = YearMonth.of(2018, 7);
     XMLGregorianCalendar ymResult = Counter4Utils.toXMLGregorianCalendar(ym);
-    assertThat(ymResult).isNotNull();
-    assertThat(ymResult.toString()).isEqualTo("2018-07");
+    assertThat(ymResult).isNotNull().hasToString("2018-07");
 
     LocalDate ld = LocalDate.of(2018, 7, 14);
     XMLGregorianCalendar ldResult = Counter4Utils.toXMLGregorianCalendar(ld);
-    assertThat(ldResult).isNotNull();
-    assertThat(ldResult.toString()).isEqualTo("2018-07-14");
+    assertThat(ldResult).isNotNull().hasToString("2018-07-14");
 
     assertThat(Counter4Utils.toXMLGregorianCalendar(HijrahDate.now())).isNull();
   }
