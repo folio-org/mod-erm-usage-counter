@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.olf</groupId>
@@ -6,13 +8,12 @@
     <version>1.8.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter41</artifactId>
   <version>1.8.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
-    <cxf.version>3.2.6</cxf.version>
+    <cxf.version>3.4.0</cxf.version>
     <super-csv.version>2.4.0</super-csv.version>
   </properties>
 

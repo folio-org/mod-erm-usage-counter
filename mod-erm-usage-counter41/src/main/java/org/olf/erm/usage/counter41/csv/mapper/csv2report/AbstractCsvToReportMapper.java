@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 
-import static org.apache.cxf.common.util.StringUtils.getFound;
+import static org.apache.cxf.common.util.StringUtils.isEmpty;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
@@ -50,6 +52,24 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
   List<ReportItem> processReportItems(List<ReportItem> reportItems) {
     return reportItems;
+  }
+
+  private static List<String> getFound(String contents, String regex) {
+    if (isEmpty(regex) || isEmpty(contents)) {
+      return null;
+    }
+    List<String> results = new ArrayList<>();
+    Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE);
+    Matcher matcher = pattern.matcher(contents);
+
+    while (matcher.find()) {
+      if (matcher.groupCount() > 0) {
+        results.add(matcher.group(1));
+      } else {
+        results.add(matcher.group());
+      }
+    }
+    return results;
   }
 
   @Override
