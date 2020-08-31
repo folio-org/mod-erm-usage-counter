@@ -1,3 +1,6 @@
+## 1.7.0
+* counter41: Add toXML() functions (MODEUSCNT-1)
+
 ## 1.6.0
 * Add functions for converting csv to xlsx and vice versa (MODEUS-60)
 
