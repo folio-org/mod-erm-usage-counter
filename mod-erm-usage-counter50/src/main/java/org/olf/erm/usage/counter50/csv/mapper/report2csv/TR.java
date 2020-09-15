@@ -105,7 +105,8 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
     String[] header = getHeader();
 
     List<Map<String, Object>> result = new ArrayList<>();
-    report.getReportItems().stream()
+    report
+        .getReportItems()
         .forEach(
             reportItem -> {
               Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =

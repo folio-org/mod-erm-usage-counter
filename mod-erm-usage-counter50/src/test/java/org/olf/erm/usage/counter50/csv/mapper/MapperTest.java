@@ -52,7 +52,6 @@ public class MapperTest {
               .replace("$$$date_run$$$", LocalDate.now().toString());
       assertThat(result).isEqualToIgnoringNewLines(expectedString);
     }
-
   }
 
   @RunWith(Parameterized.class)
@@ -74,8 +73,8 @@ public class MapperTest {
     @Test
     public void testToReports() throws IOException, MapperException {
 
-      String csvString = Resources
-          .toString(Resources.getResource(expected), StandardCharsets.UTF_8);
+      String csvString =
+          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
       CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
       Object resultReport = mapper.toReport();
       String resultCSV = MapperFactory.createReportToCsvMapper(resultReport).toCSV();
@@ -96,14 +95,13 @@ public class MapperTest {
     }
 
     private void assertThatMetricTypesAreEqual(String expectedLine, List<String> actualReport) {
-      String actualLine = actualReport.stream().filter(s -> s.startsWith("Metric_Types"))
-          .findFirst().orElse("");
+      String actualLine =
+          actualReport.stream().filter(s -> s.startsWith("Metric_Types")).findFirst().orElse("");
       String[] split = expectedLine.replace("Metric_Types,", "").split(";");
       for (String s : split) {
         assertThat(actualLine).contains(s.trim());
       }
     }
-
   }
 
   public static class MultiMonthTest {
@@ -119,8 +117,8 @@ public class MapperTest {
       URL url3 = Resources.getResource("reports/PR_3.json");
       String jsonString3 = Resources.toString(url3, StandardCharsets.UTF_8);
       COUNTERPlatformReport report3 = (COUNTERPlatformReport) Counter5Utils.fromJSON(jsonString3);
-      COUNTERPlatformReport mergedPlatformReport = Counter5Utils
-          .merge(Arrays.asList(report1, report2, report3));
+      COUNTERPlatformReport mergedPlatformReport =
+          Counter5Utils.merge(Arrays.asList(report1, report2, report3));
       String result = MapperFactory.createReportToCsvMapper(mergedPlatformReport).toCSV();
 
       String expectedString =

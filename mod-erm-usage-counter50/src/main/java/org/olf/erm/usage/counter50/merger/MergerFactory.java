@@ -8,9 +8,9 @@ import org.openapitools.client.model.COUNTERTitleReport;
 
 public final class MergerFactory {
 
-  private MergerFactory() {
-  }
+  private MergerFactory() {}
 
+  @SuppressWarnings({"rawtypes", "java:S3740"})
   public static <T> ReportsMerger createMerger(T report) throws Counter5UtilsException {
     if (report instanceof COUNTERTitleReport) {
       return new TRReportsMerger();
@@ -24,5 +24,4 @@ public final class MergerFactory {
       throw new Counter5UtilsException("Cannot merge reports. Unknown report type.");
     }
   }
-
 }

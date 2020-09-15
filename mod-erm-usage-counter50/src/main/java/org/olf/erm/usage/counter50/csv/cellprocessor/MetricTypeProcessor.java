@@ -20,18 +20,17 @@ public final class MetricTypeProcessor {
     TreeMap<MetricTypeEnum, Map<YearMonth, Integer>> result = new TreeMap<>();
     List<MetricTypeEnum> metricTypes = getMetricTypes(performances);
     metricTypes.forEach(metricTypeEnum -> result.put(metricTypeEnum, new HashMap<>()));
-    performances.stream()
-        .forEach(
-            p -> {
-              YearMonth start =
-                  YearMonth.parse(p.getPeriod().getBeginDate(), DateTimeFormatter.ISO_DATE);
-              p.getInstance().stream()
-                  .forEach(
-                      i -> {
-                        Map<YearMonth, Integer> currentMetricType = result.get(i.getMetricType());
-                        currentMetricType.put(start, i.getCount());
-                      });
-            });
+    performances.forEach(
+        p -> {
+          YearMonth start =
+              YearMonth.parse(p.getPeriod().getBeginDate(), DateTimeFormatter.ISO_DATE);
+          p.getInstance()
+              .forEach(
+                  i -> {
+                    Map<YearMonth, Integer> currentMetricType = result.get(i.getMetricType());
+                    currentMetricType.put(start, i.getCount());
+                  });
+        });
     return result;
   }
 

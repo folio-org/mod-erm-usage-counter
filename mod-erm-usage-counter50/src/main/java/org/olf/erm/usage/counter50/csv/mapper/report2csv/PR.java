@@ -44,7 +44,8 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
     String[] header = getHeader();
 
     List<Map<String, Object>> result = new ArrayList<>();
-    report.getReportItems().stream()
+    report
+        .getReportItems()
         .forEach(
             reportItem -> {
               Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =
@@ -63,11 +64,12 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 
-                        itemMap.putAll(PerformanceProcessor.getPerformancePerMonth(
-                            performancesPerMetricType,
-                            metricTypeEnum,
-                            getYearMonths(),
-                            formatter));
+                        itemMap.putAll(
+                            PerformanceProcessor.getPerformancePerMonth(
+                                performancesPerMetricType,
+                                metricTypeEnum,
+                                getYearMonths(),
+                                formatter));
 
                         result.add(itemMap);
                       });

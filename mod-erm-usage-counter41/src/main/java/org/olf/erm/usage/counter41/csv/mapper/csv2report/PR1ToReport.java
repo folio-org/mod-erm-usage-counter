@@ -1,9 +1,9 @@
 package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.niso.schemas.counter.DataType;
 import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.ReportItem;
@@ -62,7 +62,7 @@ public class PR1ToReport extends AbstractCsvToReportMapper {
                 Collectors.reducing(reportItemCombiner)))
         .values()
         .stream()
-        .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+        .flatMap(Optional::stream)
         .collect(Collectors.toList());
   }
 }
