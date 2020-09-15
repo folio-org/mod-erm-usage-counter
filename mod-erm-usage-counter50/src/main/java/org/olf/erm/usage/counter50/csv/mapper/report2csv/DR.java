@@ -87,7 +87,8 @@ public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
     String[] header = getHeader();
 
     List<Map<String, Object>> result = new ArrayList<>();
-    report.getReportItems().stream()
+    report
+        .getReportItems()
         .forEach(
             dbReport -> {
               Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =

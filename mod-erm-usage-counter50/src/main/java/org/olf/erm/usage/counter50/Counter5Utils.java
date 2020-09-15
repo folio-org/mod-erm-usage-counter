@@ -37,14 +37,12 @@ public class Counter5Utils {
 
   private static final Logger LOG = LoggerFactory.getLogger(Counter5Utils.class);
 
-  private static final List<String> PREFIXES =
-      Collections.unmodifiableList(Arrays.asList("PR", "DR", "TR", "IR"));
+  private static final List<String> PREFIXES = List.of("PR", "DR", "TR", "IR");
   private static final Gson gson = new Gson();
   private static final JsonParser parser = new JsonParser();
   private static final String REPORT_HEADER = "Report_Header";
 
-  private Counter5Utils() {
-  }
+  private Counter5Utils() {}
 
   /**
    * Returns {@link SUSHIReportHeader} from json encoded counter 5 report.
@@ -68,10 +66,10 @@ public class Counter5Utils {
    * Returns {@link SUSHIReportHeader} from the given report.
    *
    * @param report Counter 5 reports. Needs to be either a {@link COUNTERDatabaseReport}, {@link
-   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   *     COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
    * @return {@link SUSHIReportHeader} of given report.
    * @throws Counter5UtilsException Throws exception if report is not an instance of classes
-   *                                specified above.
+   *     specified above.
    */
   public static SUSHIReportHeader getSushiReportHeaderFromReportObject(Object report)
       throws Counter5UtilsException {
@@ -85,7 +83,8 @@ public class Counter5Utils {
       return ((COUNTERTitleReport) report).getReportHeader();
     } else {
       throw new Counter5UtilsException(
-          String.format("Error parsing SushiReportHeader. Report of unknown class: %s",
+          String.format(
+              "Error parsing SushiReportHeader. Report of unknown class: %s",
               report.getClass().toString()));
     }
   }
@@ -129,7 +128,7 @@ public class Counter5Utils {
    *
    * @param header The {@link SUSHIReportHeader}
    * @return {@link List} of {@link YearMonth}s starting at given {@link SUSHIReportHeader}'s
-   * "Begin_Date" and ending at its "End_Date"
+   *     "Begin_Date" and ending at its "End_Date"
    */
   public static List<YearMonth> getYearMonthsFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
@@ -158,9 +157,9 @@ public class Counter5Utils {
    * {@link #getYearMonthsFromReportHeader(SUSHIReportHeader header)}
    *
    * @param report Counter 5 reports. Needs to be either a {@link COUNTERDatabaseReport}, {@link
-   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   *     COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
    * @return {@link List} of {@link YearMonth}s starting at given {@link SUSHIReportHeader}'s
-   * "Begin_Date" and ending at its "End_Date"
+   *     "Begin_Date" and ending at its "End_Date"
    */
   public static List<YearMonth> getYearMonthFromReport(Object report) {
     if (report instanceof COUNTERDatabaseReport) {
@@ -181,7 +180,7 @@ public class Counter5Utils {
    *
    * @param header {@link SUSHIReportHeader}
    * @return {@link List} of {@link LocalDate}s containing the header's "Begin_Date" and "End_Date".
-   * Returns empty list if dates are not present.
+   *     Returns empty list if dates are not present.
    */
   public static List<LocalDate> getLocalDateFromReportHeader(SUSHIReportHeader header) {
     Objects.requireNonNull(header);
@@ -210,7 +209,7 @@ public class Counter5Utils {
    * Transforms and returns given Counter 5 report as a csv
    *
    * @param report Counter 5 report. Needs to be either a {@link COUNTERDatabaseReport}, {@link
-   *               COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
+   *     COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link COUNTERTitleReport}
    * @return CSV representation of given report.
    */
   public static String toCSV(Object report) {
@@ -227,10 +226,10 @@ public class Counter5Utils {
    *
    * @param json JSON encoded report
    * @return {@link Object} representation of given report. It is an instance of either {@link
-   * COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
-   * COUNTERTitleReport}.
+   *     COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
+   *     COUNTERTitleReport}.
    * @throws Counter5UtilsException Throws exception if report cannot be merged to an instance of
-   *                                classes specified above.
+   *     classes specified above.
    */
   public static Object fromJSON(String json) throws Counter5UtilsException {
     Object result = null;
@@ -238,7 +237,10 @@ public class Counter5Utils {
       Gson gson = new Gson();
       JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
       String reportID =
-          jsonObject.getAsJsonObject(REPORT_HEADER).getAsJsonPrimitive("Report_ID").getAsString()
+          jsonObject
+              .getAsJsonObject(REPORT_HEADER)
+              .getAsJsonPrimitive("Report_ID")
+              .getAsString()
               .toUpperCase();
       if (reportID.startsWith("TR")) {
         result = gson.fromJson(json, COUNTERTitleReport.class);
@@ -250,8 +252,7 @@ public class Counter5Utils {
         result = gson.fromJson(json, COUNTERDatabaseReport.class);
       } else {
         throw new Counter5UtilsException(
-            String.format("Error converting report. Unknown report type: %s",
-                reportID));
+            String.format("Error converting report. Unknown report type: %s", reportID));
       }
     } catch (JsonSyntaxException e) {
       LOG.error(e.getMessage(), e);
@@ -264,24 +265,23 @@ public class Counter5Utils {
    *
    * @param csv CSV encoded report
    * @return {@link Object} representation of given report. It is an instance of either {@link
-   * COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
-   * COUNTERTitleReport}.
+   *     COUNTERDatabaseReport}, {@link COUNTERItemReport}, {@link COUNTERPlatformReport} or {@link
+   *     COUNTERTitleReport}.
    */
   public static Object fromCSV(String csv) throws MapperException {
     return MapperFactory.createCsvToReportMapper(csv).toReport();
   }
 
   /**
-   * Merges COUNTER 5 reports of several months into one report. Input reports must be of same
-   * type.
+   * Merges COUNTER 5 reports of several months into one report. Input reports must be of same type.
    *
    * @param reports Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport},
-   *                {@link COUNTERPlatformReport} & {@link COUNTERItemReport}.
-   * @param <T>     Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport},
-   *                {@link COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   *     {@link COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   * @param <T> Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport}, {@link
+   *     COUNTERPlatformReport} & {@link COUNTERItemReport}.
    * @return The merged report.
    * @throws Counter5UtilsException Throws exception if reports cannot be merged (e.g. if reports
-   *                                are not of the same class).
+   *     are not of the same class).
    */
   public static <T> T merge(List<T> reports) throws Counter5UtilsException {
     boolean allObjectsSameClass =
@@ -298,13 +298,14 @@ public class Counter5Utils {
    * Splits a COUNTER 5 report into reports of several months.
    *
    * @param report Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport}, {@link
-   *               COUNTERPlatformReport} & {@link COUNTERItemReport}.
+   *     COUNTERPlatformReport} & {@link COUNTERItemReport}.
    * @return {@link List} of splitted reports.
    * @throws Counter5UtilsException Throws exception if report is not an instance of classes
-   *                                specified above.
+   *     specified above.
    */
-  // Cannot use parameterized type as the generated report types only have Object as common super-type.
-  @SuppressWarnings("rawtypes")
+  // Cannot use parameterized type as the generated report types only have Object as common
+  // super-type.
+  @SuppressWarnings({"rawtypes", "java:S3740"})
   public static List split(Object report) throws Counter5UtilsException {
     if (report instanceof COUNTERDatabaseReport) {
       DRReportsSplitter splitter = new DRReportsSplitter();
@@ -320,11 +321,10 @@ public class Counter5Utils {
       return splitter.split((COUNTERTitleReport) report);
     } else {
       throw new Counter5UtilsException(
-          String.format("Error splitting report. Report of unknown class: %s",
-              report.getClass().toString()));
+          String.format(
+              "Error splitting report. Report of unknown class: %s", report.getClass().toString()));
     }
   }
-
 
   public static class Counter5UtilsException extends Exception {
 
@@ -336,5 +336,4 @@ public class Counter5Utils {
       super(message);
     }
   }
-
 }
