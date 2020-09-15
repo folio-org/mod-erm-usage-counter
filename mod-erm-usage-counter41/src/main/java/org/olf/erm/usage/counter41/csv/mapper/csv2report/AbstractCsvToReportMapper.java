@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 
-import static org.apache.cxf.common.util.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -56,7 +56,7 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
 
   private static List<String> getFound(String contents, String regex) {
     if (isEmpty(regex) || isEmpty(contents)) {
-      return null;
+      return Collections.emptyList();
     }
     List<String> results = new ArrayList<>();
     Pattern pattern = Pattern.compile(regex, Pattern.UNICODE_CASE);
