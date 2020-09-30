@@ -99,10 +99,10 @@
       "Publisher_ID": [
         {
           "Type": "Proprietary",
-          "Value": "my:mypress"
+          "Value": "my:mypress; mym"
         }
       ],
-      "Publisher": "My Press",
+      "Publisher": "My Press MyM",
       "Section_Type": "Book"
     },
     {
