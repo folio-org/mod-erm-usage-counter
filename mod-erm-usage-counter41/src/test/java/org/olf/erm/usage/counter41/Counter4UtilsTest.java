@@ -75,7 +75,27 @@ public class Counter4UtilsTest {
     assertThat(Counter4Utils.getNameForReportTitle("Journal Report 1 (R4)")).isEqualTo("JR1");
     assertThat(Counter4Utils.getNameForReportTitle("Journal Report 1)")).isEqualTo("JR1");
     assertThat(Counter4Utils.getNameForReportTitle("JR1")).isEqualTo("JR1");
-    assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isEqualTo("JR1");
+    assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isNull();
+
+    assertThat(Counter4Utils.getNameForReportTitle("JR1 GOA")).isNull();
+    assertThat(Counter4Utils.getNameForReportTitle("JR1 GOA (R4)")).isNull();
+
+    assertThat(Counter4Utils.getNameForReportTitle("BR1")).isEqualTo("BR1");
+    assertThat(Counter4Utils.getNameForReportTitle("Book Report 1")).isEqualTo("BR1");
+    assertThat(Counter4Utils.getNameForReportTitle("Book Report 1 (R4)")).isEqualTo("BR1");
+
+    assertThat(Counter4Utils.getNameForReportTitle("BR2")).isEqualTo("BR2");
+    assertThat(Counter4Utils.getNameForReportTitle("Book Report 2")).isEqualTo("BR2");
+    assertThat(Counter4Utils.getNameForReportTitle("Book Report 2 (R4)")).isEqualTo("BR2");
+
+    assertThat(Counter4Utils.getNameForReportTitle("DB1")).isEqualTo("DB1");
+    assertThat(Counter4Utils.getNameForReportTitle("Database Report 1")).isEqualTo("DB1");
+    assertThat(Counter4Utils.getNameForReportTitle("Database Report 1 (R4)")).isEqualTo("DB1");
+
+    assertThat(Counter4Utils.getNameForReportTitle("PR1")).isEqualTo("PR1");
+    assertThat(Counter4Utils.getNameForReportTitle("Platform Report 1")).isEqualTo("PR1");
+    assertThat(Counter4Utils.getNameForReportTitle("Platform Report 1 (R4)")).isEqualTo("PR1");
+
     assertThat(Counter4Utils.getNameForReportTitle("")).isNull();
     assertThat(Counter4Utils.getNameForReportTitle("a title that does not exist")).isNull();
   }
@@ -83,7 +103,8 @@ public class Counter4UtilsTest {
   @Test
   public void testGetTitlesForReportName() {
     assertThat(Counter4Utils.getTitlesForReportName("JR1"))
-        .isEqualTo(Arrays.asList("JR1", "Journal Report 1"));
+        .isEqualTo(
+            Arrays.asList("(?=\\bJR1\\b)((?!GOA).)*", "(?=\\bJournal Report 1\\b)((?!GOA).)*"));
     assertThat(Counter4Utils.getTitlesForReportName("")).isNull();
     assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist")).isNull();
   }
