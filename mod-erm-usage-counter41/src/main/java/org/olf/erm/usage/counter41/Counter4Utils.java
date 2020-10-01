@@ -48,8 +48,15 @@ public class Counter4Utils {
   private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
 
   static {
-    mappingEntries.put("JR1", Arrays.asList("JR1", "Journal Report 1"));
+    mappingEntries.put(
+        "JR1", Arrays.asList("(?=\\bJR1\\b)((?!GOA).)*", "(?=\\bJournal Report 1\\b)((?!GOA).)*"));
+    mappingEntries.put("BR1", Arrays.asList("BR1.*", "Book Report 1.*"));
+    mappingEntries.put("BR2", Arrays.asList("BR2.*", "Book Report 2.*"));
+    mappingEntries.put("DB1", Arrays.asList("DB1.*", "Database Report 1.*"));
+    mappingEntries.put("PR1", Arrays.asList("PR1.*", "Platform Report.*"));
   }
+
+  private Counter4Utils() {}
 
   public static List<String> getTitlesForReportName(String reportName) {
     return mappingEntries.get(reportName);
@@ -57,7 +64,7 @@ public class Counter4Utils {
 
   public static String getNameForReportTitle(String title) {
     return mappingEntries.entrySet().stream()
-        .filter(e -> e.getValue().stream().anyMatch(title::contains))
+        .filter(e -> e.getValue().stream().anyMatch(title::matches))
         .findFirst()
         .map(Entry::getKey)
         .orElse(null);
@@ -311,8 +318,6 @@ public class Counter4Utils {
     dateRange.setEnd(toXMLGregorianCalendar(yearMonth.atEndOfMonth()));
     return dateRange;
   }
-
-  private Counter4Utils() {}
 
   public static class ReportMergeException extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
