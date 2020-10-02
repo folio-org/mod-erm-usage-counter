@@ -1,3 +1,8 @@
+## 2.0.0
+* Update to JDK11 (MODEUSCNT-3)
+* Generating COP5 report from csv fails (MODEUSCNT-4)
+* Add missing mappingEntries to Counter4Utils (MODEUSCNT-5) 
+
 ## 1.7.0
 * counter41: Add toXML() functions (MODEUSCNT-1)
 
