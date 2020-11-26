@@ -24,9 +24,9 @@ public class SerializationTest {
       XMLGregorianCalendar date = DatatypeFactory.newInstance().newXMLGregorianCalendar(datetime);
       String str = mapper.writeValueAsString(date);
       XMLGregorianCalendar cal = mapper.readValue(str, XMLGregorianCalendar.class);
-      assertThat(date.toString()).isEqualTo(datetime);
+      assertThat(date).hasToString(datetime);
       assertThat(str).isEqualTo(mapper.writeValueAsString(datetime));
-      assertThat(cal.toString()).isEqualTo(datetime);
+      assertThat(cal).hasToString(datetime);
     } catch (IOException | DatatypeConfigurationException e) {
       fail(e.getMessage());
     }
@@ -39,6 +39,7 @@ public class SerializationTest {
     testXMLGregCalString("2018-10-24");
     testXMLGregCalString("2018-10-24T08:37:25.730Z");
     testXMLGregCalString("2018-10-24T12:40:00.000Z");
+    testXMLGregCalString("2018-10-24T12:40:00+02:00");
   }
 
   @Test
@@ -49,6 +50,17 @@ public class SerializationTest {
     String json = Counter4Utils.toJSON(report);
     Report fromJSON = Counter4Utils.fromJSON(json);
 
-    assertThat(report).usingRecursiveComparison().isEqualTo(fromJSON);
+    assertThat(fromJSON).usingRecursiveComparison().isEqualTo(report);
+  }
+
+  @Test
+  public void testSampleReportWithoutFractionalSeconds() throws URISyntaxException {
+    URI uri = Resources.getResource("reportJSTORwofracSeconds.xml").toURI();
+    Report report = JAXB.unmarshal(uri, Report.class);
+
+    String json = Counter4Utils.toJSON(report);
+    Report fromJSON = Counter4Utils.fromJSON(json);
+
+    assertThat(fromJSON).usingRecursiveComparison().isEqualTo(report);
   }
 }
