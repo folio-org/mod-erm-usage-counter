@@ -1,3 +1,6 @@
+## 2.0.1
+* XMLGregorianCalendar serialization/deserialization mismatch (MODEUSCNT-7)
+
 ## 2.0.0
 * Update to JDK11 (MODEUSCNT-3)
 * Generating COP5 report from csv fails (MODEUSCNT-4)
