@@ -12,7 +12,7 @@ Models, Clients and Utilities for COUNTER/SUSHI standard
 
 ### Issue tracker
 
-See project [MODERM](https://issues.folio.org/browse/MODERM)
+See project [MODEUSCNT](https://issues.folio.org/browse/MODEUSCNT)
 at the [FOLIO issue tracker](https://dev.folio.org/guidelines/issue-tracker).
 
 ### Other documentation
