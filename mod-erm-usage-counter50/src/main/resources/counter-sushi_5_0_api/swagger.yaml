@@ -8,7 +8,7 @@ info:
   contact:
     name: Project COUNTER
     url: 'https://www.projectcounter.org/'
-    email: lorraine.estelle@counterusage.org
+    email: lorraine.estelle@counterusage.org 
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -21,12 +21,13 @@ securityDefinitions:
   api_key:
     type: apiKey
     description: >-
-      Unique code assigned by Content Provider to grant you access to this API. The api_key needs to be a query parameter for every operation to access this API.
+      Unique code which may be assigned by a Content Provider to grant you access to this API. If assigned, the api_key needs to be a query parameter for every operation to access this API.
     name: api_key
     in: query
   requestor_id:
     type: apiKey
-    description: Identifies the requester(client) that is asking for report data
+    description: >-
+      Identifier which may be assigned by a Content Provider for the requester(client) that is asking for report data. If assigned, the requestor_id needs to be a query parameter for every operation to access this API.
     name: requestor_id
     in: query
 security:
@@ -203,7 +204,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/pr_p1:
     get:
-      operationId: getReportsPRP1
+      operationId: getReportsPR1
       description: >-
         This resource returns COUNTER 'Platform Usage' [pr_p1]. This is a Standard View of the Package Master Report that presents usage for the overall Platform broken down by Metric_Type.
       produces:
@@ -317,7 +318,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/dr_d1:
     get:
-      operationId: getReportsDRD1
+      operationId: getReportsDR1
       description: 'This resource returns COUNTER ''Database Search and Item Usage'' [DR_D1], a Standard View of Database Master Report. Reports on key search and request metrics needed to evaluate a database.'
       produces:
         - application/json
@@ -354,7 +355,7 @@ paths:
             $ref: '#/definitions/SUSHI_error_model'
   /reports/dr_d2:
     get:
-      operationId: getReportsDRD2
+      operationId: getReportsDR2
       description: 'This resource returns COUNTER ''Database Access Denied'' [DR_D2], a Standard View of Database Master Report. Reports on Access Denied activity for databases where users were denied access because simultaneous use licenses were exceeded or their institution did not have a license for the database.'
       produces:
         - application/json
@@ -796,12 +797,6 @@ paths:
             Optional Report Filter. A list of Data_Types to return usage for.  Use | character to delimit multiple values. Omit this parameter to include all Data_Types with statistics. 
           required: false
           type: string
-        - name: section_type
-          in: query
-          description: >-
-            Optional Report Filter.  A list of Section_Types to return usage for.  Use | character to delimit multiple values. Omit this parameter to include all Section_Types with statistics.
-          required: false
-          type: string
         - name: yop
           in: query
           description: >-
@@ -826,12 +821,16 @@ paths:
             Optional Report Attribute. A list of attributes to include as separate elements in response (usage will be broken out by attribute values).  Multiple attribute names are delimited with a | character. Options include Article_Version, Authors, Access_Method, Access_Type, Data_Type, Publication_Date and YOP. When fields are included usage will be presented for each value of that field (with usage) otherwise usage will be rolled up for all values of a given field.
           required: false
           type: string
-        - name: include_item_components
+        - name: include_component_details
           in: query
           description: >-
-            Optional Report Attribute. Include this parameter to include ItemComponent details in the
-            report. Omitting the parameter will exclude the ItemComponent
-            elements.
+            Optional Report Attribute. Include this parameter to include  details of the item's constituent components in the report. Omitting the parameter will exclude the item component elements.
+          required: false
+          type: string
+        - name: include_parent_details
+          in: query
+          description: >-
+            Optional Report Attribute. Include this parameter to include details of the parent item in the report, e.g. information about the journal in which an article is published. Omitting the parameter will exclude the parent detail elements.
           required: false
           type: string
         - name: granularity
@@ -856,7 +855,7 @@ paths:
     get:
       operationId: getReportsIRA1
       description: >-
-        This resource returns 'Journal Article Requests' [IR_A1], a Standard View of Item Master Report. Reports on journal article requests at the article level. This report is limited to content with a Data_Type of Journal; Section_Type of Article and metric types of Total_Item_Requests and Unique_Item_Requests.
+        This resource returns 'Journal Article Requests' [IR_A1], a Standard View of Item Master Report. Reports on journal article requests at the article level. This report is limited to content with Data_Type=Article; Parent_Data_Type=Journal; Access_Method=Regular and metric types of Total_Item_Requests and Unique_Item_Requests.
       produces:
         - application/json
       parameters:
@@ -934,17 +933,16 @@ definitions:
     description: Generalized format for presenting errors and exceptions.
     required:
       - Code
-      - Severity
       - Message
     properties:
       Code:
         type: integer
         format: int32
-        description: Error number. See table of error.
-        example: 3040
+        description: Exception Number. See Table F.1 in the Code of Practice, Appendix F
+        example: 3031
       Severity:
         type: string
-        description: Severity of the error.
+        description: Severity of the Exception (deprecated).
         example: Warning
         enum:
           - Warning
@@ -954,15 +952,15 @@ definitions:
           - Info
       Message:
         type: string
-        description: Text describing the error.
-        example: Partial Data Returned.
+        description: Exception Description. See Table F.1 in the Code of Practice, Appendix F
+        example: Usage Not Ready for Requested Dates
       Help_URL:
         type: string
-        description: URL describing error details.
+        description: URL to a help page that explains the Exception in more detail.
       Data:
         type: string
-        description: Additional data provided by the server to clarify the error.
-        example: Usage data has not been processed for all requested months.
+        description: Additional data provided by the server to clarify the Exception.
+        example: request was for 2016-01-01 to 2016-12-31; however, usage is only available to 2016-08-31
   SUSHI_report_header:
     type: object
     description: >-
@@ -991,7 +989,7 @@ definitions:
       Customer_ID:
         type: string
         description: >-
-          Identifer of the customer the report represents - identifier used on the request
+          Identifier of the customer the report represents - identifier used on the request
         example: '12345'
       Report_ID:
         type: string
@@ -1259,6 +1257,11 @@ definitions:
         type: string
         description: Name of the database or collection being reported on.
         example: Academic Search Premier
+      Item_ID:
+        type: array
+        items:
+          $ref: '#/definitions/COUNTER_item_identifiers'
+        description: The identifier for the report item (database)
       Platform:
         type: string
         description: Name of the platform
@@ -1323,7 +1326,6 @@ definitions:
       - Title
       - Platform
       - Publisher
-      - Data_Type
       - Performance
     properties:
       Title:
@@ -1422,7 +1424,6 @@ definitions:
       - Item
       - Platform
       - Publisher
-      - Data_Type
       - Performance
     properties:
       Item:
@@ -1464,10 +1465,7 @@ definitions:
           $ref: '#/definitions/COUNTER_publisher_identifiers'
         description: The identifier for the publisher.
       Item_Parent:
-        type: array
-        items:
-          $ref: '#/definitions/COUNTER_item_parent'
-        description: The identifier for the report item (title)
+        $ref: '#/definitions/COUNTER_item_parent'
       Item_Component:
         type: array
         items:
@@ -1489,17 +1487,6 @@ definitions:
           - Repository_Item
           - Thesis_or_Dissertation
         example: Journal
-      Section_Type:
-        type: string
-        description: >-
-          Defines the nature of the sections being delivered if the item is retrieved in units smaller than the whole.
-        enum:
-          - Article
-          - Book
-          - Chapter
-          - Other
-          - Section
-        example: Article
       YOP:
         type: string
         description: >-
@@ -1529,7 +1516,7 @@ definitions:
   COUNTER_item_parent:
     type: object
     required:
-      - Item_Name
+      - Item_ID
     properties:
       Item_Name:
         type: string
@@ -1555,15 +1542,6 @@ definitions:
         items:
           $ref: '#/definitions/COUNTER_item_attributes'
         description: Other attributes related related to the parent item.
-      Publisher:
-        type: string
-        description: Name of organization that publishes the content
-        example: Springer
-      Publisher_ID:
-        type: array
-        items:
-          $ref: '#/definitions/COUNTER_publisher_identifiers'
-        description: The identifier for the publisher.
       Data_Type:
         type: string
         description: Nature of the parent item.
@@ -1583,7 +1561,7 @@ definitions:
   COUNTER_item_component:
     type: object
     required:
-      - Item_Name
+      - Item_ID
       - Performance
     properties:
       Item_Name:
@@ -1610,15 +1588,6 @@ definitions:
         items:
           $ref: '#/definitions/COUNTER_item_attributes'
         description: Other attributes related related to the parent item.
-      Publisher:
-        type: string
-        description: Name of organization that publishes the content
-        example: Springer
-      Publisher_ID:
-        type: array
-        items:
-          $ref: '#/definitions/COUNTER_publisher_identifiers'
-        description: The identifier for the publisher.
       Data_Type:
         type: string
         description: Nature of the component item.
@@ -1695,8 +1664,8 @@ definitions:
         example: John Smith
       Identifier:
         type: string
-        description: Value of the item contributor identifier, which uniquely identifies a person or organization
-        example: orcid:0000-0001-2345-6789
+        description: Value of the item contributor identifier, which uniquely identifies a person or organization. Permitted identifiers are ORCID or ISNI (use one or the other, not both)
+        example: ORCID:0000-0001-2345-6789
   COUNTER_item_dates:
     type: object
     required:
