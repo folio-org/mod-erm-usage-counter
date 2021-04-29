@@ -1,3 +1,7 @@
+## 2.0.2
+* [MODEUSCNT-9](https://issues.folio.org/browse/MODEUSCNT-9) Update Counter Sushi 5.0 API Specification
+* Bump Guava from 29.0-jre to 31.1.1-jre
+
 ## 2.0.1
 * XMLGregorianCalendar serialization/deserialization mismatch (MODEUSCNT-7)
 

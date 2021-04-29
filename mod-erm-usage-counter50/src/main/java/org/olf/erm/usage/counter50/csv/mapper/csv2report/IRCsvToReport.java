@@ -59,11 +59,11 @@ public class IRCsvToReport extends AbstractCsvToReport {
 
     List<String> contentLines = lines.subList(CONTENT_START_LINE, lines.size());
     String titleUsagesString = String.join("\n", contentLines);
-    List<YearMonth> yearMonths = Counter5Utils
-        .getYearMonthsFromReportHeader(sushiReportHeader);
+    List<YearMonth> yearMonths = Counter5Utils.getYearMonthsFromReportHeader(sushiReportHeader);
 
-    List<COUNTERItemUsage> itemUsages = itemParser
-        .parseItems(titleUsagesString,
+    List<COUNTERItemUsage> itemUsages =
+        itemParser.parseItems(
+            titleUsagesString,
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
@@ -73,96 +73,97 @@ public class IRCsvToReport extends AbstractCsvToReport {
 
   protected Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
     Class<?>[] first = {
-        null, // Title
-        null, // Publisher
-        null, // Publisher_ID
-        null, // Platform
-        COUNTERItemContributors.class, // Authors
-        COUNTERItemDates.class, // Publication_Date
-        COUNTERItemAttributes.class, // Article_Version
-        COUNTERItemIdentifiers.class, // DOI
-        COUNTERItemIdentifiers.class, // Proprietary_ID
-        COUNTERItemIdentifiers.class, // ISBN
-        COUNTERItemIdentifiers.class, // Print_ISSN
-        COUNTERItemIdentifiers.class, // Online_ISSN
-        COUNTERItemIdentifiers.class, // URI
-        COUNTERItemParent.class, // Parent_Title
-        null, // Parent_Authors
-        null, // Parent_Publication_Date
-        null, // Parent_Article_Version
-        null, // Parent_Data_Type
-        null, // Parent_DOI
-        null, // Parent_Proprietary_ID
-        null, // Parent_ISBN
-        null, // Parent_Print_ISSN
-        null, // Parent_Online_ISSN
-        null, // Parent_URI
-        COUNTERItemComponent.class, // Component_Title
-        null, // Component_Authors
-        null, // Component_Publication_Date
-        null, // Component_Data_Type
-        null, // Component_DOI
-        null, // Component_Proprietary_DOI
-        null, // Component_ISBN
-        null, // Component_Print_ISSN
-        null, // Component_Online_ISSN
-        null, // Component_URI
-        DataTypeEnum.class, // Data_Type
-        null, // YOP
-        AccessTypeEnum.class, // Access_Type
-        AccessMethodEnum.class, // Access_Method
-        null, // Metric_Type
-        null // Reporting_Period_Total
+      null, // Title
+      null, // Publisher
+      null, // Publisher_ID
+      null, // Platform
+      COUNTERItemContributors.class, // Authors
+      COUNTERItemDates.class, // Publication_Date
+      COUNTERItemAttributes.class, // Article_Version
+      COUNTERItemIdentifiers.class, // DOI
+      COUNTERItemIdentifiers.class, // Proprietary_ID
+      COUNTERItemIdentifiers.class, // ISBN
+      COUNTERItemIdentifiers.class, // Print_ISSN
+      COUNTERItemIdentifiers.class, // Online_ISSN
+      COUNTERItemIdentifiers.class, // URI
+      COUNTERItemParent.class, // Parent_Title
+      null, // Parent_Authors
+      null, // Parent_Publication_Date
+      null, // Parent_Article_Version
+      null, // Parent_Data_Type
+      null, // Parent_DOI
+      null, // Parent_Proprietary_ID
+      null, // Parent_ISBN
+      null, // Parent_Print_ISSN
+      null, // Parent_Online_ISSN
+      null, // Parent_URI
+      COUNTERItemComponent.class, // Component_Title
+      null, // Component_Authors
+      null, // Component_Publication_Date
+      null, // Component_Data_Type
+      null, // Component_DOI
+      null, // Component_Proprietary_DOI
+      null, // Component_ISBN
+      null, // Component_Print_ISSN
+      null, // Component_Online_ISSN
+      null, // Component_URI
+      DataTypeEnum.class, // Data_Type
+      null, // YOP
+      AccessTypeEnum.class, // Access_Type
+      AccessMethodEnum.class, // Access_Method
+      null, // Metric_Type
+      null // Reporting_Period_Total
     };
-    Stream<Class<COUNTERItemPerformance>> rest = yearMonths.stream()
-        .map(ym -> COUNTERItemPerformance.class);
+    Stream<Class<COUNTERItemPerformance>> rest =
+        yearMonths.stream().map(ym -> COUNTERItemPerformance.class);
     return Stream.concat(Arrays.stream(first), rest).toArray(Class<?>[]::new);
   }
 
   public String[] createFieldMapping(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Item",
-        "Publisher",
-        "PublisherID",
-        "Platform",
-        "ItemContributors[0]",
-        "ItemDates[0]",
-        "ItemAttributes[0]",
-        "ItemID[0]",
-        "ItemID[1]",
-        "ItemID[2]",
-        "ItemID[3]",
-        "ItemID[4]",
-        "ItemID[5]",
-        "ItemParent[0]", // Parent_Title
-        null, // Parent_Authors
-        null, // Parent_Publication_Date
-        null, // Parent_Article_Version
-        null, // Parent_Data_Type
-        null, // Parent_DOI
-        null, // Parent_Proprietary_ID
-        null, // Parent_ISBN
-        null, // Parent_Print_ISSN
-        null, // Parent_Online_ISSN
-        null, // Parent_URI
-        "ItemComponent[0]", // Component_Title
-        null, // Component_Authors
-        null, // Component_Publication_Date
-        null, // Component_Data_Type
-        null, // Component_DOI
-        null, // Component_Proprietary_DOI
-        null, // Component_ISBN
-        null, // Component_Print_ISSN
-        null, // Component_Online_ISSN
-        null,  // Component_URI
-        "DataType",
-        "YOP",
-        "AccessType",
-        "AccessMethod",
-        null,
-        null
-    };
+    String[] baseHeader =
+        new String[] {
+          "Item",
+          "Publisher",
+          "PublisherID",
+          "Platform",
+          "ItemContributors[0]",
+          "ItemDates[0]",
+          "ItemAttributes[0]",
+          "ItemID[0]",
+          "ItemID[1]",
+          "ItemID[2]",
+          "ItemID[3]",
+          "ItemID[4]",
+          "ItemID[5]",
+          "ItemParent", // Parent_Title
+          null, // Parent_Authors
+          null, // Parent_Publication_Date
+          null, // Parent_Article_Version
+          null, // Parent_Data_Type
+          null, // Parent_DOI
+          null, // Parent_Proprietary_ID
+          null, // Parent_ISBN
+          null, // Parent_Print_ISSN
+          null, // Parent_Online_ISSN
+          null, // Parent_URI
+          "ItemComponent[0]", // Component_Title
+          null, // Component_Authors
+          null, // Component_Publication_Date
+          null, // Component_Data_Type
+          null, // Component_DOI
+          null, // Component_Proprietary_DOI
+          null, // Component_ISBN
+          null, // Component_Print_ISSN
+          null, // Component_Online_ISSN
+          null, // Component_URI
+          "DataType",
+          "YOP",
+          "AccessType",
+          "AccessMethod",
+          null,
+          null
+        };
     for (int i = 0; i < yearMonths.size(); i++) {
       y[i] = "performance[" + i + "]";
     }
@@ -218,58 +219,58 @@ public class IRCsvToReport extends AbstractCsvToReport {
             new Optional(new ParseAccessMethod()), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
-        );
+            );
 
-    List<ParseMetricTypes> metricTypeParsers = Collections
-        .nCopies(yearMonths.size(), parseMetricTypes);
+    List<ParseMetricTypes> metricTypeParsers =
+        Collections.nCopies(yearMonths.size(), parseMetricTypes);
     return Stream.concat(first.stream(), metricTypeParsers.stream()).toArray(CellProcessor[]::new);
   }
 
   public String[] getHeader(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Title",
-        "Publisher",
-        "Publisher_ID",
-        "Platform",
-        "Authors",
-        "Publication_Date",
-        "Article_Version",
-        "DOI",
-        "Proprietary_ID",
-        "ISBN",
-        "Print_ISSN",
-        "Online_ISSN",
-        "URI",
-        "Parent_Title",
-        "Parent_Authors",
-        "Parent_Publication_Date",
-        "Parent_Article_Version",
-        "Parent_Data_Type",
-        "Parent_DOI",
-        "Parent_Proprietary_ID",
-        "Parent_ISBN",
-        "Parent_Print_ISSN",
-        "Parent_Online_ISSN",
-        "Parent_URI",
-        "Component_Title",
-        "Component_Authors",
-        "Component_Publication_Date",
-        "Component_Data_Type",
-        "Component_DOI",
-        "Component_Proprietary_DOI",
-        "Component_ISBN",
-        "Component_Print_ISSN",
-        "Component_Online_ISSN",
-        "Component_URI",
-        "Data_Type",
-        "YOP",
-        "Access_Type",
-        "Access_Method",
-        "Metric_Type",
-        "Reporting_Period_Total"
-    };
+    String[] baseHeader =
+        new String[] {
+          "Title",
+          "Publisher",
+          "Publisher_ID",
+          "Platform",
+          "Authors",
+          "Publication_Date",
+          "Article_Version",
+          "DOI",
+          "Proprietary_ID",
+          "ISBN",
+          "Print_ISSN",
+          "Online_ISSN",
+          "URI",
+          "Parent_Title",
+          "Parent_Authors",
+          "Parent_Publication_Date",
+          "Parent_Article_Version",
+          "Parent_Data_Type",
+          "Parent_DOI",
+          "Parent_Proprietary_ID",
+          "Parent_ISBN",
+          "Parent_Print_ISSN",
+          "Parent_Online_ISSN",
+          "Parent_URI",
+          "Component_Title",
+          "Component_Authors",
+          "Component_Publication_Date",
+          "Component_Data_Type",
+          "Component_DOI",
+          "Component_Proprietary_DOI",
+          "Component_ISBN",
+          "Component_Print_ISSN",
+          "Component_Online_ISSN",
+          "Component_URI",
+          "Data_Type",
+          "YOP",
+          "Access_Type",
+          "Access_Method",
+          "Metric_Type",
+          "Reporting_Period_Total"
+        };
     return Stream.concat(Arrays.stream(baseHeader), Arrays.stream(y)).toArray(String[]::new);
   }
-
 }
