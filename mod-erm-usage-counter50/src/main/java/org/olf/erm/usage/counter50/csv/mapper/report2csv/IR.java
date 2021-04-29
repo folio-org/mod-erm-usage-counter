@@ -44,47 +44,47 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
 
   @Override
   public String[] getHeader() {
-    return new String[]{
-        "Title",
-        "Publisher",
-        "Publisher_ID",
-        "Platform",
-        "Authors",
-        "Publication_Date",
-        "Article_Version",
-        "DOI",
-        "Proprietary_ID",
-        "ISBN",
-        "Print_ISSN",
-        "Online_ISSN",
-        "URI",
-        "Parent_Title",
-        "Parent_Authors",
-        "Parent_Publication_Date",
-        "Parent_Article_Version",
-        "Parent_Data_Type",
-        "Parent_DOI",
-        "Parent_Proprietary_ID",
-        "Parent_ISBN",
-        "Parent_Print_ISSN",
-        "Parent_Online_ISSN",
-        "Parent_URI",
-        "Component_Title",
-        "Component_Authors",
-        "Component_Publication_Date",
-        "Component_Data_Type",
-        "Component_DOI",
-        "Component_Proprietary_DOI",
-        "Component_ISBN",
-        "Component_Print_ISSN",
-        "Component_Online_ISSN",
-        "Component_URI",
-        "Data_Type",
-        "YOP",
-        "Access_Type",
-        "Access_Method",
-        "Metric_Type",
-        "Reporting_Period_Total"
+    return new String[] {
+      "Title",
+      "Publisher",
+      "Publisher_ID",
+      "Platform",
+      "Authors",
+      "Publication_Date",
+      "Article_Version",
+      "DOI",
+      "Proprietary_ID",
+      "ISBN",
+      "Print_ISSN",
+      "Online_ISSN",
+      "URI",
+      "Parent_Title",
+      "Parent_Authors",
+      "Parent_Publication_Date",
+      "Parent_Article_Version",
+      "Parent_Data_Type",
+      "Parent_DOI",
+      "Parent_Proprietary_ID",
+      "Parent_ISBN",
+      "Parent_Print_ISSN",
+      "Parent_Online_ISSN",
+      "Parent_URI",
+      "Component_Title",
+      "Component_Authors",
+      "Component_Publication_Date",
+      "Component_Data_Type",
+      "Component_DOI",
+      "Component_Proprietary_DOI",
+      "Component_ISBN",
+      "Component_Print_ISSN",
+      "Component_Online_ISSN",
+      "Component_URI",
+      "Data_Type",
+      "YOP",
+      "Access_Type",
+      "Access_Method",
+      "Metric_Type",
+      "Reporting_Period_Total"
     };
   }
 
@@ -148,7 +148,7 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
             new Optional(), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
-        );
+            );
     Stream<Optional> rest = getYearMonths().stream().map(ym -> new Optional());
     return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
@@ -157,7 +157,8 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
   protected List<Map<String, Object>> toMap(COUNTERItemReport report) {
     String[] header = getHeader();
     List<Map<String, Object>> result = new ArrayList<>();
-    report.getReportItems()
+    report
+        .getReportItems()
         .forEach(
             reportItem -> {
               Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =
@@ -209,7 +210,7 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
                             header[15], getParentPublicationDate(reportItem.getItemParent()));
                         itemMap.put(
                             header[16], getParentArticleVersion(reportItem.getItemParent()));
-                        itemMap.put(header[17], getParentDataType(reportItem.getItemParent()));
+                        itemMap.put(header[17], reportItem.getDataType());
                         itemMap.put(
                             header[18],
                             getParentIdentifier(
@@ -320,67 +321,25 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
         .collect(Collectors.joining("; "));
   }
 
-  private String getParentTitle(List<COUNTERItemParent> parents) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream().filter(Objects::nonNull)
-        .map(COUNTERItemParent::getItemName).collect(Collectors.joining("; "));
+  private String getParentTitle(COUNTERItemParent parent) {
+    return (parent == null) ? null : parent.getItemName();
   }
 
-  private String getParentAuthors(List<COUNTERItemParent> parents) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream()
-        .filter(Objects::nonNull)
-        .map(p -> getAuthors(p.getItemContributors()))
-        .collect(Collectors.joining("; "));
+  private String getParentAuthors(COUNTERItemParent parent) {
+    return (parent == null) ? null : getAuthors(parent.getItemContributors());
   }
 
-  private String getParentPublicationDate(List<COUNTERItemParent> parents) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream()
-        .filter(Objects::nonNull)
-        .map(p -> getPublicationDate(p.getItemDates()))
-        .collect(Collectors.joining("; "));
+  private String getParentPublicationDate(COUNTERItemParent parent) {
+    return (parent == null) ? null : getPublicationDate(parent.getItemDates());
   }
 
-  private String getParentArticleVersion(List<COUNTERItemParent> parents) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream()
-        .filter(Objects::nonNull)
-        .map(p -> getArticleVersion(p.getItemAttributes()))
-        .collect(Collectors.joining("; "));
-  }
-
-  private String getParentDataType(List<COUNTERItemParent> parents) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream()
-        .filter(Objects::nonNull)
-        .map(p -> {
-          if (p.getDataType() == null) {
-            return null;
-          }
-          return p.getDataType().getValue();
-        }).collect(Collectors.joining("; "));
+  private String getParentArticleVersion(COUNTERItemParent parent) {
+    return (parent == null) ? null : getArticleVersion(parent.getItemAttributes());
   }
 
   private String getParentIdentifier(
-      List<COUNTERItemParent> parents, COUNTERItemIdentifiers.TypeEnum identifier) {
-    if (parents == null || parents.isEmpty()) {
-      return null;
-    }
-    return parents.stream()
-        .filter(Objects::nonNull)
-        .map(p -> IdentifierProcessor.getValue(p.getItemID(), identifier))
-        .collect(Collectors.joining(", "));
+      COUNTERItemParent parent, COUNTERItemIdentifiers.TypeEnum identifier) {
+    return (parent == null) ? null : IdentifierProcessor.getValue(parent.getItemID(), identifier);
   }
 
   private String getComponentTitle(List<COUNTERItemComponent> components) {
