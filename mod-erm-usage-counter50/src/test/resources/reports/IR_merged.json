@@ -109,56 +109,54 @@
           "Value": "v0"
         }
       ],
-      "Item_Parent": [
-        {
-          "Item_Name": "Parent_1_ID",
-          "Item_Contributors": [
-            {
-              "Type": "Author",
-              "Name": "Parent 1 Author"
-            }
-          ],
-          "Item_Dates": [
-            {
-              "Type": "Publication_Date",
-              "Value": "2017-10-03"
-            }
-          ],
-          "Item_Attributes": [
-            {
-              "Type": "Article_Version",
-              "Value": "v1"
-            }
-          ],
-          "Data_Type": "Book",
-          "Item_ID": [
-            {
-              "Type": "DOI",
-              "Value": "xx.DOI"
-            },
-            {
-              "Type": "Proprietary",
-              "Value": "PropId.8"
-            },
-            {
-              "Type": "ISBN",
-              "Value": "988-3-86680-192-9"
-            },
-            {
-              "Type": "Print_ISSN",
-              "Value": "7234-5679"
-            },
-            {
-              "Type": "Online_ISSN",
-              "Value": "7234-5677"
-            },
-            {
-              "Type": "URI",
-              "Value": "foo://item.1.parent"
-            }
-          ]
-        }
-      ],
+      "Item_Parent": {
+        "Item_Name": "Parent_1_ID",
+        "Item_Contributors": [
+          {
+            "Type": "Author",
+            "Name": "Parent 1 Author"
+          }
+        ],
+        "Item_Dates": [
+          {
+            "Type": "Publication_Date",
+            "Value": "2017-10-03"
+          }
+        ],
+        "Item_Attributes": [
+          {
+            "Type": "Article_Version",
+            "Value": "v1"
+          }
+        ],
+        "Data_Type": "Book",
+        "Item_ID": [
+          {
+            "Type": "DOI",
+            "Value": "xx.DOI"
+          },
+          {
+            "Type": "Proprietary",
+            "Value": "PropId.8"
+          },
+          {
+            "Type": "ISBN",
+            "Value": "988-3-86680-192-9"
+          },
+          {
+            "Type": "Print_ISSN",
+            "Value": "7234-5679"
+          },
+          {
+            "Type": "Online_ISSN",
+            "Value": "7234-5677"
+          },
+          {
+            "Type": "URI",
+            "Value": "foo://item.1.parent"
+          }
+        ]
+      },
       "Item_Component": [
         {
           "Item_Name": "Component Title 1",
