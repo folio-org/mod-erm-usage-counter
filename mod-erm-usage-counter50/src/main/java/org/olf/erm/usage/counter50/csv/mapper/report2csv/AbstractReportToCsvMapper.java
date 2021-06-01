@@ -26,17 +26,16 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   protected static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
   private static final String FORMAT_EQUALS = "%s=%s";
+  private static final List<String> SUPPORTED_REPORTS =
+      List.of("TR", "TR_B1", "TR_B3", "TR_J1", "TR_J3", "TR_J4", "PR", "IR", "DR", "DR_D1");
   protected final List<YearMonth> yearMonths;
   protected final SUSHIReportHeader header;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
-    if (!("TR".equalsIgnoreCase(header.getReportID()))
-        && !("PR".equalsIgnoreCase(header.getReportID()))
-        && !("IR".equalsIgnoreCase(header.getReportID()))
-        && !("DR".equalsIgnoreCase(header.getReportID()))) {
+    if (SUPPORTED_REPORTS.stream().noneMatch(s -> s.equalsIgnoreCase(header.getReportID()))) {
       throw new IllegalArgumentException(
-          "Invalid report type. Possible types are COUNTERTitleReport, COUNTERPlatformReport, COUNTERItemReport, COUNTERPDatabaseReport");
+          "Invalid report type. Possible types are " + String.join(", ", SUPPORTED_REPORTS));
     }
     this.yearMonths = yearMonths;
     this.header = header;
@@ -71,8 +70,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
       String reportingPeriod =
           String.format(
               "Begin_Date=%s; End_Date=%s",
-              yearMonths.get(0).atDay(1).toString(),
-              Iterables.getLast(yearMonths).atEndOfMonth().toString());
+              yearMonths.get(0).atDay(1), Iterables.getLast(yearMonths).atEndOfMonth());
       csvListWriter.write("Reporting_Period", reportingPeriod);
       csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED, this.header.getCreated());
       csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY, this.header.getCreatedBy());
@@ -91,6 +89,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .collect(Collectors.joining("; "));
   }
 
+  // TODO: remove metric type, begin_date, end_date from filters as they have a separate row
   private String getReportFilters() {
     return this.header.getReportFilters().stream()
         .map(
