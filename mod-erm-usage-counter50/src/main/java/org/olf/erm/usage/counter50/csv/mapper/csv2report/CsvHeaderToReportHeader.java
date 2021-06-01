@@ -47,11 +47,10 @@ public class CsvHeaderToReportHeader {
             .collect(Collectors.toList());
     sushiReportHeader.setInstitutionID(orgIdentifiers);
 
-    String repFilters =
-        headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS, "");
-    String[] splittedReportFilters = repFilters == null ? new String[0] : repFilters.split(";");
+    String repPeriod = headerColumns.getOrDefault("Reporting_Period", "");
+    String[] splittedRepPeriod = repPeriod == null ? new String[0] : repPeriod.split(";");
     List<SUSHIReportHeaderReportFilters> headerReportFilters =
-        Stream.of(splittedReportFilters)
+        Stream.of(splittedRepPeriod)
             .map(
                 s -> {
                   String[] split = s.split("=");
