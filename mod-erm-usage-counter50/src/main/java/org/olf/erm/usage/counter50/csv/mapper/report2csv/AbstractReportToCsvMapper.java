@@ -32,6 +32,8 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   protected final List<YearMonth> yearMonths;
   protected final SUSHIReportHeader header;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private static final List<String> REMOVE_FROM_FILTERS =
+      List.of("Metric_Type", "Begin_Date", "End_Date");
 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
     if (SUPPORTED_REPORTS.stream().noneMatch(s -> s.equalsIgnoreCase(header.getReportID()))) {
@@ -90,9 +92,9 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .collect(Collectors.joining("; "));
   }
 
-  // TODO: remove metric type, begin_date, end_date from filters as they have a separate row
   private String getReportFilters() {
     return this.header.getReportFilters().stream()
+        .filter(f -> REMOVE_FROM_FILTERS.stream().noneMatch(s -> s.equals(f.getName())))
         .map(
             reportFilter ->
                 String.format(FORMAT_EQUALS, reportFilter.getName(), reportFilter.getValue()))
