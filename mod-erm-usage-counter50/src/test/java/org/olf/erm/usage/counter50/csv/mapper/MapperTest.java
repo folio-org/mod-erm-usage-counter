@@ -37,7 +37,7 @@ public class MapperTest {
 
     @Parameters(name = "{0}")
     public static Collection<String> params() {
-      return Arrays.asList("DR_1", "IR_1", "PR_1", "TR_1", "PR_merged");
+      return Arrays.asList("DR_1", "IR_1", "PR_1", "TR_1", "PR_merged", "TRJ1_merged");
     }
 
     @Test
