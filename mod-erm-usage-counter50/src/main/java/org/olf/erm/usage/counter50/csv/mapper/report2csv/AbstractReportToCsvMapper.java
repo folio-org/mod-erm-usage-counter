@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 import com.google.common.collect.Iterables;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -72,7 +73,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
               "Begin_Date=%s; End_Date=%s",
               yearMonths.get(0).atDay(1), Iterables.getLast(yearMonths).atEndOfMonth());
       csvListWriter.write("Reporting_Period", reportingPeriod);
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED, this.header.getCreated());
+      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED, LocalDate.now().toString());
       csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY, this.header.getCreatedBy());
       csvListWriter.write("");
       csvListWriter.flush();
