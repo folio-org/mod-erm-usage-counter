@@ -57,11 +57,9 @@ public class MapperTest {
   public static class TestCsvToReport {
 
     private final String input;
-    private final String expected;
 
     public TestCsvToReport(String reportName) {
-      this.input = "reports/" + reportName + ".json";
-      this.expected = "reports/" + reportName + ".csv";
+      this.input = "reports/" + reportName + ".csv";
     }
 
     @Parameters(name = "{0}")
@@ -72,7 +70,7 @@ public class MapperTest {
     @Test
     public void testToReports() throws IOException, MapperException {
       String csvString =
-          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8)
+          Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8)
               .replace("$$$date_run$$$", LocalDate.now().toString());
       CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
       Object resultReport = mapper.toReport();
