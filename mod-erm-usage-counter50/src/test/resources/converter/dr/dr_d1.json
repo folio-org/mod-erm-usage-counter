@@ -1,0 +1,1189 @@
+{
+  "Report_Header": {
+    "Created": "2021-05-31T07:24:35Z",
+    "Created_By": "EBSCO Information Services",
+    "Customer_ID": "customerId",
+    "Report_ID": "DR_D1",
+    "Release": "5",
+    "Report_Name": "Database Search and Item Usage",
+    "Institution_Name": "institutionName",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "institutionId"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Metric_Type",
+        "Value": "Searches_Automated|Searches_Federated|Searches_Regular|Total_Item_Investigations|Total_Item_Requests"
+      },
+      {
+        "Name": "Access_Method",
+        "Value": "Regular"
+      },
+      {
+        "Name": "Begin_Date",
+        "Value": "2021-01-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2021-01-31"
+      }
+    ],
+    "Report_Attributes": [],
+    "Exceptions": []
+  },
+  "Report_Items": [
+    {
+      "Database": "APA PsycArticles",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:pdh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "American Psychological Association",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 4
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 329
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 381
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 315
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "APA PsycInfo",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:psyh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "American Psychological Association",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 8
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 979
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1163
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "APA PsycTests",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:pst"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "American Psychological Association",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 229
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 8
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Academic Search Premier",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:aph"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 1065
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 996
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 710
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "American Antiquarian Society (AAS) Historical Periodicals Collection: Series 1",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:h9h"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 177
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "American Antiquarian Society (AAS) Historical Periodicals Collection: Series 2",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:h9i"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 174
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "American Antiquarian Society (AAS) Historical Periodicals Collection: Series 3",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:h9j"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 184
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "American Antiquarian Society (AAS) Historical Periodicals Collection: Series 4",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:h9k"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 178
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "American Antiquarian Society (AAS) Historical Periodicals Collection: Series 5",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:h9m"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 183
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Associated Press Video",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:vap"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Undefined",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 4796
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 3
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Atla Religion Database",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:reh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "American Theological Library Association",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 164
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Bibliography of Asian Studies",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:bas"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Association of Asian Studies",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 4
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Business Source Complete",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:bth"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 1063
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1023
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 623
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Communication \u0026 Mass Media Complete",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:ufh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 500
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 320
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 198
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Education Research Complete",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:ehh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 357
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 107
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 91
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "GreenFILE",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:8gh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 165
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Historical Abstracts",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:hia"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 224
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 32
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Historical Abstracts with Full Text",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:30h"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 290
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 120
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 78
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "International Bibliography of Theatre \u0026 Dance with Full Text",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:ibh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 182
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 18
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 13
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Library, Information Science \u0026 Technology Abstracts",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:lxh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 230
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Literary Reference Center",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:lfh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 212
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 51
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 47
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Literary Reference eBook Collection",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:e870sww"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Undefined",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "MLA Directory of Periodicals",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:kah"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Modern Language Association of America",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 174
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "MLA International Bibliography",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:mzh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Modern Language Association of America",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 1119
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1130
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Old Testament Abstracts",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:oah"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "American Theological Library Association",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 164
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Political Science Complete",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:poh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 349
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 183
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 156
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Public Affairs Index",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:p4h"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 173
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "RILM Abstracts of Music Literature",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:ram"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Repertoire International de Litterature Musicale,",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "RILM Abstracts of Music Literature (1967 to present)",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:rih"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Repertoire International de Litterature Musicale,",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 294
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 78
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "RIPM - Retrospective Index to Music Periodicals",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:rph"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "RIPM Consortium, LTD.",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 178
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Regional Business News",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:bwh"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 347
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 47
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 17
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "SPORTDiscus",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:sph"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Undefined",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 361
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 46
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "SPORTDiscus with Full Text",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:s3h"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 14
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 562
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 711
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 172
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "SocINDEX with Full Text",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:sih"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 545
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 274
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 192
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "The Nation Archive (DFG)",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:dfn"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 168
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "The New Republic Archive (DFG)",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:dfg"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "EBSCO Publishing",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 168
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "eBook Collection (EBSCOhost)",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "EBSCOhost:nlebk"
+        }
+      ],
+      "Platform": "EBSCOhost",
+      "Publisher": "Undefined",
+      "Publisher_ID": [],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 468
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 82
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 27
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
