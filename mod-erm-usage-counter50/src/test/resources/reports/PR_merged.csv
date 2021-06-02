@@ -8,7 +8,7 @@ Report_Filters,Begin_Date=2019-09-01; End_Date=2019-11-30
 Report_Attributes,
 Exceptions,
 Reporting_Period,Begin_Date=2019-09-01; End_Date=2019-11-30
-Created,2020-03-27T10:54:24Z
+Created,$$$date_run$$$
 Created_By,FooBar Systems
 
 Platform,Data_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019,Oct-2019,Nov-2019

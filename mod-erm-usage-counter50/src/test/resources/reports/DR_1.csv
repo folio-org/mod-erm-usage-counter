@@ -8,7 +8,7 @@ Report_Filters,Begin_Date=2019-01-01; End_Date=2019-01-31
 Report_Attributes,
 Exceptions,
 Reporting_Period,Begin_Date=2019-01-01; End_Date=2019-01-31
-Created,2020-04-08T08:23:02Z
+Created,$$$date_run$$$
 Created_By,My Service
 
 Database,Publisher,Publisher_ID,Platform,Proprietary_ID,Data_Type,Access_Method,Metric_Type,Reporting_Period_Total,Jan-2019
