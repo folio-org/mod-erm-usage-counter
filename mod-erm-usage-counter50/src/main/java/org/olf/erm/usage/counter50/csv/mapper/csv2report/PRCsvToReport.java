@@ -43,11 +43,11 @@ public class PRCsvToReport extends AbstractCsvToReport {
 
     List<String> contentLines = lines.subList(CONTENT_START_LINE, lines.size());
     String platformUsagesString = String.join("\n", contentLines);
-    List<YearMonth> yearMonths = Counter5Utils
-        .getYearMonthsFromReportHeader(sushiReportHeader);
+    List<YearMonth> yearMonths = Counter5Utils.getYearMonthsFromReportHeader(sushiReportHeader);
 
-    List<COUNTERPlatformUsage> platformUsages = itemParser
-        .parseItems(platformUsagesString,
+    List<COUNTERPlatformUsage> platformUsages =
+        itemParser.parseItems(
+            platformUsagesString,
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
@@ -56,15 +56,9 @@ public class PRCsvToReport extends AbstractCsvToReport {
   }
 
   protected Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
-    Class<?>[] first = {
-        null,
-        DataTypeEnum.class,
-        AccessTypeEnum.class,
-        null,
-        null
-    };
-    Stream<Class<COUNTERItemPerformance>> rest = yearMonths.stream()
-        .map(ym -> COUNTERItemPerformance.class);
+    Class<?>[] first = {null, DataTypeEnum.class, AccessTypeEnum.class, null, null};
+    Stream<Class<COUNTERItemPerformance>> rest =
+        yearMonths.stream().map(ym -> COUNTERItemPerformance.class);
     return Stream.concat(Arrays.stream(first), rest).toArray(Class<?>[]::new);
   }
 
@@ -78,34 +72,25 @@ public class PRCsvToReport extends AbstractCsvToReport {
             new Optional(new ParseAccessType()), // Access_Type
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
-        );
+            );
 
-    List<ParseMetricTypes> metricTypeParsers = Collections
-        .nCopies(yearMonths.size(), parseMetricTypes);
+    List<ParseMetricTypes> metricTypeParsers =
+        Collections.nCopies(yearMonths.size(), parseMetricTypes);
     return Stream.concat(first.stream(), metricTypeParsers.stream()).toArray(CellProcessor[]::new);
   }
 
   public String[] getHeader(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Platform",
-        "Data_Type",
-        "Access_Method",
-        "Metric_Type",
-        "Reporting_Period_Total"
-    };
+    String[] baseHeader =
+        new String[] {
+          "Platform", "Data_Type", "Access_Method", "Metric_Type", "Reporting_Period_Total"
+        };
     return Stream.concat(Arrays.stream(baseHeader), Arrays.stream(y)).toArray(String[]::new);
   }
 
   public String[] createFieldMapping(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Platform",
-        "DataType",
-        "AccessMethod",
-        null,
-        null
-    };
+    String[] baseHeader = new String[] {"Platform", "DataType", "AccessMethod", null, null};
     for (int i = 0; i < yearMonths.size(); i++) {
       y[i] = "performance[" + i + "]";
     }

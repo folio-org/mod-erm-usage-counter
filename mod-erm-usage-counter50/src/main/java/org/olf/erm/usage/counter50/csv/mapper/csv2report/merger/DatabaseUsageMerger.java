@@ -10,21 +10,15 @@ public class DatabaseUsageMerger extends AbstractMerger<COUNTERDatabaseUsage> {
   @Override
   public List<COUNTERDatabaseUsage> mergeItems(List<COUNTERDatabaseUsage> items) {
     // merge by platform
-    ArrayList<COUNTERDatabaseUsage> result = new ArrayList<>(
-        items.stream()
-            .collect(
-                Collectors
-                    .toMap(COUNTERDatabaseUsage::getDatabase, it -> it, this::merge))
-            .values());
+    ArrayList<COUNTERDatabaseUsage> result =
+        new ArrayList<>(
+            items.stream()
+                .collect(Collectors.toMap(COUNTERDatabaseUsage::getDatabase, it -> it, this::merge))
+                .values());
 
-    result.forEach(ctu ->
-        ctu.setPerformance(removeNullPerformances(ctu.getPerformance()))
-    );
+    result.forEach(ctu -> ctu.setPerformance(removeNullPerformances(ctu.getPerformance())));
 
-    result
-        .forEach(ctu ->
-            ctu.setPerformance(mergeItemPerformances(ctu.getPerformance()))
-        );
+    result.forEach(ctu -> ctu.setPerformance(mergeItemPerformances(ctu.getPerformance())));
     return result;
   }
 

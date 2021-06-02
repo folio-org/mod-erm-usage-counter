@@ -5,5 +5,4 @@ import java.util.List;
 public interface Merger<T> {
 
   List<T> mergeItems(List<T> items);
-
 }

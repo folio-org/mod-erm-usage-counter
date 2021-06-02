@@ -6,8 +6,7 @@ import org.openapitools.client.model.COUNTERPublisherIdentifiers;
 
 public final class PublisherIDProcessor {
 
-  private PublisherIDProcessor() {
-  }
+  private PublisherIDProcessor() {}
 
   public static String getPublisherID(List<COUNTERPublisherIdentifiers> identifiers) {
     if (identifiers == null || identifiers.isEmpty()) {

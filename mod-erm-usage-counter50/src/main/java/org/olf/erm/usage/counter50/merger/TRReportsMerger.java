@@ -11,11 +11,11 @@ public class TRReportsMerger extends ReportsMerger<COUNTERTitleReport> {
 
   @Override
   public COUNTERTitleReport merge(List<COUNTERTitleReport> reports) {
-    List<SUSHIReportHeader> headers = reports.stream().map(COUNTERTitleReport::getReportHeader)
-        .collect(Collectors.toList());
+    List<SUSHIReportHeader> headers =
+        reports.stream().map(COUNTERTitleReport::getReportHeader).collect(Collectors.toList());
     SUSHIReportHeader mergedHeader = mergeHeaders(headers);
-    List<COUNTERTitleUsage> mergedReportItems = reports.stream()
-        .flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
+    List<COUNTERTitleUsage> mergedReportItems =
+        reports.stream().flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
     mergedReportItems = mergeTitleUsages(mergedReportItems);
 
     COUNTERTitleReport result = new COUNTERTitleReport();
@@ -25,15 +25,16 @@ public class TRReportsMerger extends ReportsMerger<COUNTERTitleReport> {
   }
 
   private List<COUNTERTitleUsage> mergeTitleUsages(List<COUNTERTitleUsage> titleUsages) {
-    return new ArrayList<>(titleUsages.stream().collect(
-        Collectors.toMap(COUNTERTitleUsage::getItemID, titleUsage -> titleUsage, this::merge))
-        .values());
+    return new ArrayList<>(
+        titleUsages.stream()
+            .collect(
+                Collectors.toMap(
+                    COUNTERTitleUsage::getItemID, titleUsage -> titleUsage, this::merge))
+            .values());
   }
 
   private COUNTERTitleUsage merge(COUNTERTitleUsage a, COUNTERTitleUsage b) {
     a.getPerformance().addAll(b.getPerformance());
     return a;
   }
-
-
 }

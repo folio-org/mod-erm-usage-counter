@@ -8,7 +8,7 @@ info:
   contact:
     name: Project COUNTER
     url: 'https://www.projectcounter.org/'
-    email: lorraine.estelle@counterusage.org 
+    email: lorraine.estelle@counterusage.org
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -31,8 +31,8 @@ securityDefinitions:
     name: requestor_id
     in: query
 security:
-  - api_key: []
-  - requestor_id: []
+  - api_key: [ ]
+  - requestor_id: [ ]
 paths:
   /status:
     get:

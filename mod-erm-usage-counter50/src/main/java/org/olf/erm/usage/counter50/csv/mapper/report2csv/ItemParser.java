@@ -21,13 +21,12 @@ public class ItemParser<T> {
     this.clazz = clazz;
   }
 
-  public List<T> parseItems(String itemsString, String[] fieldMapping, CellProcessor[] processors,
-      Class<?>[] hintTypes) {
+  public List<T> parseItems(
+      String itemsString, String[] fieldMapping, CellProcessor[] processors, Class<?>[] hintTypes) {
 
     List<T> counterItemUsages = new ArrayList<>();
-    try (ICsvDozerBeanReader beanReader = new CsvDozerBeanReader(
-        new StringReader(itemsString),
-        CsvPreference.STANDARD_PREFERENCE)) {
+    try (ICsvDozerBeanReader beanReader =
+        new CsvDozerBeanReader(new StringReader(itemsString), CsvPreference.STANDARD_PREFERENCE)) {
 
       beanReader.configureBeanMapping(clazz, fieldMapping, hintTypes);
       T item;
@@ -39,5 +38,4 @@ public class ItemParser<T> {
     }
     return counterItemUsages;
   }
-
 }

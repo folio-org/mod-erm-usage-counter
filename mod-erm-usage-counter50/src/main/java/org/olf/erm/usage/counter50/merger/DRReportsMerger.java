@@ -11,12 +11,12 @@ public class DRReportsMerger extends ReportsMerger<COUNTERDatabaseReport> {
 
   @Override
   public COUNTERDatabaseReport merge(List<COUNTERDatabaseReport> reports) {
-    List<SUSHIReportHeader> headers = reports.stream().map(COUNTERDatabaseReport::getReportHeader).collect(
-        Collectors.toList());
+    List<SUSHIReportHeader> headers =
+        reports.stream().map(COUNTERDatabaseReport::getReportHeader).collect(Collectors.toList());
     SUSHIReportHeader mergedHeader = mergeHeaders(headers);
 
-    List<COUNTERDatabaseUsage> mergedReportItems = reports.stream()
-        .flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
+    List<COUNTERDatabaseUsage> mergedReportItems =
+        reports.stream().flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
     mergedReportItems = mergeDatabaseUsages(mergedReportItems);
 
     COUNTERDatabaseReport result = new COUNTERDatabaseReport();
@@ -26,14 +26,14 @@ public class DRReportsMerger extends ReportsMerger<COUNTERDatabaseReport> {
   }
 
   private List<COUNTERDatabaseUsage> mergeDatabaseUsages(List<COUNTERDatabaseUsage> dbUsages) {
-    return new ArrayList<>(dbUsages.stream().collect(
-        Collectors.toMap(COUNTERDatabaseUsage::getDatabase, t -> t, this::merge))
-        .values());
+    return new ArrayList<>(
+        dbUsages.stream()
+            .collect(Collectors.toMap(COUNTERDatabaseUsage::getDatabase, t -> t, this::merge))
+            .values());
   }
 
   private COUNTERDatabaseUsage merge(COUNTERDatabaseUsage a, COUNTERDatabaseUsage b) {
     a.getPerformance().addAll(b.getPerformance());
     return a;
   }
-
 }

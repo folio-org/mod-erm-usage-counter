@@ -12,32 +12,31 @@ public abstract class AbstractMerger<T> implements Merger<T> {
   protected List<COUNTERItemPerformance> mergeItemPerformances(
       List<COUNTERItemPerformance> performances) {
     return new ArrayList<>(
-        performances
-            .stream()
+        performances.stream()
             .collect(
-                Collectors.toMap(COUNTERItemPerformance::getPeriod,
+                Collectors.toMap(
+                    COUNTERItemPerformance::getPeriod,
                     counterItemPerformance -> counterItemPerformance,
-                    this::mergeInnerItemPerformances)).values());
+                    this::mergeInnerItemPerformances))
+            .values());
   }
 
-
-  private COUNTERItemPerformance mergeInnerItemPerformances(COUNTERItemPerformance a,
-      COUNTERItemPerformance b) {
-    b.getInstance().forEach(i -> {
-      if (i.getCount() != null) {
-        List<COUNTERItemPerformanceInstance> list = new ArrayList<>(
-            a.getInstance());
-        list.add(i);
-        a.setInstance(list);
-      }
-    });
+  private COUNTERItemPerformance mergeInnerItemPerformances(
+      COUNTERItemPerformance a, COUNTERItemPerformance b) {
+    b.getInstance()
+        .forEach(
+            i -> {
+              if (i.getCount() != null) {
+                List<COUNTERItemPerformanceInstance> list = new ArrayList<>(a.getInstance());
+                list.add(i);
+                a.setInstance(list);
+              }
+            });
     return a;
   }
 
   protected List<COUNTERItemPerformance> removeNullPerformances(
       List<COUNTERItemPerformance> performances) {
-    return performances.stream()
-        .filter(Objects::nonNull).collect(Collectors.toList());
+    return performances.stream().filter(Objects::nonNull).collect(Collectors.toList());
   }
-
 }

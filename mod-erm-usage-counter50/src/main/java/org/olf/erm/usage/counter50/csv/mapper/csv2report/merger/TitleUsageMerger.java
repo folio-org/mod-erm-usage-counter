@@ -10,21 +10,15 @@ public class TitleUsageMerger extends AbstractMerger<COUNTERTitleUsage> {
   @Override
   public List<COUNTERTitleUsage> mergeItems(List<COUNTERTitleUsage> items) {
     // merge by itemID
-    ArrayList<COUNTERTitleUsage> result = new ArrayList<>(
-        items.stream()
-            .collect(
-                Collectors
-                    .toMap(COUNTERTitleUsage::getItemID, tU -> tU, this::merge))
-            .values());
+    ArrayList<COUNTERTitleUsage> result =
+        new ArrayList<>(
+            items.stream()
+                .collect(Collectors.toMap(COUNTERTitleUsage::getItemID, tU -> tU, this::merge))
+                .values());
 
-    result.forEach(ctu ->
-        ctu.setPerformance(removeNullPerformances(ctu.getPerformance()))
-    );
+    result.forEach(ctu -> ctu.setPerformance(removeNullPerformances(ctu.getPerformance())));
 
-    result
-        .forEach(ctu ->
-            ctu.setPerformance(mergeItemPerformances(ctu.getPerformance()))
-        );
+    result.forEach(ctu -> ctu.setPerformance(mergeItemPerformances(ctu.getPerformance())));
 
     return result;
   }

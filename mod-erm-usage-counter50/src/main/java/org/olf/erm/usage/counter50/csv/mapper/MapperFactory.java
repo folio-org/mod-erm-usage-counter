@@ -18,8 +18,7 @@ import org.openapitools.client.model.COUNTERTitleReport;
 
 public final class MapperFactory {
 
-  private MapperFactory() {
-  }
+  private MapperFactory() {}
 
   public static ReportToCsvMapper createReportToCsvMapper(Object report) throws MapperException {
     if (report instanceof COUNTERTitleReport) {
@@ -46,8 +45,7 @@ public final class MapperFactory {
       } else if (csvReport.startsWith("Report_Name,Database Master Report")) {
         return new DRCsvToReport(csvReport);
       } else {
-        throw new MapperException(
-            "Cannot create CsvToReportMapper. Report has unknown name.");
+        throw new MapperException("Cannot create CsvToReportMapper. Report has unknown name.");
       }
     } catch (IOException | MapperException e) {
       throw new MapperException("Cannot create CsvToReportMapper. " + e.getCause());

@@ -11,11 +11,11 @@ public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
 
   @Override
   public COUNTERItemReport merge(List<COUNTERItemReport> reports) {
-    List<SUSHIReportHeader> headers = reports.stream().map(COUNTERItemReport::getReportHeader)
-        .collect(Collectors.toList());
+    List<SUSHIReportHeader> headers =
+        reports.stream().map(COUNTERItemReport::getReportHeader).collect(Collectors.toList());
     SUSHIReportHeader mergedHeader = mergeHeaders(headers);
-    List<COUNTERItemUsage> mergedReportItems = reports.stream()
-        .flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
+    List<COUNTERItemUsage> mergedReportItems =
+        reports.stream().flatMap(r -> r.getReportItems().stream()).collect(Collectors.toList());
     mergedReportItems = mergeReportItemsWithSameID(mergedReportItems);
 
     COUNTERItemReport result = new COUNTERItemReport();
@@ -25,9 +25,12 @@ public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
   }
 
   public List<COUNTERItemUsage> mergeReportItemsWithSameID(List<COUNTERItemUsage> reportItems) {
-    return new ArrayList<>(reportItems.stream().collect(
-        Collectors.toMap(COUNTERItemUsage::getItemID, titleUsage -> titleUsage, this::merge))
-        .values());
+    return new ArrayList<>(
+        reportItems.stream()
+            .collect(
+                Collectors.toMap(
+                    COUNTERItemUsage::getItemID, titleUsage -> titleUsage, this::merge))
+            .values());
   }
 
   private COUNTERItemUsage merge(COUNTERItemUsage a, COUNTERItemUsage b) {
