@@ -71,9 +71,9 @@ public class MapperTest {
 
     @Test
     public void testToReports() throws IOException, MapperException {
-
       String csvString =
-          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
+          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8)
+              .replace("$$$date_run$$$", LocalDate.now().toString());
       CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
       Object resultReport = mapper.toReport();
       String resultCSV = MapperFactory.createReportToCsvMapper(resultReport).toCSV();
