@@ -9,10 +9,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
+import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERDatabaseReport;
+import org.openapitools.client.model.COUNTERItemIdentifiers;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -104,7 +106,10 @@ public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
                             header[2],
                             PublisherIDProcessor.getPublisherID(dbReport.getPublisherID()));
                         itemMap.put(header[3], dbReport.getPlatform());
-                        itemMap.put(header[4], ""); // TODO: What to put as Proprietary_ID?
+                        itemMap.put(
+                            header[4],
+                            IdentifierProcessor.getValue(
+                                dbReport.getItemID(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY));
                         itemMap.put(header[5], dbReport.getDataType());
                         itemMap.put(header[6], dbReport.getAccessMethod());
                         itemMap.put(header[7], metricTypeEnum);
