@@ -3,7 +3,7 @@ Report_ID,IR
 Release,5
 Institution_Name,MY INSTITUION
 Institution_ID,Proprietary=mit:1234
-Metric_Types,Unique_Item_Requests; Total_Item_Requests; Unique_Item_Investigations; Total_Item_Investigations
+Metric_Types,
 Report_Filters,
 Report_Attributes,
 Exceptions,

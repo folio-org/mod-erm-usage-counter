@@ -3,7 +3,7 @@ Report_ID,DR
 Release,5
 Institution_Name,My Institution
 Institution_ID,Proprietary=ServiceMy Customer
-Metric_Types,Searches_Federated; Searches_Regular; Total_Item_Investigations; Total_Item_Requests; Unique_Item_Investigations; Unique_Item_Requests; Unique_Title_Investigations
+Metric_Types,
 Report_Filters,
 Report_Attributes,
 Exceptions,

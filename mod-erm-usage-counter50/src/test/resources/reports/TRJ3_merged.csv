@@ -3,7 +3,7 @@ Report_ID,TR_J3
 Release,5
 Institution_Name,Sample University
 Institution_ID,ISNI=1234567890
-Metric_Types,Total_Item_Investigations; Unique_Item_Investigations; Total_Item_Requests; Unique_Item_Requests
+Metric_Types,Total_Item_Requests; Unique_Item_Requests; Total_Item_Investigations; Unique_Item_Investigations
 Report_Filters,Access_Method=Regular; Data_Type=Journal
 Report_Attributes,
 Exceptions,
