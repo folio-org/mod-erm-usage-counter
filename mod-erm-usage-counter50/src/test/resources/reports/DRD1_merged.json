@@ -1,0 +1,245 @@
+{
+  "Report_Header": {
+    "Created": "2021-05-31T07:24:35Z",
+    "Created_By": "Sample Provider",
+    "Customer_ID": "customerId123",
+    "Report_ID": "DR_D1",
+    "Release": "5",
+    "Report_Name": "Database Search and Item Usage",
+    "Institution_Name": "Sample University",
+    "Institution_ID": [
+      {
+        "Type": "ISNI",
+        "Value": "1234567890"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Metric_Type",
+        "Value": "Searches_Automated|Searches_Federated|Searches_Regular|Total_Item_Investigations|Total_Item_Requests"
+      },
+      {
+        "Name": "Access_Method",
+        "Value": "Regular"
+      },
+      {
+        "Name": "Begin_Date",
+        "Value": "2021-01-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2021-03-31"
+      }
+    ],
+    "Report_Attributes": [],
+    "Exceptions": []
+  },
+  "Report_Items": [
+    {
+      "Database": "Database A",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "pubx:dbA"
+        }
+      ],
+      "Platform": "PlatformX",
+      "Publisher": "DB Publisher X",
+      "Publisher_ID": [
+        {
+          "Type": "ISNI",
+          "Value": "1234123412341234"
+        }
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 123
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 80
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 329
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 481
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 515
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-02-01",
+            "End_Date": "2021-02-28"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 223
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 180
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 429
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 581
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 615
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-03-01",
+            "End_Date": "2021-03-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 323
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 280
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 529
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 681
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 715
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "Database B",
+      "Item_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "pubx:dbB"
+        }
+      ],
+      "Platform": "PlatformX",
+      "Publisher": "DB Publisher X",
+      "Publisher_ID": [
+        {
+          "Type": "ISNI",
+          "Value": "1234123412341234"
+        }
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 1230
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 800
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 3290
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 4810
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 5150
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-02-01",
+            "End_Date": "2021-02-28"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 2230
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 1800
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 4290
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 5810
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 6150
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-03-01",
+            "End_Date": "2021-03-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Automated",
+              "Count": 3230
+            },
+            {
+              "Metric_Type": "Searches_Federated",
+              "Count": 2800
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 5290
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 6810
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 7150
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
