@@ -89,22 +89,6 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
   }
 
   @Override
-  protected String getMetricTypes() {
-    return report.getReportItems().stream()
-        .flatMap(
-            counterItemUsage ->
-                counterItemUsage.getPerformance().stream()
-                    .flatMap(
-                        counterItemPerformance ->
-                            counterItemPerformance.getInstance().stream()
-                                .map(
-                                    counterItemPerformanceInstance ->
-                                        counterItemPerformanceInstance.getMetricType().getValue())))
-        .distinct()
-        .collect(Collectors.joining("; "));
-  }
-
-  @Override
   protected CellProcessor[] createProcessors() {
     List<Optional> first =
         Arrays.asList(

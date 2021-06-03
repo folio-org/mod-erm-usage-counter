@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
@@ -75,22 +74,6 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
                       });
             });
     return result;
-  }
-
-  @Override
-  protected String getMetricTypes() {
-    return report.getReportItems().stream()
-        .flatMap(
-            counterTitleUsage ->
-                counterTitleUsage.getPerformance().stream()
-                    .flatMap(
-                        counterItemPerformance ->
-                            counterItemPerformance.getInstance().stream()
-                                .map(
-                                    counterItemPerformanceInstance ->
-                                        counterItemPerformanceInstance.getMetricType().getValue())))
-        .distinct()
-        .collect(Collectors.joining("; "));
   }
 
   @Override

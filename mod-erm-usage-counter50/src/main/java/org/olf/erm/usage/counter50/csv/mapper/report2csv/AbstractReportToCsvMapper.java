@@ -1,5 +1,7 @@
 package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
+import static org.openapitools.client.model.COUNTERItemPerformanceInstance.SERIALIZED_NAME_METRIC_TYPE;
+
 import com.google.common.collect.Iterables;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -14,6 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -48,7 +51,14 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
 
   protected abstract T getReport();
 
-  protected abstract String getMetricTypes();
+  protected String getMetricTypes() {
+    return this.header.getReportFilters().stream()
+        .filter(f -> SERIALIZED_NAME_METRIC_TYPE.equals(f.getName()))
+        .map(SUSHIReportHeaderReportFilters::getValue)
+        .map(s -> s.replace("|", "; "))
+        .findFirst()
+        .orElse("");
+  }
 
   protected abstract CellProcessor[] createProcessors();
 
