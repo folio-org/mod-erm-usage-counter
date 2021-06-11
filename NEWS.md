@@ -1,3 +1,6 @@
+## 2.1.0
+* Add functionality for converting Master Reports into Standard Report Views ([MODEUSCNT-10](https://issues.folio.org/browse/MODEUSCNT-10))
+
 ## 2.0.2
 * [MODEUSCNT-9](https://issues.folio.org/browse/MODEUSCNT-9) Update Counter Sushi 5.0 API Specification
 * Bump Guava from 29.0-jre to 31.1.1-jre
