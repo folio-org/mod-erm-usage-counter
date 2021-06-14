@@ -44,6 +44,8 @@ public class MapperTest {
           "PR_1",
           "TR_1",
           "PR_merged",
+          "TRB1_merged",
+          "TRB3_merged",
           "TRJ1_merged",
           "TRJ3_merged",
           "TRJ4_merged");
