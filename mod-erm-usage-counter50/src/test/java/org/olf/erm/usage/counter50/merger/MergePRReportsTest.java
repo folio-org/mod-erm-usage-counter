@@ -22,26 +22,33 @@ public class MergePRReportsTest extends MergerTest<COUNTERPlatformReport> {
   @Test
   public void testMergeReports() throws IOException, Counter5UtilsException {
     List<COUNTERPlatformReport> reports = readData();
-    COUNTERPlatformReport mergedReports = Counter5Utils
-        .merge(Arrays.asList(reports.get(0), reports.get(1), reports.get(2)));
+    COUNTERPlatformReport mergedReports =
+        Counter5Utils.merge(Arrays.asList(reports.get(0), reports.get(1), reports.get(2)));
     COUNTERPlatformReport repExpected = reports.get(3);
 
-    // Need to delete reportHeader.created as assertj does not ignore nested field reportHeader.created...
+    // Need to delete reportHeader.created as assertj does not ignore nested field
+    // reportHeader.created...
     mergedReports.getReportHeader().setCreated("");
     repExpected.getReportHeader().setCreated("");
 
-    assertThat(mergedReports.getReportHeader()).usingRecursiveComparison()
-        .ignoringCollectionOrder().isEqualTo(repExpected.getReportHeader());
+    assertThat(mergedReports.getReportHeader())
+        .usingRecursiveComparison()
+        .ignoringCollectionOrder()
+        .isEqualTo(repExpected.getReportHeader());
     assertThat(mergedReports.getReportItems().size())
         .isEqualTo(repExpected.getReportItems().size());
 
     // Compare each platform usage
     for (int i = 0; i < mergedReports.getReportItems().size(); i++) {
       COUNTERPlatformUsage counterPlatformUsage = mergedReports.getReportItems().get(i);
-      COUNTERPlatformUsage expectedCounterPlatformUsage = repExpected.getReportItems().stream()
-          .filter(item -> item.getPlatform().equals(counterPlatformUsage.getPlatform()))
-          .findFirst().get();
-      assertThat(counterPlatformUsage).usingRecursiveComparison().ignoringCollectionOrder()
+      COUNTERPlatformUsage expectedCounterPlatformUsage =
+          repExpected.getReportItems().stream()
+              .filter(item -> item.getPlatform().equals(counterPlatformUsage.getPlatform()))
+              .findFirst()
+              .get();
+      assertThat(counterPlatformUsage)
+          .usingRecursiveComparison()
+          .ignoringCollectionOrder()
           .isEqualTo(expectedCounterPlatformUsage);
     }
   }

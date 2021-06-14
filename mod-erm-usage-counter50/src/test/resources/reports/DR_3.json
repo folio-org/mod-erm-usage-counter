@@ -1,175 +1,175 @@
 {
-    "Report_Header": {
-        "Created": "2020-04-08T08:22:53Z",
-        "Release": "5",
-        "Report_ID": "DR",
-        "Created_By": "My Service",
-        "Exceptions": [],
-        "Customer_ID": "My Customer",
-        "Report_Name": "Database Master Report",
-        "Institution_ID": [
+  "Report_Header": {
+    "Created": "2020-04-08T08:22:53Z",
+    "Release": "5",
+    "Report_ID": "DR",
+    "Created_By": "My Service",
+    "Exceptions": [],
+    "Customer_ID": "My Customer",
+    "Report_Name": "Database Master Report",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "ServiceMy Customer"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2019-03-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2019-03-31"
+      }
+    ],
+    "Institution_Name": "My Institution",
+    "Report_Attributes": []
+  },
+  "Report_Items": [
+    {
+      "Database": "Database 1",
+      "Platform": "My Platform",
+      "Publisher": "Publisher 1",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-03-31",
+            "Begin_Date": "2019-03-01"
+          },
+          "Instance": [
             {
-                "Type": "Proprietary",
-                "Value": "ServiceMy Customer"
-            }
-        ],
-        "Report_Filters": [
-            {
-                "Name": "Begin_Date",
-                "Value": "2019-03-01"
+              "Count": 21,
+              "Metric_Type": "Searches_Federated"
             },
             {
-                "Name": "End_Date",
-                "Value": "2019-03-31"
+              "Count": 496,
+              "Metric_Type": "Searches_Regular"
+            },
+            {
+              "Count": 9381,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 4916,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 4944,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 4885,
+              "Metric_Type": "Unique_Item_Requests"
             }
-        ],
-        "Institution_Name": "My Institution",
-        "Report_Attributes": []
-    },
-    "Report_Items": [
-        {
-            "Database": "Database 1",
-            "Platform": "My Platform",
-            "Publisher": "Publisher 1",
-            "Performance": [
-                {
-                    "Period": {
-                        "End_Date": "2019-03-31",
-                        "Begin_Date": "2019-03-01"
-                    },
-                    "Instance": [
-                        {
-                            "Count": 21,
-                            "Metric_Type": "Searches_Federated"
-                        },
-                        {
-                            "Count": 496,
-                            "Metric_Type": "Searches_Regular"
-                        },
-                        {
-                            "Count": 9381,
-                            "Metric_Type": "Total_Item_Investigations"
-                        },
-                        {
-                            "Count": 4916,
-                            "Metric_Type": "Total_Item_Requests"
-                        },
-                        {
-                            "Count": 4944,
-                            "Metric_Type": "Unique_Item_Investigations"
-                        },
-                        {
-                            "Count": 4885,
-                            "Metric_Type": "Unique_Item_Requests"
-                        }
-                    ]
-                }
-            ],
-            "Publisher_ID": []
-        },
-        {
-            "Database": "Database 2",
-            "Platform": "My Platform",
-            "Publisher": "Publisher 1",
-            "Performance": [
-                {
-                    "Period": {
-                        "End_Date": "2019-03-31",
-                        "Begin_Date": "2019-03-01"
-                    },
-                    "Instance": [
-                        {
-                            "Count": 29,
-                            "Metric_Type": "Searches_Federated"
-                        },
-                        {
-                            "Count": 1560,
-                            "Metric_Type": "Searches_Regular"
-                        },
-                        {
-                            "Count": 5769,
-                            "Metric_Type": "Total_Item_Investigations"
-                        },
-                        {
-                            "Count": 5386,
-                            "Metric_Type": "Unique_Item_Investigations"
-                        },
-                        {
-                            "Count": 277,
-                            "Metric_Type": "Unique_Title_Investigations"
-                        }
-                    ]
-                }
-            ],
-            "Publisher_ID": []
-        },
-        {
-            "Database": "Database 3",
-            "Platform": "My Platform",
-            "Publisher": "My Publisher 2",
-            "Performance": [
-                {
-                    "Period": {
-                        "End_Date": "2019-03-31",
-                        "Begin_Date": "2019-03-01"
-                    },
-                    "Instance": [
-                        {
-                            "Count": 1494,
-                            "Metric_Type": "Searches_Regular"
-                        },
-                        {
-                            "Count": 1417,
-                            "Metric_Type": "Total_Item_Investigations"
-                        },
-                        {
-                            "Count": 941,
-                            "Metric_Type": "Total_Item_Requests"
-                        },
-                        {
-                            "Count": 1261,
-                            "Metric_Type": "Unique_Item_Investigations"
-                        },
-                        {
-                            "Count": 868,
-                            "Metric_Type": "Unique_Item_Requests"
-                        }
-                    ]
-                }
-            ],
-            "Publisher_ID": []
-        },
-        {
-            "Database": "Database 4",
-            "Platform": "My Platform",
-            "Publisher": "My Publisher 2",
-            "Performance": [
-                {
-                    "Period": {
-                        "End_Date": "2019-03-31",
-                        "Begin_Date": "2019-03-01"
-                    },
-                    "Instance": [
-                        {
-                            "Count": 62,
-                            "Metric_Type": "Searches_Federated"
-                        },
-                        {
-                            "Count": 117,
-                            "Metric_Type": "Searches_Regular"
-                        },
-                        {
-                            "Count": 2,
-                            "Metric_Type": "Total_Item_Investigations"
-                        },
-                        {
-                            "Count": 2,
-                            "Metric_Type": "Unique_Item_Investigations"
-                        }
-                    ]
-                }
-            ],
-            "Publisher_ID": []
+          ]
         }
-    ]
+      ],
+      "Publisher_ID": []
+    },
+    {
+      "Database": "Database 2",
+      "Platform": "My Platform",
+      "Publisher": "Publisher 1",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-03-31",
+            "Begin_Date": "2019-03-01"
+          },
+          "Instance": [
+            {
+              "Count": 29,
+              "Metric_Type": "Searches_Federated"
+            },
+            {
+              "Count": 1560,
+              "Metric_Type": "Searches_Regular"
+            },
+            {
+              "Count": 5769,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 5386,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 277,
+              "Metric_Type": "Unique_Title_Investigations"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": []
+    },
+    {
+      "Database": "Database 3",
+      "Platform": "My Platform",
+      "Publisher": "My Publisher 2",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-03-31",
+            "Begin_Date": "2019-03-01"
+          },
+          "Instance": [
+            {
+              "Count": 1494,
+              "Metric_Type": "Searches_Regular"
+            },
+            {
+              "Count": 1417,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 941,
+              "Metric_Type": "Total_Item_Requests"
+            },
+            {
+              "Count": 1261,
+              "Metric_Type": "Unique_Item_Investigations"
+            },
+            {
+              "Count": 868,
+              "Metric_Type": "Unique_Item_Requests"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": []
+    },
+    {
+      "Database": "Database 4",
+      "Platform": "My Platform",
+      "Publisher": "My Publisher 2",
+      "Performance": [
+        {
+          "Period": {
+            "End_Date": "2019-03-31",
+            "Begin_Date": "2019-03-01"
+          },
+          "Instance": [
+            {
+              "Count": 62,
+              "Metric_Type": "Searches_Federated"
+            },
+            {
+              "Count": 117,
+              "Metric_Type": "Searches_Regular"
+            },
+            {
+              "Count": 2,
+              "Metric_Type": "Total_Item_Investigations"
+            },
+            {
+              "Count": 2,
+              "Metric_Type": "Unique_Item_Investigations"
+            }
+          ]
+        }
+      ],
+      "Publisher_ID": []
+    }
+  ]
 }

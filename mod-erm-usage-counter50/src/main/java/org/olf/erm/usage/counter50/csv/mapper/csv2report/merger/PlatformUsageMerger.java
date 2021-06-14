@@ -10,21 +10,15 @@ public class PlatformUsageMerger extends AbstractMerger<COUNTERPlatformUsage> {
   @Override
   public List<COUNTERPlatformUsage> mergeItems(List<COUNTERPlatformUsage> items) {
     // merge by platform
-    ArrayList<COUNTERPlatformUsage> result = new ArrayList<>(
-        items.stream()
-            .collect(
-                Collectors
-                    .toMap(COUNTERPlatformUsage::getPlatform, it -> it, this::merge))
-            .values());
+    ArrayList<COUNTERPlatformUsage> result =
+        new ArrayList<>(
+            items.stream()
+                .collect(Collectors.toMap(COUNTERPlatformUsage::getPlatform, it -> it, this::merge))
+                .values());
 
-    result.forEach(ctu ->
-        ctu.setPerformance(removeNullPerformances(ctu.getPerformance()))
-    );
+    result.forEach(ctu -> ctu.setPerformance(removeNullPerformances(ctu.getPerformance())));
 
-    result
-        .forEach(ctu ->
-            ctu.setPerformance(mergeItemPerformances(ctu.getPerformance()))
-        );
+    result.forEach(ctu -> ctu.setPerformance(mergeItemPerformances(ctu.getPerformance())));
     return result;
   }
 

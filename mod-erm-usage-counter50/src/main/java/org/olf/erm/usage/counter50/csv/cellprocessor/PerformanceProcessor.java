@@ -9,14 +9,14 @@ import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEn
 
 public final class PerformanceProcessor {
 
-  private PerformanceProcessor() {
-  }
+  private PerformanceProcessor() {}
 
   public static int calculateSum(
       Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType,
       MetricTypeEnum metricTypeEnum) {
     return performancesPerMetricType.get(metricTypeEnum).values().stream()
-        .mapToInt(x -> x == null ? 0 : x).sum();
+        .mapToInt(x -> x == null ? 0 : x)
+        .sum();
   }
 
   public static Map<String, Integer> getPerformancePerMonth(
@@ -26,9 +26,11 @@ public final class PerformanceProcessor {
       DateTimeFormatter formatter) {
 
     Map<String, Integer> collected = new HashMap<>();
-    yearMonths.forEach(yearMonth -> collected
-        .put(yearMonth.format(formatter), performancesPerMetricType.get(metricTypeEnum)
-            .getOrDefault(yearMonth, null)));
+    yearMonths.forEach(
+        yearMonth ->
+            collected.put(
+                yearMonth.format(formatter),
+                performancesPerMetricType.get(metricTypeEnum).getOrDefault(yearMonth, null)));
     return collected;
   }
 }

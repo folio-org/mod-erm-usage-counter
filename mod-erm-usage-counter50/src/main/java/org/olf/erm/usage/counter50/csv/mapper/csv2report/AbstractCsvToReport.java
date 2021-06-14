@@ -21,8 +21,7 @@ public abstract class AbstractCsvToReport implements CsvToReportMapper {
   private final Logger log = LoggerFactory.getLogger(AbstractCsvToReport.class);
   protected final List<String> lines;
 
-  public AbstractCsvToReport(String csvString)
-      throws MapperException, IOException {
+  public AbstractCsvToReport(String csvString) throws MapperException, IOException {
 
     StringReader stringReader = new StringReader(csvString);
     lines = IOUtils.readLines(stringReader);
@@ -53,5 +52,4 @@ public abstract class AbstractCsvToReport implements CsvToReportMapper {
       return Collections.emptyMap();
     }
   }
-
 }

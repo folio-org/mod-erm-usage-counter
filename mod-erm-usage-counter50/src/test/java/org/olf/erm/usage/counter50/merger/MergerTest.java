@@ -33,10 +33,8 @@ public abstract class MergerTest<T> {
 
     URL urlExpected = Resources.getResource(expected);
     String jsonStringExpected = Resources.toString(urlExpected, StandardCharsets.UTF_8);
-    T repExpected = (T) Counter5Utils
-        .fromJSON(jsonStringExpected);
+    T repExpected = (T) Counter5Utils.fromJSON(jsonStringExpected);
 
     return Arrays.asList(rep1, rep2, rep3, repExpected);
   }
-
 }

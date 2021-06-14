@@ -26,5 +26,5 @@ http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
       <ref bean="logOutbound"/>
     </cxf:outInterceptors>
   </cxf:bus> -->
-  
+
 </beans>

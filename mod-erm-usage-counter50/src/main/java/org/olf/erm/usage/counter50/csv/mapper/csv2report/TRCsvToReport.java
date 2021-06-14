@@ -32,8 +32,7 @@ import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
-public class TRCsvToReport extends
-    AbstractCsvToReport {
+public class TRCsvToReport extends AbstractCsvToReport {
 
   private final ItemParser<COUNTERTitleUsage> itemParser;
   private final Merger<COUNTERTitleUsage> itemsMerger;
@@ -53,11 +52,11 @@ public class TRCsvToReport extends
 
     List<String> contentLines = lines.subList(CONTENT_START_LINE, lines.size());
     String titleUsagesString = String.join("\n", contentLines);
-    List<YearMonth> yearMonths = Counter5Utils
-        .getYearMonthsFromReportHeader(sushiReportHeader);
+    List<YearMonth> yearMonths = Counter5Utils.getYearMonthsFromReportHeader(sushiReportHeader);
 
-    List<COUNTERTitleUsage> titleUsages = itemParser
-        .parseItems(titleUsagesString,
+    List<COUNTERTitleUsage> titleUsages =
+        itemParser.parseItems(
+            titleUsagesString,
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
@@ -67,29 +66,28 @@ public class TRCsvToReport extends
 
   protected Class<?>[] createHintTypes(List<YearMonth> yearMonths) {
     Class<?>[] first = {
-        null,
-        null,
-        null,
-        null,
-        COUNTERItemIdentifiers.class,
-        COUNTERItemIdentifiers.class,
-        COUNTERItemIdentifiers.class,
-        COUNTERItemIdentifiers.class,
-        COUNTERItemIdentifiers.class,
-        COUNTERItemIdentifiers.class,
-        DataTypeEnum.class,
-        SectionTypeEnum.class,
-        null,
-        AccessTypeEnum.class,
-        AccessMethodEnum.class,
-        null,
-        null
+      null,
+      null,
+      null,
+      null,
+      COUNTERItemIdentifiers.class,
+      COUNTERItemIdentifiers.class,
+      COUNTERItemIdentifiers.class,
+      COUNTERItemIdentifiers.class,
+      COUNTERItemIdentifiers.class,
+      COUNTERItemIdentifiers.class,
+      DataTypeEnum.class,
+      SectionTypeEnum.class,
+      null,
+      AccessTypeEnum.class,
+      AccessMethodEnum.class,
+      null,
+      null
     };
-    Stream<Class<COUNTERItemPerformance>> rest = yearMonths.stream()
-        .map(ym -> COUNTERItemPerformance.class);
+    Stream<Class<COUNTERItemPerformance>> rest =
+        yearMonths.stream().map(ym -> COUNTERItemPerformance.class);
     return Stream.concat(Arrays.stream(first), rest).toArray(Class<?>[]::new);
   }
-
 
   protected CellProcessor[] createProcessors(List<YearMonth> yearMonths) {
     ParseMetricTypes parseMetricTypes = new ParseMetricTypes(getHeader(yearMonths));
@@ -113,62 +111,63 @@ public class TRCsvToReport extends
             new Optional(new ParseAccessMethod()), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
-        );
+            );
 
-    List<ParseMetricTypes> metricTypeParsers = Collections
-        .nCopies(yearMonths.size(), parseMetricTypes);
+    List<ParseMetricTypes> metricTypeParsers =
+        Collections.nCopies(yearMonths.size(), parseMetricTypes);
     return Stream.concat(first.stream(), metricTypeParsers.stream()).toArray(CellProcessor[]::new);
   }
 
   public String[] getHeader(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Title",
-        "Publisher",
-        "Publisher_ID",
-        "Platform",
-        "DOI",
-        "Proprietary",
-        "ISBN",
-        "Print_ISSN",
-        "Online_ISSN",
-        "URI",
-        "Data_Type",
-        "Section_Type",
-        "YOP",
-        "Access_Type",
-        "Access_Method",
-        "Metric_Type",
-        "Reporting_Period_Total"
-    };
+    String[] baseHeader =
+        new String[] {
+          "Title",
+          "Publisher",
+          "Publisher_ID",
+          "Platform",
+          "DOI",
+          "Proprietary",
+          "ISBN",
+          "Print_ISSN",
+          "Online_ISSN",
+          "URI",
+          "Data_Type",
+          "Section_Type",
+          "YOP",
+          "Access_Type",
+          "Access_Method",
+          "Metric_Type",
+          "Reporting_Period_Total"
+        };
     return Stream.concat(Arrays.stream(baseHeader), Arrays.stream(y)).toArray(String[]::new);
   }
 
   public String[] createFieldMapping(List<YearMonth> yearMonths) {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
-    String[] baseHeader = new String[]{
-        "Title",
-        "Publisher",
-        "PublisherID",
-        "Platform",
-        "itemID[0]",
-        "itemID[1]",
-        "itemID[2]",
-        "itemID[3]",
-        "itemID[4]",
-        "itemID[5]",
-        "DataType",
-        "SectionType",
-        "YOP",
-        "AccessType",
-        "AccessMethod",
-        null,
-        null
-    };
+    String[] baseHeader =
+        new String[] {
+          "Title",
+          "Publisher",
+          "PublisherID",
+          "Platform",
+          "itemID[0]",
+          "itemID[1]",
+          "itemID[2]",
+          "itemID[3]",
+          "itemID[4]",
+          "itemID[5]",
+          "DataType",
+          "SectionType",
+          "YOP",
+          "AccessType",
+          "AccessMethod",
+          null,
+          null
+        };
     for (int i = 0; i < yearMonths.size(); i++) {
       y[i] = "performance[" + i + "]";
     }
     return Stream.concat(Arrays.stream(baseHeader), Arrays.stream(y)).toArray(String[]::new);
   }
-
 }

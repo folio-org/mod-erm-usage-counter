@@ -39,8 +39,7 @@ public class ParseMetricTypes extends CellProcessorAdaptor {
 
     COUNTERItemPerformance counterItemPerformance = new COUNTERItemPerformance();
     COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
-    DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("uuuu-MM", Locale.ENGLISH);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM", Locale.ENGLISH);
     YearMonth ym = YearMonth.parse(yearMonthString, formatter);
     LocalDate beginDate = ym.atDay(1);
     LocalDate endDate = ym.atEndOfMonth();
