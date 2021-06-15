@@ -2,18 +2,14 @@ package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.openapitools.client.model.COUNTERPlatformReport;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
 
@@ -74,19 +70,5 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
                       });
             });
     return result;
-  }
-
-  @Override
-  protected CellProcessor[] createProcessors() {
-    List<Optional> first =
-        Arrays.asList(
-            new Optional(), // Platform
-            new Optional(), // Data_Type
-            new Optional(), // Access_Method
-            new Optional(), // Metric_Type
-            new Optional() // Reporting_Period_Total
-            );
-    Stream<Optional> rest = getYearMonths().stream().map(ym -> new Optional());
-    return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
 }

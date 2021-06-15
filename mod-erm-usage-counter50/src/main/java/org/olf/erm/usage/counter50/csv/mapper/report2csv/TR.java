@@ -2,11 +2,9 @@ package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
@@ -15,8 +13,6 @@ import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.openapitools.client.model.COUNTERTitleReport;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
 
@@ -55,32 +51,6 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
   @Override
   protected COUNTERTitleReport getReport() {
     return this.report;
-  }
-
-  @Override
-  protected CellProcessor[] createProcessors() {
-    List<Optional> first =
-        Arrays.asList(
-            new Optional(), // Title
-            new Optional(), // Publisher
-            new Optional(), // Publisher_ID
-            new Optional(), // Platform
-            new Optional(), // DOI
-            new Optional(), // Proprietary Identifier
-            new Optional(), // ISBN
-            new Optional(), // Print ISSN
-            new Optional(), // Online ISSN
-            new Optional(), // URI
-            new Optional(), // Data_Type
-            new Optional(), // Section_Type
-            new Optional(), // YOP
-            new Optional(), // Access_Type
-            new Optional(), // Access_Method
-            new Optional(), // Metric_Type
-            new Optional() // Reporting_Period_Total
-            );
-    Stream<Optional> rest = getYearMonths().stream().map(ym -> new Optional());
-    return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
 
   @Override

@@ -2,13 +2,11 @@ package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.IdentifierProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
@@ -23,8 +21,6 @@ import org.openapitools.client.model.COUNTERItemIdentifiers;
 import org.openapitools.client.model.COUNTERItemParent;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.openapitools.client.model.COUNTERItemReport;
-import org.supercsv.cellprocessor.Optional;
-import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
 
@@ -86,55 +82,6 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
       "Metric_Type",
       "Reporting_Period_Total"
     };
-  }
-
-  @Override
-  protected CellProcessor[] createProcessors() {
-    List<Optional> first =
-        Arrays.asList(
-            new Optional(), // Item
-            new Optional(), // Publisher
-            new Optional(), // Publisher_ID
-            new Optional(), // Platform
-            new Optional(), // Authors,
-            new Optional(), // Publication_Date
-            new Optional(), // Article_Version
-            new Optional(), // DOI
-            new Optional(), // Proprietary Identifier
-            new Optional(), // ISBN
-            new Optional(), // Print ISSN
-            new Optional(), // Online ISSN
-            new Optional(), // URI
-            new Optional(), // Parent_Title
-            new Optional(), // Parent_Authors
-            new Optional(), // Parent_Publication_Date
-            new Optional(), // Parent_Article_Version
-            new Optional(), // Parent_Data_Type
-            new Optional(), // Parent_DOI
-            new Optional(), // Parent_Proprietary_ID
-            new Optional(), // Parent_ISBN
-            new Optional(), // Parent_Print_ISSN
-            new Optional(), // Parent_Online_ISSN
-            new Optional(), // Parent_URI
-            new Optional(), // Component_Title
-            new Optional(), // Component_Authors
-            new Optional(), // Component_Publication_Date
-            new Optional(), // Component_Data_Type
-            new Optional(), // Component_DOI
-            new Optional(), // Component_Proprietary_DOI
-            new Optional(), // Component_ISBN
-            new Optional(), // Component_Print_ISSN
-            new Optional(), // Component_Online_ISSN
-            new Optional(), // Component_URI
-            new Optional(), // Data_Type
-            new Optional(), // YOP
-            new Optional(), // Access_Type
-            new Optional(), // Access_Method
-            new Optional(), // Metric_Type
-            new Optional() // Reporting_Period_Total
-            );
-    Stream<Optional> rest = getYearMonths().stream().map(ym -> new Optional());
-    return Stream.concat(first.stream(), rest).toArray(CellProcessor[]::new);
   }
 
   @Override

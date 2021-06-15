@@ -10,6 +10,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.CsvMapWriter;
@@ -60,7 +62,10 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .orElse("");
   }
 
-  protected abstract CellProcessor[] createProcessors();
+  protected CellProcessor[] createProcessors() {
+    return Collections.nCopies(getHeader().length + getYearMonths().size(), new Optional())
+        .toArray(CellProcessor[]::new);
+  }
 
   protected abstract List<Map<String, Object>> toMap(T report);
 
