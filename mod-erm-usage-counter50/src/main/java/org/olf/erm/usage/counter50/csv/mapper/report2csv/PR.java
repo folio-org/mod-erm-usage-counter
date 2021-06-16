@@ -13,8 +13,6 @@ import org.openapitools.client.model.COUNTERPlatformReport;
 
 public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
 
-  private final COUNTERPlatformReport report;
-
   public PR(COUNTERPlatformReport report) {
     super(
         report.getReportHeader(),
@@ -27,11 +25,6 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
     return new String[] {
       "Platform", "Data_Type", "Access_Method", "Metric_Type", "Reporting_Period_Total"
     };
-  }
-
-  @Override
-  protected COUNTERPlatformReport getReport() {
-    return report;
   }
 
   @Override

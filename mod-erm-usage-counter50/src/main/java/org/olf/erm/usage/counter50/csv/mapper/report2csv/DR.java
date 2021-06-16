@@ -16,8 +16,6 @@ import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEn
 
 public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
 
-  private final COUNTERDatabaseReport report;
-
   public DR(COUNTERDatabaseReport report) {
     super(
         report.getReportHeader(),
@@ -38,11 +36,6 @@ public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
       "Metric_Type",
       "Reporting_Period_Total"
     };
-  }
-
-  @Override
-  protected COUNTERDatabaseReport getReport() {
-    return this.report;
   }
 
   @Override

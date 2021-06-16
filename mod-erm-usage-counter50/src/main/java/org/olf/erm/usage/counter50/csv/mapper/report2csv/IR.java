@@ -24,18 +24,11 @@ import org.openapitools.client.model.COUNTERItemReport;
 
 public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
 
-  private final COUNTERItemReport report;
-
   public IR(COUNTERItemReport report) {
     super(
         report.getReportHeader(),
         Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader()));
     this.report = report;
-  }
-
-  @Override
-  protected COUNTERItemReport getReport() {
-    return this.report;
   }
 
   @Override

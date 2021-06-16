@@ -16,8 +16,6 @@ import org.openapitools.client.model.COUNTERTitleReport;
 
 public class TRJ4 extends AbstractReportToCsvMapper<COUNTERTitleReport> {
 
-  private final COUNTERTitleReport report;
-
   public TRJ4(COUNTERTitleReport report) {
     super(
         report.getReportHeader(),
@@ -41,11 +39,6 @@ public class TRJ4 extends AbstractReportToCsvMapper<COUNTERTitleReport> {
       "Metric_Type",
       "Reporting_Period_Total"
     };
-  }
-
-  @Override
-  protected COUNTERTitleReport getReport() {
-    return this.report;
   }
 
   @Override
