@@ -71,9 +71,7 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
       "Data_Type",
       "YOP",
       "Access_Type",
-      "Access_Method",
-      "Metric_Type",
-      "Reporting_Period_Total"
+      "Access_Method"
     };
   }
 
@@ -202,9 +200,9 @@ public class IR extends AbstractReportToCsvMapper<COUNTERItemReport> {
                         itemMap.put(header[35], reportItem.getYOP());
                         itemMap.put(header[36], reportItem.getAccessType());
                         itemMap.put(header[37], reportItem.getAccessMethod());
-                        itemMap.put(header[38], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
                         itemMap.put(
-                            header[39],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
                         itemMap.putAll(

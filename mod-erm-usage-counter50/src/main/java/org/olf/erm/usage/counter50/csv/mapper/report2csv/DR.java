@@ -32,9 +32,7 @@ public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
       "Platform",
       "Proprietary_ID",
       "Data_Type",
-      "Access_Method",
-      "Metric_Type",
-      "Reporting_Period_Total"
+      "Access_Method"
     };
   }
 
@@ -66,9 +64,9 @@ public class DR extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
                                 dbReport.getItemID(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY));
                         itemMap.put(header[5], dbReport.getDataType());
                         itemMap.put(header[6], dbReport.getAccessMethod());
-                        itemMap.put(header[7], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
                         itemMap.put(
-                            header[8],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 

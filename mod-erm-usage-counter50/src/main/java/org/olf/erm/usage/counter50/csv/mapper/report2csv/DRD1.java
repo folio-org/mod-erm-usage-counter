@@ -25,15 +25,7 @@ public class DRD1 extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
 
   @Override
   protected String[] getHeader() {
-    return new String[] {
-      "Database",
-      "Publisher",
-      "Publisher_ID",
-      "Platform",
-      "Proprietary_ID",
-      "Metric_Type",
-      "Reporting_Period_Total"
-    };
+    return new String[] {"Database", "Publisher", "Publisher_ID", "Platform", "Proprietary_ID"};
   }
 
   @Override
@@ -62,9 +54,9 @@ public class DRD1 extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
                             header[4],
                             IdentifierProcessor.getValue(
                                 dbReport.getItemID(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY));
-                        itemMap.put(header[5], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
                         itemMap.put(
-                            header[6],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 

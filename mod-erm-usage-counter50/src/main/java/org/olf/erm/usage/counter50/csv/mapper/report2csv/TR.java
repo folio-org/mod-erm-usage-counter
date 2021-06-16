@@ -40,9 +40,7 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
       "Section_Type",
       "YOP",
       "Access_Type",
-      "Access_Method",
-      "Metric_Type",
-      "Reporting_Period_Total"
+      "Access_Method"
     };
   }
 
@@ -94,10 +92,10 @@ public class TR extends AbstractReportToCsvMapper<COUNTERTitleReport> {
                         itemMap.put(header[12], reportItem.getYOP());
                         itemMap.put(header[13], reportItem.getAccessType());
                         itemMap.put(header[14], reportItem.getAccessMethod());
-                        itemMap.put(header[15], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
 
                         itemMap.put(
-                            header[16],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 

@@ -37,9 +37,7 @@ public class TRB3 extends AbstractReportToCsvMapper<COUNTERTitleReport> {
       "Online_ISSN",
       "URI",
       "YOP",
-      "Access_Type",
-      "Metric_Type",
-      "Reporting_Period_Total"
+      "Access_Type"
     };
   }
 
@@ -88,10 +86,10 @@ public class TRB3 extends AbstractReportToCsvMapper<COUNTERTitleReport> {
                             IdentifierProcessor.getValue(reportItem.getItemID(), TypeEnum.URI));
                         itemMap.put(header[10], reportItem.getYOP());
                         itemMap.put(header[11], reportItem.getAccessType());
-                        itemMap.put(header[12], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
 
                         itemMap.put(
-                            header[13],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 

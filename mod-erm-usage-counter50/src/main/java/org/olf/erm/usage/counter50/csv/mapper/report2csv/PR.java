@@ -22,9 +22,7 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
 
   @Override
   protected String[] getHeader() {
-    return new String[] {
-      "Platform", "Data_Type", "Access_Method", "Metric_Type", "Reporting_Period_Total"
-    };
+    return new String[] {"Platform", "Data_Type", "Access_Method"};
   }
 
   @Override
@@ -46,9 +44,9 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
                         itemMap.put(header[0], reportItem.getPlatform());
                         itemMap.put(header[1], reportItem.getDataType());
                         itemMap.put(header[2], reportItem.getAccessMethod());
-                        itemMap.put(header[3], metricTypeEnum);
+                        itemMap.put("Metric_Type", metricTypeEnum);
                         itemMap.put(
-                            header[4],
+                            "Reporting_Period_Total",
                             PerformanceProcessor.calculateSum(
                                 performancesPerMetricType, metricTypeEnum));
 

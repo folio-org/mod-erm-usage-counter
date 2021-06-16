@@ -1,6 +1,16 @@
 package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import static org.openapitools.client.model.COUNTERItemPerformanceInstance.SERIALIZED_NAME_METRIC_TYPE;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_CREATED;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_NAME;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_RELEASE;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_NAME;
 
 import com.google.common.collect.Iterables;
 import java.io.IOException;
@@ -8,6 +18,7 @@ import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,11 +45,12 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   private static final String FORMAT_EQUALS = "%s=%s";
   private static final List<String> SUPPORTED_REPORTS =
       List.of("TR", "TR_B1", "TR_B3", "TR_J1", "TR_J3", "TR_J4", "PR", "IR", "DR", "DR_D1");
-  protected final List<YearMonth> yearMonths;
-  protected final SUSHIReportHeader header;
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
   private static final List<String> REMOVE_FROM_FILTERS =
       List.of("Metric_Type", "Begin_Date", "End_Date");
+  protected final List<YearMonth> yearMonths;
+  protected final SUSHIReportHeader header;
+  protected final List<String> extendedHeader;
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
   protected T report;
 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
@@ -48,15 +60,23 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     }
     this.yearMonths = yearMonths;
     this.header = header;
+    this.extendedHeader = createExtendedHeader();
   }
 
   protected abstract String[] getHeader();
+
+  private List<String> createExtendedHeader() {
+    List<String> strings = new ArrayList<>(Arrays.asList(getHeader()));
+    strings.add("Metric_Type");
+    strings.add("Reporting_Period_Total");
+    return strings;
+  }
 
   protected T getReport() {
     return this.report;
   }
 
-  protected String getMetricTypes() {
+  private String getMetricTypes() {
     return this.header.getReportFilters().stream()
         .filter(f -> SERIALIZED_NAME_METRIC_TYPE.equals(f.getName()))
         .map(SUSHIReportHeaderReportFilters::getValue)
@@ -65,36 +85,33 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .orElse("");
   }
 
-  protected CellProcessor[] createProcessors() {
-    return Collections.nCopies(getHeader().length + getYearMonths().size(), new Optional())
+  private CellProcessor[] createProcessors() {
+    return Collections.nCopies(extendedHeader.size() + getYearMonths().size(), new Optional())
         .toArray(CellProcessor[]::new);
   }
 
   protected abstract List<Map<String, Object>> toMap(T report);
 
-  protected String createReportHeader() {
+  private String createReportHeader() {
     StringWriter stringWriter = new StringWriter();
     try (CsvListWriter csvListWriter =
         new CsvListWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
-      csvListWriter.write(
-          SUSHIReportHeader.SERIALIZED_NAME_REPORT_NAME, this.header.getReportName());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_REPORT_I_D, this.header.getReportID());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_RELEASE, this.header.getRelease());
-      csvListWriter.write(
-          SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_NAME, this.header.getInstitutionName());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D, getInstitutionId());
+      csvListWriter.write(SERIALIZED_NAME_REPORT_NAME, this.header.getReportName());
+      csvListWriter.write(SERIALIZED_NAME_REPORT_I_D, this.header.getReportID());
+      csvListWriter.write(SERIALIZED_NAME_RELEASE, this.header.getRelease());
+      csvListWriter.write(SERIALIZED_NAME_INSTITUTION_NAME, this.header.getInstitutionName());
+      csvListWriter.write(SERIALIZED_NAME_INSTITUTION_I_D, getInstitutionId());
       csvListWriter.write("Metric_Types", getMetricTypes());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS, getReportFilters());
-      csvListWriter.write(
-          SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES, getReportAttributes());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS, getExceptions());
+      csvListWriter.write(SERIALIZED_NAME_REPORT_FILTERS, getReportFilters());
+      csvListWriter.write(SERIALIZED_NAME_REPORT_ATTRIBUTES, getReportAttributes());
+      csvListWriter.write(SERIALIZED_NAME_EXCEPTIONS, getExceptions());
       String reportingPeriod =
           String.format(
               "Begin_Date=%s; End_Date=%s",
               yearMonths.get(0).atDay(1), Iterables.getLast(yearMonths).atEndOfMonth());
       csvListWriter.write("Reporting_Period", reportingPeriod);
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED, LocalDate.now().toString());
-      csvListWriter.write(SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY, this.header.getCreatedBy());
+      csvListWriter.write(SERIALIZED_NAME_CREATED, LocalDate.now().toString());
+      csvListWriter.write(SERIALIZED_NAME_CREATED_BY, this.header.getCreatedBy());
       csvListWriter.write("");
       csvListWriter.flush();
     } catch (IOException e) {
@@ -142,7 +159,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   }
 
   private String[] createHeader() {
-    Stream<String> h = Arrays.stream(getHeader());
+    Stream<String> h = extendedHeader.stream();
     Stream<String> months = yearMonths.stream().map(ym -> ym.format(formatter));
     return Stream.concat(h, months).toArray(String[]::new);
   }
@@ -154,9 +171,8 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         getYearMonths().stream()
             .map(yearMonth -> yearMonth.format(formatter))
             .collect(Collectors.toList());
-    List<String> h = Arrays.asList(getHeader());
     List<String> headerList =
-        Stream.of(h, ym).flatMap(Collection::stream).collect(Collectors.toList());
+        Stream.of(extendedHeader, ym).flatMap(Collection::stream).collect(Collectors.toList());
 
     String[] headerArray = new String[headerList.size()];
     headerArray = headerList.toArray(headerArray);
