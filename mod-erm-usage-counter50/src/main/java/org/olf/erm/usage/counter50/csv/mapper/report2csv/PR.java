@@ -1,23 +1,14 @@
 package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
-import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import org.olf.erm.usage.counter50.Counter5Utils;
-import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
-import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 import org.openapitools.client.model.COUNTERPlatformReport;
+import org.openapitools.client.model.COUNTERPlatformUsage;
 
-public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
+public class PR extends AbstractPRMapper {
 
   public PR(COUNTERPlatformReport report) {
-    super(
-        report.getReportHeader(),
-        Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader()));
-    this.report = report;
+    super(report);
   }
 
   @Override
@@ -26,40 +17,8 @@ public class PR extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
   }
 
   @Override
-  protected List<Map<String, Object>> toMap(COUNTERPlatformReport report) {
-    String[] header = getHeader();
-
-    List<Map<String, Object>> result = new ArrayList<>();
-    report
-        .getReportItems()
-        .forEach(
-            reportItem -> {
-              Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =
-                  MetricTypeProcessor.getPerformancesPerMetricType(reportItem.getPerformance());
-              performancesPerMetricType
-                  .keySet()
-                  .forEach(
-                      metricTypeEnum -> {
-                        final Map<String, Object> itemMap = new HashMap<>();
-                        itemMap.put(header[0], reportItem.getPlatform());
-                        itemMap.put(header[1], reportItem.getDataType());
-                        itemMap.put(header[2], reportItem.getAccessMethod());
-                        itemMap.put("Metric_Type", metricTypeEnum);
-                        itemMap.put(
-                            "Reporting_Period_Total",
-                            PerformanceProcessor.calculateSum(
-                                performancesPerMetricType, metricTypeEnum));
-
-                        itemMap.putAll(
-                            PerformanceProcessor.getPerformancePerMonth(
-                                performancesPerMetricType,
-                                metricTypeEnum,
-                                getYearMonths(),
-                                formatter));
-
-                        result.add(itemMap);
-                      });
-            });
-    return result;
+  protected List<Object> getValues(COUNTERPlatformUsage platformUsage) {
+    return Arrays.asList(
+        platformUsage.getPlatform(), platformUsage.getDataType(), platformUsage.getAccessMethod());
   }
 }
