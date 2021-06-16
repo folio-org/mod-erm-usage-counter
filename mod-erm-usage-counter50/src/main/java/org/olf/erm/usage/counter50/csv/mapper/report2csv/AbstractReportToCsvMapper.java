@@ -50,6 +50,8 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   protected final List<YearMonth> yearMonths;
   protected final SUSHIReportHeader header;
   protected final List<String> extendedHeader;
+  protected final List<String> yearMonthsHeader;
+  protected final String[] fullHeader;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
   protected T report;
 
@@ -61,6 +63,11 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     this.yearMonths = yearMonths;
     this.header = header;
     this.extendedHeader = createExtendedHeader();
+    this.yearMonthsHeader =
+        yearMonths.stream()
+            .map(yearMonth -> yearMonth.format(formatter))
+            .collect(Collectors.toList());
+    this.fullHeader = createFullHeader();
   }
 
   protected abstract String[] getHeader();
@@ -86,8 +93,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   }
 
   private CellProcessor[] createProcessors() {
-    return Collections.nCopies(extendedHeader.size() + getYearMonths().size(), new Optional())
-        .toArray(CellProcessor[]::new);
+    return Collections.nCopies(fullHeader.length, new Optional()).toArray(CellProcessor[]::new);
   }
 
   protected abstract List<Map<String, Object>> toMap(T report);
@@ -158,28 +164,18 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     return yearMonths;
   }
 
-  private String[] createHeader() {
-    Stream<String> h = extendedHeader.stream();
-    Stream<String> months = yearMonths.stream().map(ym -> ym.format(formatter));
-    return Stream.concat(h, months).toArray(String[]::new);
+  private String[] createFullHeader() {
+    return Stream.of(extendedHeader, yearMonthsHeader)
+        .flatMap(Collection::stream)
+        .toArray(String[]::new);
   }
 
   private void writeItems(ICsvMapWriter writer) throws IOException {
     CellProcessor[] processors = createProcessors();
 
-    List<String> ym =
-        getYearMonths().stream()
-            .map(yearMonth -> yearMonth.format(formatter))
-            .collect(Collectors.toList());
-    List<String> headerList =
-        Stream.of(extendedHeader, ym).flatMap(Collection::stream).collect(Collectors.toList());
-
-    String[] headerArray = new String[headerList.size()];
-    headerArray = headerList.toArray(headerArray);
-
     List<Map<String, Object>> entries = toMap(getReport());
     for (final Map<String, Object> item : entries) {
-      writer.write(item, headerArray, processors);
+      writer.write(item, fullHeader, processors);
     }
   }
 
@@ -190,7 +186,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
 
     try (ICsvMapWriter mapWriter =
         new CsvMapWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
-      mapWriter.writeHeader(createHeader());
+      mapWriter.writeHeader(createFullHeader());
 
       writeItems(mapWriter);
 
