@@ -16,7 +16,7 @@ public class TRJ4 extends AbstractTRMapper {
   }
 
   @Override
-  public String[] getHeader() {
+  String[] getHeader() {
     return new String[] {
       "Title",
       "Publisher",
@@ -32,7 +32,7 @@ public class TRJ4 extends AbstractTRMapper {
   }
 
   @Override
-  protected List<Object> getValues(COUNTERTitleUsage titleUsage) {
+  List<Object> getValues(COUNTERTitleUsage titleUsage) {
     return Arrays.asList(
         titleUsage.getTitle(),
         titleUsage.getPublisher(),

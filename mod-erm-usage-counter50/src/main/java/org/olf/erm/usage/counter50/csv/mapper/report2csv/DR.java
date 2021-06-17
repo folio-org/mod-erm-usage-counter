@@ -16,7 +16,7 @@ public class DR extends AbstractDRMapper {
   }
 
   @Override
-  protected String[] getHeader() {
+  String[] getHeader() {
     return new String[] {
       "Database",
       "Publisher",
@@ -29,7 +29,7 @@ public class DR extends AbstractDRMapper {
   }
 
   @Override
-  protected List<Object> getValues(COUNTERDatabaseUsage dbUsage) {
+  List<Object> getValues(COUNTERDatabaseUsage dbUsage) {
     return Arrays.asList(
         dbUsage.getDatabase(),
         dbUsage.getPublisher(),

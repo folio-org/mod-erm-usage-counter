@@ -24,7 +24,7 @@ public class IR extends AbstractIRMapper {
   }
 
   @Override
-  protected String[] getHeader() {
+  String[] getHeader() {
     return new String[] {
       "Title",
       "Publisher",
@@ -68,7 +68,7 @@ public class IR extends AbstractIRMapper {
   }
 
   @Override
-  protected List<Object> getValues(COUNTERItemUsage iu) {
+  List<Object> getValues(COUNTERItemUsage iu) {
     return Arrays.asList(
         iu.getItem(),
         iu.getPublisher(),

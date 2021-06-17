@@ -12,12 +12,12 @@ public class PR extends AbstractPRMapper {
   }
 
   @Override
-  protected String[] getHeader() {
+  String[] getHeader() {
     return new String[] {"Platform", "Data_Type", "Access_Method"};
   }
 
   @Override
-  protected List<Object> getValues(COUNTERPlatformUsage platformUsage) {
+  List<Object> getValues(COUNTERPlatformUsage platformUsage) {
     return Arrays.asList(
         platformUsage.getPlatform(), platformUsage.getDataType(), platformUsage.getAccessMethod());
   }

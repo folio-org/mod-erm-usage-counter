@@ -14,19 +14,19 @@ import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERDatabaseUsage;
 import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 
-public abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
+abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTERDatabaseReport> {
 
-  protected AbstractDRMapper(COUNTERDatabaseReport report) {
+  AbstractDRMapper(COUNTERDatabaseReport report) {
     super(
         report.getReportHeader(),
         Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader()));
     this.report = report;
   }
 
-  protected abstract List<Object> getValues(COUNTERDatabaseUsage dbUsage);
+  abstract List<Object> getValues(COUNTERDatabaseUsage dbUsage);
 
   @Override
-  protected List<Map<String, Object>> toMap(COUNTERDatabaseReport report) {
+  List<Map<String, Object>> toMap(COUNTERDatabaseReport report) {
     List<String> header = Arrays.asList(getHeader());
 
     List<Map<String, Object>> result = new ArrayList<>();
@@ -56,10 +56,7 @@ public abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTER
 
                         itemMap.putAll(
                             PerformanceProcessor.getPerformancePerMonth(
-                                performancesPerMetricType,
-                                metricTypeEnum,
-                                getYearMonths(),
-                                formatter));
+                                performancesPerMetricType, metricTypeEnum, yearMonths, formatter));
 
                         result.add(itemMap);
                       });

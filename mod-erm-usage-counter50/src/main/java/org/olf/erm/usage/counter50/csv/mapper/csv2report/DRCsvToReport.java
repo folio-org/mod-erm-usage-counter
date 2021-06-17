@@ -15,7 +15,6 @@ import org.olf.erm.usage.counter50.csv.cellprocessor.ParsePublisherID;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.DatabaseUsageMerger;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
-import org.olf.erm.usage.counter50.csv.mapper.report2csv.ItemParser;
 import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERDatabaseUsage;
 import org.openapitools.client.model.COUNTERItemIdentifiers;

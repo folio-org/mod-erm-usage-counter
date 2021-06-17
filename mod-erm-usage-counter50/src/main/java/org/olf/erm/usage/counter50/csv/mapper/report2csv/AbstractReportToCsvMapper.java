@@ -38,22 +38,22 @@ import org.supercsv.io.CsvMapWriter;
 import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
-public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
+abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
 
-  protected static final DateTimeFormatter formatter =
+  static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
   private static final String FORMAT_EQUALS = "%s=%s";
   private static final List<String> SUPPORTED_REPORTS =
       List.of("TR", "TR_B1", "TR_B3", "TR_J1", "TR_J3", "TR_J4", "PR", "IR", "DR", "DR_D1");
   private static final List<String> REMOVE_FROM_FILTERS =
       List.of("Metric_Type", "Begin_Date", "End_Date");
-  protected final List<YearMonth> yearMonths;
-  protected final SUSHIReportHeader header;
-  protected final List<String> extendedHeader;
-  protected final List<String> yearMonthsHeader;
-  protected final String[] fullHeader;
+  final List<YearMonth> yearMonths;
+  final SUSHIReportHeader header;
+  final List<String> extendedHeader;
+  final List<String> yearMonthsHeader;
+  final String[] fullHeader;
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
-  protected T report;
+  T report;
 
   AbstractReportToCsvMapper(SUSHIReportHeader header, List<YearMonth> yearMonths) {
     if (SUPPORTED_REPORTS.stream().noneMatch(s -> s.equalsIgnoreCase(header.getReportID()))) {
@@ -70,17 +70,13 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     this.fullHeader = createFullHeader();
   }
 
-  protected abstract String[] getHeader();
+  abstract String[] getHeader();
 
   private List<String> createExtendedHeader() {
     List<String> strings = new ArrayList<>(Arrays.asList(getHeader()));
     strings.add("Metric_Type");
     strings.add("Reporting_Period_Total");
     return strings;
-  }
-
-  protected T getReport() {
-    return this.report;
   }
 
   private String getMetricTypes() {
@@ -96,7 +92,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
     return Collections.nCopies(fullHeader.length, new Optional()).toArray(CellProcessor[]::new);
   }
 
-  protected abstract List<Map<String, Object>> toMap(T report);
+  abstract List<Map<String, Object>> toMap(T report);
 
   private String createReportHeader() {
     StringWriter stringWriter = new StringWriter();
@@ -160,10 +156,6 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
         .collect(Collectors.joining("; "));
   }
 
-  List<YearMonth> getYearMonths() {
-    return yearMonths;
-  }
-
   private String[] createFullHeader() {
     return Stream.of(extendedHeader, yearMonthsHeader)
         .flatMap(Collection::stream)
@@ -173,7 +165,7 @@ public abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper 
   private void writeItems(ICsvMapWriter writer) throws IOException {
     CellProcessor[] processors = createProcessors();
 
-    List<Map<String, Object>> entries = toMap(getReport());
+    List<Map<String, Object>> entries = toMap(report);
     for (final Map<String, Object> item : entries) {
       writer.write(item, fullHeader, processors);
     }

@@ -16,12 +16,12 @@ public class DRD1 extends AbstractDRMapper {
   }
 
   @Override
-  protected String[] getHeader() {
+  String[] getHeader() {
     return new String[] {"Database", "Publisher", "Publisher_ID", "Platform", "Proprietary_ID"};
   }
 
   @Override
-  protected List<Object> getValues(COUNTERDatabaseUsage dbUsage) {
+  List<Object> getValues(COUNTERDatabaseUsage dbUsage) {
     return Arrays.asList(
         dbUsage.getDatabase(),
         dbUsage.getPublisher(),

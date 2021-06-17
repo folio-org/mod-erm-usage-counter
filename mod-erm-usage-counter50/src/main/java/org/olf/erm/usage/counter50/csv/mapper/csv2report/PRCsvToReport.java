@@ -13,7 +13,6 @@ import org.olf.erm.usage.counter50.csv.cellprocessor.ParseMetricTypes;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.PlatformUsageMerger;
-import org.olf.erm.usage.counter50.csv.mapper.report2csv.ItemParser;
 import org.openapitools.client.model.COUNTERItemPerformance;
 import org.openapitools.client.model.COUNTERPlatformReport;
 import org.openapitools.client.model.COUNTERPlatformUsage;
