@@ -9,23 +9,15 @@ import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERDatabaseUsage;
 import org.openapitools.client.model.COUNTERItemIdentifiers;
 
-public class DR extends AbstractDRMapper {
+public class DRD1 extends AbstractDRMapper {
 
-  public DR(COUNTERDatabaseReport report) {
+  public DRD1(COUNTERDatabaseReport report) {
     super(report);
   }
 
   @Override
   String[] getHeader() {
-    return new String[] {
-      "Database",
-      "Publisher",
-      "Publisher_ID",
-      "Platform",
-      "Proprietary_ID",
-      "Data_Type",
-      "Access_Method"
-    };
+    return new String[] {"Database", "Publisher", "Publisher_ID", "Platform", "Proprietary_ID"};
   }
 
   @Override
@@ -35,8 +27,6 @@ public class DR extends AbstractDRMapper {
         dbUsage.getPublisher(),
         getPublisherID(dbUsage.getPublisherID()),
         dbUsage.getPlatform(),
-        getValue(dbUsage.getItemID(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
-        dbUsage.getDataType(),
-        dbUsage.getAccessMethod());
+        getValue(dbUsage.getItemID(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY));
   }
 }

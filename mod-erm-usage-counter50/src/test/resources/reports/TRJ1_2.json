@@ -1,0 +1,98 @@
+{
+  "Report_Header": {
+    "Created": "2021-05-25T17:50:36Z",
+    "Created_By": "Sample Provider",
+    "Customer_ID": "customerId123",
+    "Report_ID": "TR_J1",
+    "Release": "5",
+    "Report_Name": "Journal Requests (Excluding OA_Gold)",
+    "Institution_Name": "Sample University",
+    "Institution_ID": [
+      {
+        "Type": "ISNI",
+        "Value": "1234567890"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Metric_Type",
+        "Value": "Total_Item_Requests|Unique_Item_Requests"
+      },
+      {
+        "Name": "Access_Method",
+        "Value": "Regular"
+      },
+      {
+        "Name": "Access_Type",
+        "Value": "Controlled"
+      },
+      {
+        "Name": "Data_Type",
+        "Value": "Journal"
+      },
+      {
+        "Name": "Begin_Date",
+        "Value": "2021-02-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2021-02-28"
+      }
+    ],
+    "Report_Attributes": [],
+    "Exceptions": []
+  },
+  "Report_Items": [
+    {
+      "Title": "Journal A",
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "/12.1.0.1/1111.2.222"
+        },
+        {
+          "Type": "Proprietary",
+          "Value": "pubx:jnlA"
+        },
+        {
+          "Type": "URI",
+          "Value": "uri:pubx:jnlA"
+        },
+        {
+          "Type": "Print_ISSN",
+          "Value": "1111-22222"
+        },
+        {
+          "Type": "Online_ISSN",
+          "Value": "1111-1223"
+        }
+      ],
+      "Platform": "Platform X",
+      "Publisher": "Publisher X",
+      "Publisher_ID": [
+        {
+          "Type": "ISNI",
+          "Value": "1234123412341234"
+        }
+      ],
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-02-01",
+            "End_Date": "2021-02-28"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 4
+            },
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

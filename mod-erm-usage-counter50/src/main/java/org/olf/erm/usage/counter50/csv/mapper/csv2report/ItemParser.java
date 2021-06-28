@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter50.csv.mapper.report2csv;
+package org.olf.erm.usage.counter50.csv.mapper.csv2report;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -11,7 +11,7 @@ import org.supercsv.io.dozer.CsvDozerBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-public class ItemParser<T> {
+class ItemParser<T> {
 
   private static final Logger logger = LoggerFactory.getLogger(ItemParser.class);
 

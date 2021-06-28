@@ -9,9 +9,9 @@ import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
 import org.openapitools.client.model.COUNTERTitleReport;
 import org.openapitools.client.model.COUNTERTitleUsage;
 
-public class TR extends AbstractTRMapper {
+public class TRJ1 extends AbstractTRMapper {
 
-  public TR(COUNTERTitleReport report) {
+  public TRJ1(COUNTERTitleReport report) {
     super(report);
   }
 
@@ -24,15 +24,9 @@ public class TR extends AbstractTRMapper {
       "Platform",
       "DOI",
       "Proprietary_ID",
-      "ISBN",
       "Print_ISSN",
       "Online_ISSN",
-      "URI",
-      "Data_Type",
-      "Section_Type",
-      "YOP",
-      "Access_Type",
-      "Access_Method"
+      "URI"
     };
   }
 
@@ -45,14 +39,8 @@ public class TR extends AbstractTRMapper {
         titleUsage.getPlatform(),
         getValue(titleUsage.getItemID(), TypeEnum.DOI),
         getValue(titleUsage.getItemID(), TypeEnum.PROPRIETARY),
-        getValue(titleUsage.getItemID(), TypeEnum.ISBN),
         getValue(titleUsage.getItemID(), TypeEnum.PRINT_ISSN),
         getValue(titleUsage.getItemID(), TypeEnum.ONLINE_ISSN),
-        getValue(titleUsage.getItemID(), TypeEnum.URI),
-        titleUsage.getDataType(),
-        titleUsage.getSectionType(),
-        titleUsage.getYOP(),
-        titleUsage.getAccessType(),
-        titleUsage.getAccessMethod());
+        getValue(titleUsage.getItemID(), TypeEnum.URI));
   }
 }
