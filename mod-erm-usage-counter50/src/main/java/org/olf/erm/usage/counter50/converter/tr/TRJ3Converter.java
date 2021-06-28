@@ -72,6 +72,7 @@ public class TRJ3Converter extends TRConverterBase {
             u.getAccessType());
   }
 
+  @Override
   public COUNTERTitleReport convert(COUNTERTitleReport report) {
     List<COUNTERTitleUsage> newReportItems =
         createNewReportItems(report.getReportItems(), filter, mapper);

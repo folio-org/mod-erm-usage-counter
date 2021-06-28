@@ -61,6 +61,7 @@ public class TRB3Converter extends TRConverterBase {
           "Access_Method",
           "Regular");
 
+  @Override
   public COUNTERTitleReport convert(COUNTERTitleReport report) {
     List<COUNTERTitleUsage> newReportItems =
         createNewReportItems(report.getReportItems(), filter, mapper);
