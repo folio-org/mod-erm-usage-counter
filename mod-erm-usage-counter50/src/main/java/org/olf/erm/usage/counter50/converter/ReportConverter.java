@@ -14,6 +14,27 @@ public class ReportConverter {
 
   private final Gson gson = new Gson();
 
+  @SuppressWarnings("rawtypes")
+  public static Converter create(String reportID) {
+    switch (reportID.toLowerCase()) {
+      case "tr_j1":
+        return new TRJ1Converter();
+      case "tr_j3":
+        return new TRJ3Converter();
+      case "tr_j4":
+        return new TRJ4Converter();
+      case "tr_b1":
+        return new TRB1Converter();
+      case "tr_b3":
+        return new TRB3Converter();
+      case "dr_d1":
+        return new DRD1Converter();
+      default:
+        throw new ReportNotSupportedException(
+            String.format("Report '%s' is not supported.", reportID));
+    }
+  }
+
   public COUNTERTitleReport convert(COUNTERTitleReport report, String reportID) {
     COUNTERTitleReport clone = gson.fromJson(gson.toJson(report), COUNTERTitleReport.class);
 
