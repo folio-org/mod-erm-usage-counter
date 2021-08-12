@@ -30,8 +30,8 @@ public class TRJ3Converter extends TRConverterBase {
 
   private static final Predicate<COUNTERTitleUsage> filter =
       u ->
-          u.getDataType().equals(DataTypeEnum.JOURNAL)
-              && u.getAccessMethod().equals(AccessMethodEnum.REGULAR)
+          DataTypeEnum.JOURNAL.equals(u.getDataType())
+              && AccessMethodEnum.REGULAR.equals(u.getAccessMethod())
               && u.getPerformance().stream()
                   .anyMatch(p -> p.getInstance().stream().anyMatch(hasMetricType));
 

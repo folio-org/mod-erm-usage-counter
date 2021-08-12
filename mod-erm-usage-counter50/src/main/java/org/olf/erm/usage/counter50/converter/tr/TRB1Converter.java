@@ -26,9 +26,9 @@ public class TRB1Converter extends TRConverterBase {
 
   private static final Predicate<COUNTERTitleUsage> filter =
       u ->
-          u.getDataType().equals(DataTypeEnum.BOOK)
-              && u.getAccessMethod().equals(AccessMethodEnum.REGULAR)
-              && u.getAccessType().equals(AccessTypeEnum.CONTROLLED)
+          DataTypeEnum.BOOK.equals(u.getDataType())
+              && AccessMethodEnum.REGULAR.equals(u.getAccessMethod())
+              && AccessTypeEnum.CONTROLLED.equals(u.getAccessType())
               && u.getPerformance().stream()
                   .anyMatch(p -> p.getInstance().stream().anyMatch(hasMetricType));
 
