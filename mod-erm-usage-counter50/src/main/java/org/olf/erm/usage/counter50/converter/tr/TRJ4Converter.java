@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter50.converter.tr;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -63,7 +64,7 @@ public class TRJ4Converter extends TRConverterBase {
   @Override
   public Function<COUNTERTitleUsage, List<Object>> getGroupByAttributes() {
     return u ->
-        List.of(
+        Arrays.asList(
             u.getTitle(),
             u.getItemID(),
             u.getPlatform(),
