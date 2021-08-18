@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter50.converter.tr;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -27,9 +28,9 @@ public class TRJ4Converter extends TRConverterBase {
 
   private static final Predicate<COUNTERTitleUsage> filter =
       u ->
-          u.getDataType().equals(DataTypeEnum.JOURNAL)
-              && u.getAccessMethod().equals(AccessMethodEnum.REGULAR)
-              && u.getAccessType().equals(AccessTypeEnum.CONTROLLED)
+          DataTypeEnum.JOURNAL.equals(u.getDataType())
+              && AccessMethodEnum.REGULAR.equals(u.getAccessMethod())
+              && AccessTypeEnum.CONTROLLED.equals(u.getAccessType())
               && u.getPerformance().stream()
                   .anyMatch(p -> p.getInstance().stream().anyMatch(hasMetricType));
 
@@ -63,7 +64,7 @@ public class TRJ4Converter extends TRConverterBase {
   @Override
   public Function<COUNTERTitleUsage, List<Object>> getGroupByAttributes() {
     return u ->
-        List.of(
+        Arrays.asList(
             u.getTitle(),
             u.getItemID(),
             u.getPlatform(),

@@ -28,7 +28,7 @@ public class DRD1Converter extends DRConverterBase {
 
   private static final Predicate<COUNTERDatabaseUsage> filter =
       u ->
-          u.getAccessMethod().equals(AccessMethodEnum.REGULAR)
+          AccessMethodEnum.REGULAR.equals(u.getAccessMethod())
               && u.getPerformance().stream()
                   .anyMatch(p -> p.getInstance().stream().anyMatch(hasMetricType));
 

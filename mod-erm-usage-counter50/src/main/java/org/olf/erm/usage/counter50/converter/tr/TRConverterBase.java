@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,7 +19,8 @@ public abstract class TRConverterBase implements Converter<COUNTERTitleReport> {
 
   protected Function<COUNTERTitleUsage, List<Object>> getGroupByAttributes() {
     return u ->
-        List.of(u.getTitle(), u.getItemID(), u.getPlatform(), u.getPublisher(), u.getPublisherID());
+        Arrays.asList(
+            u.getTitle(), u.getItemID(), u.getPlatform(), u.getPublisher(), u.getPublisherID());
   }
 
   protected List<COUNTERTitleUsage> createNewReportItems(

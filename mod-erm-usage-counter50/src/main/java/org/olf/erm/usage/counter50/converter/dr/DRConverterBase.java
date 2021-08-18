@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,7 +19,7 @@ public abstract class DRConverterBase implements Converter<COUNTERDatabaseReport
 
   protected Function<COUNTERDatabaseUsage, List<Object>> getGroupByAttributes() {
     return u ->
-        List.of(
+        Arrays.asList(
             u.getDatabase(), u.getPlatform(), u.getItemID(), u.getPublisher(), u.getPublisherID());
   }
 
