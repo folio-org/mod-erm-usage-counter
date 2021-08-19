@@ -11,6 +11,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -45,9 +48,14 @@ public class ExcelUtil {
                       int lastCellNum = row.getLastCellNum() - 1;
                       return IntStream.rangeClosed(0, lastCellNum)
                           .mapToObj(
-                              cn ->
-                                  row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK)
-                                      .getStringCellValue())
+                              cn -> {
+                                Cell cell = row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                  return String.valueOf((int) cell.getNumericCellValue());
+                                } else {
+                                  return cell.getStringCellValue();
+                                }
+                              })
                           .collect(Collectors.toList());
                     })
                 .collect(Collectors.toList());
@@ -72,13 +80,24 @@ public class ExcelUtil {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     try (Workbook wb = new XSSFWorkbook()) {
       Sheet sheet = wb.createSheet();
+      CellStyle numberCellStyle = wb.createCellStyle();
+      numberCellStyle.setDataFormat((short) 1);
 
-      List<String> line;
+      List<String> columns;
       int rowNo = 0;
-      while ((line = csvListReader.read()) != null) {
+      while ((columns = csvListReader.read()) != null) {
         Row row = sheet.createRow(rowNo++);
         AtomicInteger cellNo = new AtomicInteger();
-        line.forEach(s -> row.createCell(cellNo.getAndIncrement()).setCellValue(s));
+        columns.forEach(
+            s -> {
+              Cell cell = row.createCell(cellNo.getAndIncrement());
+              try {
+                cell.setCellValue(Integer.parseInt(s));
+                cell.setCellStyle(numberCellStyle);
+              } catch (NumberFormatException e) {
+                cell.setCellValue(s);
+              }
+            });
       }
 
       wb.write(baos);
