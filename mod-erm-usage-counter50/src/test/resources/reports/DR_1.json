@@ -23,8 +23,7 @@
         "Value": "2019-01-31"
       }
     ],
-    "Institution_Name": "My Institution",
-    "Report_Attributes": []
+    "Institution_Name": "My Institution"
   },
   "Report_Items": [
     {
@@ -64,8 +63,7 @@
             }
           ]
         }
-      ],
-      "Publisher_ID": []
+      ]
     },
     {
       "Database": "Database 2",
@@ -100,8 +98,7 @@
             }
           ]
         }
-      ],
-      "Publisher_ID": []
+      ]
     },
     {
       "Database": "Database 3",
@@ -140,8 +137,7 @@
             }
           ]
         }
-      ],
-      "Publisher_ID": []
+      ]
     },
     {
       "Database": "Database 4",
@@ -160,8 +156,7 @@
             }
           ]
         }
-      ],
-      "Publisher_ID": []
+      ]
     }
   ]
 }
