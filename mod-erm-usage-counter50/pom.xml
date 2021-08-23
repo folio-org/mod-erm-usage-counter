@@ -12,7 +12,7 @@
   <artifactId>mod-erm-usage-counter50</artifactId>
 
   <properties>
-    <openapi.generator.version>4.0.3</openapi.generator.version>
+    <openapi.generator.version>4.1.1</openapi.generator.version>
     <gson-fire-version>1.8.3</gson-fire-version>
     <swagger-annotations-version>1.5.21</swagger-annotations-version>
     <retrofit-version>2.5.0</retrofit-version>
