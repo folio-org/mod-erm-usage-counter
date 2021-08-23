@@ -1,6 +1,8 @@
 package org.olf.erm.usage.counter50.csv.mapper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.DRCsvToReport;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.IRCsvToReport;
@@ -61,18 +63,24 @@ public final class MapperFactory {
 
   public static CsvToReportMapper createCsvToReportMapper(String csvReport) throws MapperException {
     try {
-      if (csvReport.startsWith("Report_Name,Title Master Report")) {
+      BufferedReader br = new BufferedReader(new StringReader(csvReport));
+      String firstLine = br.readLine();
+      if (firstLine == null) {
+        throw new MapperException("Cant read first line.");
+      }
+
+      if (firstLine.contains("Title Master Report")) {
         return new TRCsvToReport(csvReport);
-      } else if (csvReport.startsWith("Report_Name,Item Master Report")) {
+      } else if (firstLine.contains("Item Master Report")) {
         return new IRCsvToReport(csvReport);
-      } else if (csvReport.startsWith("Report_Name,Platform Master Report")) {
+      } else if (firstLine.contains("Platform Master Report")) {
         return new PRCsvToReport(csvReport);
-      } else if (csvReport.startsWith("Report_Name,Database Master Report")) {
+      } else if (firstLine.contains("Database Master Report")) {
         return new DRCsvToReport(csvReport);
       } else {
         throw new MapperException("Cannot create CsvToReportMapper. Report has unknown name.");
       }
-    } catch (IOException | MapperException e) {
+    } catch (IOException e) {
       throw new MapperException("Cannot create CsvToReportMapper. " + e.getCause());
     }
   }

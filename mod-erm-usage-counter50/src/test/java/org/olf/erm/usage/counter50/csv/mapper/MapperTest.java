@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.csv.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Resources;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
+import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
@@ -109,6 +111,36 @@ public class MapperTest {
       for (String s : split) {
         assertThat(actualLine).contains(s.trim());
       }
+    }
+  }
+
+  public static class MapperFactoryTest {
+
+    @Test
+    public void testCsvWithQuotes() throws IOException, MapperException {
+      String inputStr =
+          Resources.toString(
+              Resources.getResource("reports/TR_withquotes.csv"), StandardCharsets.UTF_8);
+      CsvToReportMapper result = MapperFactory.createCsvToReportMapper(inputStr);
+      assertThat(result).isInstanceOf(TRCsvToReport.class);
+    }
+
+    @Test
+    public void testCsvWithNoContent() {
+      String inputStr = "";
+      assertThatThrownBy(() -> MapperFactory.createCsvToReportMapper(inputStr))
+          .isInstanceOf(MapperException.class)
+          .hasMessageContaining("Cant read first line");
+    }
+
+    @Test
+    public void testCsvWithUnknownReport() throws IOException {
+      String inputStr =
+          Resources.toString(
+              Resources.getResource("reports/TRB1_merged.csv"), StandardCharsets.UTF_8);
+      assertThatThrownBy(() -> MapperFactory.createCsvToReportMapper(inputStr))
+          .isInstanceOf(MapperException.class)
+          .hasMessageContaining("unknown name");
     }
   }
 }
