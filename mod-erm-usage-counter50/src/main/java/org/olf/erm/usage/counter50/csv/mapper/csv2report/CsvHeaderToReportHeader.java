@@ -45,7 +45,7 @@ public class CsvHeaderToReportHeader {
                   return identifiers;
                 })
             .collect(Collectors.toList());
-    sushiReportHeader.setInstitutionID(orgIdentifiers);
+    sushiReportHeader.setInstitutionID((orgIdentifiers.isEmpty()) ? null : orgIdentifiers);
 
     String repPeriod = headerColumns.getOrDefault("Reporting_Period", "");
     String[] splittedRepPeriod = repPeriod == null ? new String[0] : repPeriod.split(";");
@@ -61,7 +61,8 @@ public class CsvHeaderToReportHeader {
                   return reportFilters;
                 })
             .collect(Collectors.toList());
-    sushiReportHeader.setReportFilters(headerReportFilters);
+    sushiReportHeader.setReportFilters(
+        (headerReportFilters.isEmpty()) ? null : headerReportFilters);
 
     String reportAttrs =
         headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES, "");
@@ -78,7 +79,8 @@ public class CsvHeaderToReportHeader {
                   return attributes;
                 })
             .collect(Collectors.toList());
-    sushiReportHeader.setReportAttributes(headerReportAttributes);
+    sushiReportHeader.setReportAttributes(
+        (headerReportAttributes.isEmpty()) ? null : headerReportAttributes);
 
     String errors = headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS, "");
     String[] splittedErrors = errors == null ? new String[0] : errors.split(";");
@@ -108,7 +110,7 @@ public class CsvHeaderToReportHeader {
                   return sushiErrorModel;
                 })
             .collect(Collectors.toList());
-    sushiReportHeader.setExceptions(errorModels);
+    sushiReportHeader.setExceptions((errorModels.isEmpty()) ? null : errorModels);
     return sushiReportHeader;
   }
 }
