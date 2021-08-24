@@ -1,3 +1,11 @@
+## 2.2.0
+
+* [MODEUSCNT-17](https://issues.folio.org/browse/MODEUSCNT-17) Security vulnerabilites CVE-2021-21429, CVE-2021-21430
+* [MODEUSCNT-16](https://issues.folio.org/browse/MODEUSCNT-16) Incorrect cell formatting in xlsx
+* [MODEUSCNT-15](https://issues.folio.org/browse/MODEUSCNT-15) NullPointerException when converting master reports into standard views
+* [MODEUSCNT-13](https://issues.folio.org/browse/MODEUSCNT-13) CSV files not recognized as report if the first line contains quotes
+* [MODEUSCNT-11](https://issues.folio.org/browse/MODEUSCNT-11) Create csv mappings for Standard Report Views
+
 ## 2.1.0
 
 * Add functionality for converting Master Reports into Standard Report
