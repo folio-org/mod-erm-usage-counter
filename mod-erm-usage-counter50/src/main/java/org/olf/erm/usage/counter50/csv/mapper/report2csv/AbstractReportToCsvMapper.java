@@ -124,7 +124,9 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
   }
 
   private String getInstitutionId() {
-    return this.header.getInstitutionID().stream()
+    return java.util.Optional.ofNullable(this.header.getInstitutionID())
+        .orElse(Collections.emptyList())
+        .stream()
         .map(instId -> String.format(FORMAT_EQUALS, instId.getType(), instId.getValue()))
         .collect(Collectors.joining("; "));
   }
@@ -139,7 +141,9 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
   }
 
   private String getReportAttributes() {
-    return this.header.getReportAttributes().stream()
+    return java.util.Optional.ofNullable(this.header.getReportAttributes())
+        .orElse(Collections.emptyList())
+        .stream()
         .map(
             reportFilter ->
                 String.format(FORMAT_EQUALS, reportFilter.getName(), reportFilter.getValue()))
@@ -147,7 +151,9 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
   }
 
   private String getExceptions() {
-    return this.header.getExceptions().stream()
+    return java.util.Optional.ofNullable(this.header.getExceptions())
+        .orElse(Collections.emptyList())
+        .stream()
         .map(
             e ->
                 String.format(

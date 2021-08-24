@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter50.merger;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.client.model.SUSHIOrgIdentifiers;
@@ -33,10 +34,14 @@ public abstract class ReportsMerger<T> {
 
     List<SUSHIReportHeaderReportAttributes> reportAttributes =
         headers.stream()
-            .flatMap(h -> h.getReportAttributes().stream())
+            .flatMap(
+                h ->
+                    Optional.ofNullable(h.getReportAttributes())
+                        .orElse(Collections.emptyList())
+                        .stream())
             .distinct()
             .collect(Collectors.toList());
-    result.setReportAttributes(reportAttributes);
+    result.setReportAttributes((reportAttributes.isEmpty()) ? null : reportAttributes);
 
     result.setReportFilters(mergeReportFilters(headers));
     return result;
