@@ -17,10 +17,10 @@ import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.DatabaseUsageMer
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
 import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERDatabaseUsage;
+import org.openapitools.client.model.COUNTERDatabaseUsage.AccessMethodEnum;
+import org.openapitools.client.model.COUNTERDatabaseUsage.DataTypeEnum;
 import org.openapitools.client.model.COUNTERItemIdentifiers;
 import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERTitleUsage.AccessMethodEnum;
-import org.openapitools.client.model.COUNTERTitleUsage.DataTypeEnum;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
