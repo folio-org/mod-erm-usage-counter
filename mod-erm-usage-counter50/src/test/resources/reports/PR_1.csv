@@ -12,9 +12,9 @@ Created,$$$date_run$$$
 Created_By,FooBar Systems
 
 Platform,Data_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019
-My Journals,,,Searches_Platform,4,4
-My Journals,,,Total_Item_Investigations,221,221
-My Journals,,,Total_Item_Requests,141,141
-My Journals,,,Unique_Item_Investigations,159,159
-My Journals,,,Unique_Item_Requests,111,111
+My Journals,Journal,Regular,Searches_Platform,4,4
+My Journals,Journal,Regular,Total_Item_Investigations,221,221
+My Journals,Journal,Regular,Total_Item_Requests,141,141
+My Journals,Journal,Regular,Unique_Item_Investigations,159,159
+My Journals,Journal,Regular,Unique_Item_Requests,111,111
 

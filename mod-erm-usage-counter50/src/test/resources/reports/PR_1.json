@@ -27,6 +27,8 @@
   "Report_Items": [
     {
       "Platform": "My Journals",
+      "Data_Type": "Journal",
+      "Access_Method": "Regular",
       "Performance": [
         {
           "Period": {
