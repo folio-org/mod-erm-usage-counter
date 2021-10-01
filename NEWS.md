@@ -1,3 +1,7 @@
+## 2.2.1
+
+* [MODEUSCNT-19](https://issues.folio.org/browse/MODEUSCNT-19) Fix wrong column type used in PRCsvToReport.java
+
 ## 2.2.0
 
 * [MODEUSCNT-17](https://issues.folio.org/browse/MODEUSCNT-17) Security vulnerabilites CVE-2021-21429, CVE-2021-21430
