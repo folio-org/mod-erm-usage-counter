@@ -128,7 +128,11 @@ public class Counter5UtilsTest {
           new Object[] {"TRJ1_merged", COUNTERTitleReport.class},
           new Object[] {"DR_merged", COUNTERDatabaseReport.class},
           new Object[] {"IR_merged", COUNTERItemReport.class},
-          new Object[] {"PR_merged", COUNTERPlatformReport.class});
+          new Object[] {"PR_merged", COUNTERPlatformReport.class},
+          new Object[] {"full/tr", COUNTERTitleReport.class},
+          new Object[] {"full/dr", COUNTERDatabaseReport.class},
+          new Object[] {"full/ir", COUNTERItemReport.class},
+          new Object[] {"full/pr", COUNTERPlatformReport.class});
     }
 
     @Test
@@ -143,7 +147,16 @@ public class Counter5UtilsTest {
 
       sort(mergedReport);
       sort(expectedReport);
-      assertThat(mergedReport).isEqualTo(expectedReport);
+      assertThat(mergedReport)
+          .usingRecursiveComparison()
+          .withEqualsForFields(
+              (List<?> a, List<?> e) ->
+                  ((a == null || a.isEmpty()) && (e == null || e.isEmpty()))
+                      || (a != null && a.equals(e)),
+              "reportHeader.exceptions",
+              "reportHeader.reportAttributes",
+              "reportItems.itemID")
+          .isEqualTo(expectedReport);
     }
   }
 }
