@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.merger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openapitools.client.model.COUNTERDatabaseReport;
@@ -28,7 +29,19 @@ public class DRReportsMerger extends ReportsMerger<COUNTERDatabaseReport> {
   private List<COUNTERDatabaseUsage> mergeDatabaseUsages(List<COUNTERDatabaseUsage> dbUsages) {
     return new ArrayList<>(
         dbUsages.stream()
-            .collect(Collectors.toMap(COUNTERDatabaseUsage::getDatabase, t -> t, this::merge))
+            .collect(
+                Collectors.toMap(
+                    du ->
+                        Arrays.asList(
+                            du.getDatabase(),
+                            du.getPublisher(),
+                            du.getPublisherID(),
+                            du.getPlatform(),
+                            du.getItemID(),
+                            du.getDataType(),
+                            du.getAccessMethod()),
+                    du -> du,
+                    this::merge))
             .values());
   }
 
