@@ -65,17 +65,6 @@ public class Counter5UtilsTest {
       }
       assertThat(Counter5Utils.isValidReportHeader(header)).isEqualTo(ex);
     }
-
-    @Test
-    public void testIsValidReport2() {
-      SUSHIReportHeader header = null;
-      try {
-        header = Counter5Utils.getSushiReportHeader(s);
-      } catch (Counter5UtilsException e) {
-        // ignore -> header == null
-      }
-      assertThat(Counter5Utils.isValidReportHeader(header)).isEqualTo(ex);
-    }
   }
 
   @RunWith(Parameterized.class)
