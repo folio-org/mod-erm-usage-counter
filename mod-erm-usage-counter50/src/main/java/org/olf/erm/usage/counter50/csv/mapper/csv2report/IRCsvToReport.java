@@ -7,9 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessMethod;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessType;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseDataType;
+import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemAttributes;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemComponent;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemContributors;
@@ -212,10 +210,11 @@ public class IRCsvToReport extends AbstractCsvToReport {
             new Optional(), // Component_Print_ISSN
             new Optional(), // Component_Online_ISSN
             new Optional(), // Component_URI
-            new Optional(new ParseDataType()), // Data_Type
+            new Optional(new ParseEnumType<>(COUNTERItemUsage.DataTypeEnum.class)), // Data_Type
             new Optional(), // YOP
-            new Optional(new ParseAccessType()), // Access_Type
-            new Optional(new ParseAccessMethod()), // Access_Method
+            new Optional(new ParseEnumType<>(COUNTERItemUsage.AccessTypeEnum.class)), // Access_Type
+            new Optional(
+                new ParseEnumType<>(COUNTERItemUsage.AccessMethodEnum.class)), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
             );
