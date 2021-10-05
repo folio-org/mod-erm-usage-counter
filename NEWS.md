@@ -1,3 +1,7 @@
+## 2.2.2
+
+* [MODEUSCNT-20](https://issues.folio.org/browse/MODEUSCNT-20) Reading data from CSV reports results in invalid JSON report data
+
 ## 2.2.1
 
 * [MODEUSCNT-19](https://issues.folio.org/browse/MODEUSCNT-19) Fix wrong column type used in PRCsvToReport.java
