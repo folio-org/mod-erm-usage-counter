@@ -135,9 +135,9 @@ public class IRCsvToReport extends AbstractCsvToReport {
           "Publisher",
           "PublisherID",
           "Platform",
-          "ItemContributors[0]",
-          "ItemDates[0]",
-          "ItemAttributes[0]",
+          "ItemContributors",
+          "ItemDates",
+          "ItemAttributes",
           "ItemID[0]",
           "ItemID[1]",
           "ItemID[2]",
@@ -155,7 +155,7 @@ public class IRCsvToReport extends AbstractCsvToReport {
           null, // Parent_Print_ISSN
           null, // Parent_Online_ISSN
           null, // Parent_URI
-          "ItemComponent[0]", // Component_Title
+          "ItemComponent", // Component_Title
           null, // Component_Authors
           null, // Component_Publication_Date
           null, // Component_Data_Type
