@@ -27,6 +27,7 @@ import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERPlatformReport;
 import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.client.model.SUSHIErrorModel;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
@@ -65,11 +66,24 @@ public class MapperTest {
 
       assertThat(actualReport)
           .usingRecursiveComparison()
+          .withEqualsForFields( // remove linebreaks in SUSHIErrorModel.data
+              (List<SUSHIErrorModel> a, List<SUSHIErrorModel> e) -> {
+                if ((a == null || a.isEmpty()) && (e == null || e.isEmpty())) {
+                  return true;
+                }
+                e.forEach(
+                    em -> {
+                      if (em.getData() != null) {
+                        em.setData(em.getData().replaceAll("\\R", " "));
+                      }
+                    });
+                return a != null && a.equals(e);
+              },
+              "reportHeader.exceptions")
           .withEqualsForFields(
               (List<?> a, List<?> e) ->
                   ((a == null || a.isEmpty()) && (e == null || e.isEmpty()))
                       || (a != null && a.equals(e)),
-              "reportHeader.exceptions",
               "reportHeader.reportAttributes",
               "reportItems.itemID")
           .ignoringFields("reportHeader.created", "reportHeader.customerID")
