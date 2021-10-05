@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.csv.mapper.csv2report.merger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openapitools.client.model.COUNTERPlatformUsage;
@@ -9,16 +10,22 @@ public class PlatformUsageMerger extends AbstractMerger<COUNTERPlatformUsage> {
 
   @Override
   public List<COUNTERPlatformUsage> mergeItems(List<COUNTERPlatformUsage> items) {
-    // merge by platform
+    // merge by everything except performance
     ArrayList<COUNTERPlatformUsage> result =
         new ArrayList<>(
             items.stream()
-                .collect(Collectors.toMap(COUNTERPlatformUsage::getPlatform, it -> it, this::merge))
+                .collect(
+                    Collectors.toMap(
+                        cpu ->
+                            Arrays.asList(
+                                cpu.getPlatform(), cpu.getDataType(), cpu.getAccessMethod()),
+                        cpu -> cpu,
+                        this::merge))
                 .values());
 
-    result.forEach(ctu -> ctu.setPerformance(removeNullPerformances(ctu.getPerformance())));
+    result.forEach(cpu -> cpu.setPerformance(removeNullPerformances(cpu.getPerformance())));
 
-    result.forEach(ctu -> ctu.setPerformance(mergeItemPerformances(ctu.getPerformance())));
+    result.forEach(cpu -> cpu.setPerformance(mergeItemPerformances(cpu.getPerformance())));
     return result;
   }
 

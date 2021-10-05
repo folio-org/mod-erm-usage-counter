@@ -96,15 +96,15 @@ public class CsvHeaderToReportHeader {
                             "Exception needs to have at least 3 entries: code, severity, message. Got exception: %s",
                             s));
                   } else {
-                    sushiErrorModel.setSeverity(SeverityEnum.fromValue(split[0]));
-                    sushiErrorModel.setCode(Integer.valueOf(split[1]));
-                    sushiErrorModel.setMessage(split[2]);
+                    sushiErrorModel.setSeverity(SeverityEnum.fromValue(split[0].trim()));
+                    sushiErrorModel.setCode(Integer.valueOf(split[1].trim()));
+                    sushiErrorModel.setMessage(split[2].trim());
 
-                    if (split.length > 3) {
-                      sushiErrorModel.setData(split[3]);
+                    if (split.length > 3 && !split[3].trim().equals("null")) {
+                      sushiErrorModel.setData(split[3].trim());
                     }
-                    if (split.length > 4) {
-                      sushiErrorModel.setHelpURL(split[4]);
+                    if (split.length > 4 && !split[4].trim().equals("null")) {
+                      sushiErrorModel.setHelpURL(split[4].trim());
                     }
                   }
                   return sushiErrorModel;

@@ -5,11 +5,10 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessMethod;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessType;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseDataType;
+import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemIDs;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseMetricTypes;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParsePublisherID;
@@ -59,6 +58,15 @@ public class TRCsvToReport extends AbstractCsvToReport {
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
+    titleUsages.forEach(
+        ctu -> {
+          if (ctu.getItemID() != null) {
+            ctu.getItemID().removeIf(Objects::isNull);
+            if (ctu.getItemID().isEmpty()) {
+              ctu.setItemID(null);
+            }
+          }
+        });
     result.setReportItems(itemsMerger.mergeItems(titleUsages));
     return result;
   }
@@ -103,11 +111,13 @@ public class TRCsvToReport extends AbstractCsvToReport {
             new Optional(new ParseItemIDs(TypeEnum.PRINT_ISSN)), // Print ISSN
             new Optional(new ParseItemIDs(TypeEnum.ONLINE_ISSN)), // Online ISSN
             new Optional(new ParseItemIDs((TypeEnum.URI))), // URI
-            new Optional(new ParseDataType()), // Data_Type
+            new Optional(new ParseEnumType<>(COUNTERTitleUsage.DataTypeEnum.class)), // Data_Type
             new Optional(new ParseSectionType()), // Section_Type
             new Optional(), // YOP
-            new Optional(new ParseAccessType()), // Access_Type
-            new Optional(new ParseAccessMethod()), // Access_Method
+            new Optional(
+                new ParseEnumType<>(COUNTERTitleUsage.AccessTypeEnum.class)), // Access_Type
+            new Optional(
+                new ParseEnumType<>(COUNTERTitleUsage.AccessMethodEnum.class)), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
             );
