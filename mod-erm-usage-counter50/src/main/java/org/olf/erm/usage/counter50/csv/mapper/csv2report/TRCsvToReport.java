@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
@@ -57,6 +58,15 @@ public class TRCsvToReport extends AbstractCsvToReport {
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
+    titleUsages.forEach(
+        ctu -> {
+          if (ctu.getItemID() != null) {
+            ctu.getItemID().removeIf(Objects::isNull);
+            if (ctu.getItemID().isEmpty()) {
+              ctu.setItemID(null);
+            }
+          }
+        });
     result.setReportItems(itemsMerger.mergeItems(titleUsages));
     return result;
   }
