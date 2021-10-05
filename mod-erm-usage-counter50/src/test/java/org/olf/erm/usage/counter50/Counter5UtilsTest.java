@@ -1,10 +1,10 @@
 package org.olf.erm.usage.counter50;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.olf.erm.usage.counter50.TestUtil.sort;
 
 import com.google.common.io.Resources;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.YearMonth;
 import java.util.Arrays;
@@ -19,6 +19,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
+import org.openapitools.client.model.COUNTERDatabaseReport;
+import org.openapitools.client.model.COUNTERItemReport;
+import org.openapitools.client.model.COUNTERPlatformReport;
+import org.openapitools.client.model.COUNTERTitleReport;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 
@@ -118,29 +122,39 @@ public class Counter5UtilsTest {
   }
 
   @RunWith(Parameterized.class)
-  public static class SplitReportsTest {
+  public static class SplitAndMergeTest<T> {
 
-    private final String input;
+    private final String reportName;
+    private final Class<T> clazz;
 
-    public SplitReportsTest(String reportName) {
-      this.input = "reports/" + reportName + ".json";
+    public SplitAndMergeTest(String reportName, Class<T> clazz) {
+      this.reportName = reportName;
+      this.clazz = clazz;
     }
 
-    @Parameters
-    public static Collection params() {
-      return Arrays.asList("DR_merged", "IR_merged", "PR_merged", "TR_merged");
+    @Parameters(name = "{0}")
+    public static Collection<Object[]> params() {
+      return List.of(
+          new Object[] {"TR_merged", COUNTERTitleReport.class},
+          new Object[] {"TRJ1_merged", COUNTERTitleReport.class},
+          new Object[] {"DR_merged", COUNTERDatabaseReport.class},
+          new Object[] {"IR_merged", COUNTERItemReport.class},
+          new Object[] {"PR_merged", COUNTERPlatformReport.class});
     }
 
     @Test
-    public void testSplitReport() throws IOException, Counter5UtilsException {
-      URL url = Resources.getResource(input);
-      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
-      Object report = Counter5Utils.fromJSON(jsonString);
-      List splittedReports = Counter5Utils.split(report);
+    public void testSplitAndMerge() throws IOException, Counter5UtilsException {
+      String expectedReportStr =
+          Resources.toString(
+              Resources.getResource("reports/" + reportName + ".json"), StandardCharsets.UTF_8);
+      T expectedReport = clazz.cast(Counter5Utils.fromJSON(expectedReportStr));
 
-      SUSHIReportHeader sushiReportHeader = Counter5Utils.getSushiReportHeader(jsonString);
-      List<YearMonth> yms = Counter5Utils.getYearMonthsFromReportHeader(sushiReportHeader);
-      assertThat(splittedReports.size()).isEqualTo(yms.size());
+      List split = Counter5Utils.split(expectedReport);
+      T mergedReport = clazz.cast(Counter5Utils.merge(split));
+
+      sort(mergedReport);
+      sort(expectedReport);
+      assertThat(mergedReport).isEqualTo(expectedReport);
     }
   }
 }
