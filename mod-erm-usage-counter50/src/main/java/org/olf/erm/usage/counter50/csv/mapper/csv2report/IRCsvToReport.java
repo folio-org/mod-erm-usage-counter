@@ -5,11 +5,10 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessMethod;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessType;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseDataType;
+import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemAttributes;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemComponent;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemContributors;
@@ -66,6 +65,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
+    itemUsages.forEach(
+        ciu -> {
+          if (ciu.getItemID() != null) {
+            ciu.getItemID().removeIf(Objects::isNull);
+            if (ciu.getItemID().isEmpty()) {
+              ciu.setItemID(null);
+            }
+          }
+        });
+
     result.setReportItems(itemsMerger.mergeItems(itemUsages));
     return result;
   }
@@ -126,9 +135,9 @@ public class IRCsvToReport extends AbstractCsvToReport {
           "Publisher",
           "PublisherID",
           "Platform",
-          "ItemContributors[0]",
-          "ItemDates[0]",
-          "ItemAttributes[0]",
+          "ItemContributors",
+          "ItemDates",
+          "ItemAttributes",
           "ItemID[0]",
           "ItemID[1]",
           "ItemID[2]",
@@ -146,7 +155,7 @@ public class IRCsvToReport extends AbstractCsvToReport {
           null, // Parent_Print_ISSN
           null, // Parent_Online_ISSN
           null, // Parent_URI
-          "ItemComponent[0]", // Component_Title
+          "ItemComponent", // Component_Title
           null, // Component_Authors
           null, // Component_Publication_Date
           null, // Component_Data_Type
@@ -212,10 +221,11 @@ public class IRCsvToReport extends AbstractCsvToReport {
             new Optional(), // Component_Print_ISSN
             new Optional(), // Component_Online_ISSN
             new Optional(), // Component_URI
-            new Optional(new ParseDataType()), // Data_Type
+            new Optional(new ParseEnumType<>(COUNTERItemUsage.DataTypeEnum.class)), // Data_Type
             new Optional(), // YOP
-            new Optional(new ParseAccessType()), // Access_Type
-            new Optional(new ParseAccessMethod()), // Access_Method
+            new Optional(new ParseEnumType<>(COUNTERItemUsage.AccessTypeEnum.class)), // Access_Type
+            new Optional(
+                new ParseEnumType<>(COUNTERItemUsage.AccessMethodEnum.class)), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
             );

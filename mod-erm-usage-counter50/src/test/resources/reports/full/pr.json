@@ -1,0 +1,157 @@
+{
+  "Report_Header": {
+    "Customer_ID": "custId123",
+    "Institution_Name": "Institution XY",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "ar:12345"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2021-01-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2021-03-31"
+      }
+    ],
+    "Report_Attributes": [
+      {
+        "Name": "Attributes_To_Show",
+        "Value": "Data_Type|Access_Method"
+      }
+    ],
+    "Created": "2021-10-02T12:21:10Z",
+    "Created_By": "Atypon Systems LLC.",
+    "Release": "5",
+    "Report_ID": "PR",
+    "Report_Name": "Platform Master Report"
+  },
+  "Report_Items": [
+    {
+      "Platform": "Annual Reviews",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Platform",
+              "Count": 69
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-02-01",
+            "End_Date": "2021-02-28"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Platform",
+              "Count": 55
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-03-01",
+            "End_Date": "2021-03-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Searches_Platform",
+              "Count": 50
+            }
+          ]
+        }
+      ],
+      "Access_Method": "Regular",
+      "Data_Type": "Platform"
+    },
+    {
+      "Platform": "Annual Reviews",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 640
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 865
+            },
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 721
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1169
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-02-01",
+            "End_Date": "2021-02-28"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 521
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 720
+            },
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 587
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 960
+            }
+          ]
+        },
+        {
+          "Period": {
+            "Begin_Date": "2021-03-01",
+            "End_Date": "2021-03-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 550
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 752
+            },
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 633
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1006
+            }
+          ]
+        }
+      ],
+      "Access_Method": "Regular",
+      "Data_Type": "Journal"
+    }
+  ]
+}

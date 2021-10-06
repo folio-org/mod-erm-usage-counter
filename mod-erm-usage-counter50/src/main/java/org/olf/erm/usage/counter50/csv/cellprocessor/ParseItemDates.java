@@ -1,5 +1,6 @@
 package org.olf.erm.usage.counter50.csv.cellprocessor;
 
+import java.util.Collections;
 import org.openapitools.client.model.COUNTERItemDates;
 import org.openapitools.client.model.COUNTERItemDates.TypeEnum;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
@@ -22,6 +23,6 @@ public class ParseItemDates extends CellProcessorAdaptor {
     COUNTERItemDates result = new COUNTERItemDates();
     result.setType(type);
     result.setValue((String) value);
-    return result;
+    return Collections.singletonList(result);
   }
 }

@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.merger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openapitools.client.model.COUNTERItemReport;
@@ -29,7 +30,24 @@ public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
         reportItems.stream()
             .collect(
                 Collectors.toMap(
-                    COUNTERItemUsage::getItemID, titleUsage -> titleUsage, this::merge))
+                    ciu ->
+                        Arrays.asList(
+                            ciu.getItem(),
+                            ciu.getPublisher(),
+                            ciu.getPublisherID(),
+                            ciu.getItemID(),
+                            ciu.getDataType(),
+                            ciu.getAccessMethod(),
+                            ciu.getAccessType(),
+                            ciu.getPlatform(),
+                            ciu.getYOP(),
+                            ciu.getItemAttributes(),
+                            ciu.getItemComponent(),
+                            ciu.getItemContributors(),
+                            ciu.getItemDates(),
+                            ciu.getItemParent()),
+                    ciu -> ciu,
+                    this::merge))
             .values());
   }
 

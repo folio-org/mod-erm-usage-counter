@@ -1,3 +1,11 @@
+## 2.2.2
+
+* [MODEUSCNT-20](https://issues.folio.org/browse/MODEUSCNT-20) Reading data from CSV reports results in invalid JSON report data
+
+## 2.2.1
+
+* [MODEUSCNT-19](https://issues.folio.org/browse/MODEUSCNT-19) Fix wrong column type used in PRCsvToReport.java
+
 ## 2.2.0
 
 * [MODEUSCNT-17](https://issues.folio.org/browse/MODEUSCNT-17) Security vulnerabilites CVE-2021-21429, CVE-2021-21430
