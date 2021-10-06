@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter50.csv.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.olf.erm.usage.counter50.TestUtil.sort;
 
 import com.google.common.io.Resources;
 import java.io.IOException;
@@ -22,9 +23,73 @@ import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
+import org.openapitools.client.model.COUNTERDatabaseReport;
+import org.openapitools.client.model.COUNTERItemReport;
+import org.openapitools.client.model.COUNTERPlatformReport;
+import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.client.model.SUSHIErrorModel;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
+
+  @RunWith(Parameterized.class)
+  public static class TestToAndFromCSV<T> {
+
+    private final String input;
+    private final Class<T> clazz;
+
+    public TestToAndFromCSV(String reportName, Class<T> clazz) {
+      this.input = "reports/full/" + reportName + ".json";
+      this.clazz = clazz;
+    }
+
+    @Parameters(name = "{0}")
+    public static Collection<Object[]> params() {
+      return List.of(
+          new Object[] {"tr", COUNTERTitleReport.class},
+          new Object[] {"pr", COUNTERPlatformReport.class},
+          new Object[] {"ir", COUNTERItemReport.class},
+          new Object[] {"dr", COUNTERDatabaseReport.class});
+    }
+
+    @Test
+    public void testToAndFromCSV() throws IOException, Counter5UtilsException, MapperException {
+      String expectedReportStr =
+          Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8);
+      T expectedReport = clazz.cast(Counter5Utils.fromJSON(expectedReportStr));
+
+      String csv = Counter5Utils.toCSV(expectedReport);
+      T actualReport = clazz.cast(Counter5Utils.fromCSV(csv));
+
+      sort(actualReport);
+      sort(expectedReport);
+
+      assertThat(actualReport)
+          .usingRecursiveComparison()
+          .withEqualsForFields( // remove linebreaks in SUSHIErrorModel.data
+              (List<SUSHIErrorModel> a, List<SUSHIErrorModel> e) -> {
+                if ((a == null || a.isEmpty()) && (e == null || e.isEmpty())) {
+                  return true;
+                }
+                e.forEach(
+                    em -> {
+                      if (em.getData() != null) {
+                        em.setData(em.getData().replaceAll("\\R", " "));
+                      }
+                    });
+                return a != null && a.equals(e);
+              },
+              "reportHeader.exceptions")
+          .withEqualsForFields(
+              (List<?> a, List<?> e) ->
+                  ((a == null || a.isEmpty()) && (e == null || e.isEmpty()))
+                      || (a != null && a.equals(e)),
+              "reportHeader.reportAttributes",
+              "reportItems.itemID")
+          .ignoringFields("reportHeader.created", "reportHeader.customerID")
+          .isEqualTo(expectedReport);
+    }
+  }
 
   @RunWith(Parameterized.class)
   public static class TestReportToCsv {

@@ -26,7 +26,7 @@ public abstract class AbstractMerger<T> implements Merger<T> {
     b.getInstance()
         .forEach(
             i -> {
-              if (i.getCount() != null) {
+              if (i.getCount() != 0) {
                 List<COUNTERItemPerformanceInstance> list = new ArrayList<>(a.getInstance());
                 list.add(i);
                 a.setInstance(list);

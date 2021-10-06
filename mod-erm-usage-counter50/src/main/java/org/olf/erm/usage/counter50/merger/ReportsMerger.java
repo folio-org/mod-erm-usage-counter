@@ -1,8 +1,10 @@
 package org.olf.erm.usage.counter50.merger;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.Counter5Utils;
@@ -44,6 +46,15 @@ public abstract class ReportsMerger<T> {
     result.setReportAttributes((reportAttributes.isEmpty()) ? null : reportAttributes);
 
     result.setReportFilters(mergeReportFilters(headers));
+    result.setExceptions(
+        headers.stream()
+            .map(SUSHIReportHeader::getExceptions)
+            .filter(Objects::nonNull)
+            .flatMap(Collection::stream)
+            .distinct()
+            .collect(
+                Collectors.collectingAndThen(
+                    Collectors.toList(), list -> (list.isEmpty()) ? null : list)));
     return result;
   }
 

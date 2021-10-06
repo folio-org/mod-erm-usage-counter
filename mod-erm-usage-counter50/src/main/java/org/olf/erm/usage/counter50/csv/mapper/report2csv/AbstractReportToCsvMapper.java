@@ -159,7 +159,8 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
                 String.format(
                     "%s - %s - %s - %s - %s",
                     e.getSeverity(), e.getCode(), e.getMessage(), e.getData(), e.getHelpURL()))
-        .collect(Collectors.joining("; "));
+        .collect(Collectors.joining("; "))
+        .replaceAll("\\R", " ");
   }
 
   private String[] createFullHeader() {

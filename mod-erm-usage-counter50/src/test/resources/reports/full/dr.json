@@ -1,0 +1,115 @@
+{
+  "Report_Header": {
+    "Created": "2021-10-04T17:15:06Z",
+    "Created_By": "SpringerNature",
+    "Customer_ID": "custId123",
+    "Report_ID": "DR",
+    "Release": "5",
+    "Report_Name": "Database Master Report",
+    "Institution_Name": "Institution XY",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "SN:12345"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "Begin_Date",
+        "Value": "2021-01-01"
+      },
+      {
+        "Name": "End_Date",
+        "Value": "2021-01-31"
+      }
+    ],
+    "Report_Attributes": [],
+    "Exceptions": []
+  },
+  "Report_Items": [
+    {
+      "Database": "Springer Materials",
+      "Item_ID": [],
+      "Platform": "SpringerMaterials",
+      "Publisher": "mat",
+      "Publisher_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "SN:SpringerMaterials"
+        }
+      ],
+      "Data_Type": "Database",
+      "Access_Method": "Regular",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 205
+            },
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 195
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 206
+            },
+            {
+              "Metric_Type": "No_License",
+              "Count": 13
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 217
+            },
+            {
+              "Metric_Type": "Searches_Regular",
+              "Count": 217
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Database": "AdisInsight Drugs",
+      "Item_ID": [],
+      "Platform": "AdisInsight",
+      "Publisher": "adis",
+      "Publisher_ID": [
+        {
+          "Type": "Proprietary",
+          "Value": "SN:AdisInsight"
+        }
+      ],
+      "Data_Type": "Database",
+      "Access_Method": "Regular",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2021-01-01",
+            "End_Date": "2021-01-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 8
+            },
+            {
+              "Metric_Type": "No_License",
+              "Count": 8
+            },
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -7,8 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseAccessMethod;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseDataType;
+import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseMetricTypes;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
@@ -67,8 +66,9 @@ public class PRCsvToReport extends AbstractCsvToReport {
     List<CellProcessorAdaptor> first =
         Arrays.asList(
             new Optional(), // Platform
-            new Optional(new ParseDataType()), // Data_Type
-            new Optional(new ParseAccessMethod()), // Access_Type
+            new Optional(new ParseEnumType<>(COUNTERPlatformUsage.DataTypeEnum.class)), // Data_Type
+            new Optional(
+                new ParseEnumType<>(COUNTERPlatformUsage.AccessMethodEnum.class)), // Access_Method
             new Optional(), // Metric_Type
             new Optional() // Reporting_Period_Total
             );
