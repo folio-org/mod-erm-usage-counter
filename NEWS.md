@@ -1,3 +1,9 @@
+## 2.2.3
+
+* [MODEUSCNT-24](https://issues.folio.org/browse/MODEUSCNT-24) Update depencendies
+* [MODEUSCNT-23](https://issues.folio.org/browse/MODEUSCNT-23) commons-beanutils Arbitrary Code Execution (CVE-2014-0114)
+* [MODEUSCNT-22](https://issues.folio.org/browse/MODEUSCNT-22) Remove spring-context dependency
+
 ## 2.2.2
 
 * [MODEUSCNT-20](https://issues.folio.org/browse/MODEUSCNT-20) Reading data from CSV reports results in invalid JSON report data
