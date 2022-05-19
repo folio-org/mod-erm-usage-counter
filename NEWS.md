@@ -1,3 +1,7 @@
+## 2.2.4
+
+* [MODEUSCNT-25](https://issues.folio.org/browse/MODEUSCNT-25) Conflicting jackson versions
+
 ## 2.2.3
 
 * [MODEUSCNT-24](https://issues.folio.org/browse/MODEUSCNT-24) Update depencendies
