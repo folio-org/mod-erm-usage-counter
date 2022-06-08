@@ -1,3 +1,8 @@
+## 2.2.5
+
+* [MODEUSCNT-27](https://issues.folio.org/browse/MODEUSCNT-27) Report date only updated when a performance period exists
+* [MODEUSCNT-26](https://issues.folio.org/browse/MODEUSCNT-26) Publish javadoc and sources to maven repository
+
 ## 2.2.4
 
 * [MODEUSCNT-25](https://issues.folio.org/browse/MODEUSCNT-25) Conflicting jackson versions
