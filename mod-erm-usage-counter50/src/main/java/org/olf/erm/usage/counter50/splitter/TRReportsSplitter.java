@@ -5,7 +5,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.client.model.COUNTERItemPerformance;
 import org.openapitools.client.model.COUNTERItemPerformancePeriod;
@@ -40,21 +39,9 @@ public class TRReportsSplitter extends AbstractReportsSplitter<COUNTERTitleRepor
               .map(COUNTERTitleUsage::getPerformance)
               .forEach(list -> list.removeIf(metric -> !metric.getPeriod().equals(period)));
 
-          Optional<COUNTERItemPerformancePeriod> performance =
-              clone.getReportItems().stream()
-                  .flatMap(
-                      counterTitleUsage ->
-                          counterTitleUsage.getPerformance().stream()
-                              .map(COUNTERItemPerformance::getPeriod))
-                  .findFirst();
-
           List<SUSHIReportHeaderReportFilters> reportFilters =
               clone.getReportHeader().getReportFilters();
-          performance.ifPresent(
-              performancePeriod ->
-                  clone
-                      .getReportHeader()
-                      .setReportFilters(replaceBeginAndEndDate(reportFilters, performancePeriod)));
+          clone.getReportHeader().setReportFilters(replaceBeginAndEndDate(reportFilters, period));
           result.add(clone);
         });
     return result;

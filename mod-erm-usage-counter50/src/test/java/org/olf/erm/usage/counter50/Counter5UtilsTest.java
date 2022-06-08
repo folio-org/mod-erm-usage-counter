@@ -132,7 +132,8 @@ public class Counter5UtilsTest {
           new Object[] {"full/tr", COUNTERTitleReport.class},
           new Object[] {"full/dr", COUNTERDatabaseReport.class},
           new Object[] {"full/ir", COUNTERItemReport.class},
-          new Object[] {"full/pr", COUNTERPlatformReport.class});
+          new Object[] {"full/pr", COUNTERPlatformReport.class},
+          new Object[] {"full/dr_with_empty_months", COUNTERDatabaseReport.class});
     }
 
     @Test
