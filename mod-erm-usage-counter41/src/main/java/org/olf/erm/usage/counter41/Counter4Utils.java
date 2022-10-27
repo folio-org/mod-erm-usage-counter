@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter41;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static java.util.Map.entry;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,10 +14,8 @@ import java.io.StringWriter;
 import java.time.YearMonth;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -44,30 +43,54 @@ import org.w3c.dom.Node;
 public class Counter4Utils {
 
   public static final ObjectMapper mapper = createObjectMapper();
-  private static final Map<String, List<String>> mappingEntries = new HashMap<>();
-  private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
+  private static final Map<String, String> mappingEntries =
+      Map.ofEntries(
+          entry("JR1", "(?:JR1|Journal Report 1)(?! GOA)(?: \\(R4\\))?"),
+          entry("JR2", "(?:JR2|Journal Report 2)(?: \\(R4\\))?"),
+          entry("JR3", "(?:JR3|Journal Report 3)(?: \\(R4\\))?"),
+          entry("JR4", "(?:JR4|Journal Report 4)(?: \\(R4\\))?"),
+          entry("JR5", "(?:JR5|Journal Report 5)(?: \\(R4\\))?"),
+          entry("JR1 GOA", "(?:JR1|Journal Report 1) GOA(?: \\(R4\\))?"),
+          entry("JR1a", "(?:JR1a|Journal Report 1a)(?: \\(R4\\))?"),
+          entry("JR3 Mobile", "(?:JR3|Journal Report 3) Mobile(?: \\(R4\\))?"),
+          entry("BR1", "(?:BR1|Book Report 1)(?: \\(R4\\))?"),
+          entry("BR2", "(?:BR2|Book Report 2)(?: \\(R4\\))?"),
+          entry("BR3", "(?:BR3|Book Report 3)(?: \\(R4\\))?"),
+          entry("BR4", "(?:BR4|Book Report 4)(?: \\(R4\\))?"),
+          entry("BR5", "(?:BR5|Book Report 5)(?: \\(R4\\))?"),
+          entry("BR7", "(?:BR7|Book Report 7)(?: \\(R4\\))?"),
+          entry("DB1", "(?:DB1|Database Report 1)(?: \\(R4\\))?"),
+          entry("DB2", "(?:DB2|Database Report 2)(?: \\(R4\\))?"),
+          entry("MM1", "(?:MM1|Multimedia Report 1)(?: \\(R4\\))?"),
+          entry("MM2", "(?:MM2|Multimedia Report 2)(?: \\(R4\\))?"),
+          entry("TR1", "(?:TR1|Title Report 1)(?: \\(R4\\))?"),
+          entry("TR2", "(?:TR2|Title Report 2)(?: \\(R4\\))?"),
+          entry("TR3", "(?:TR3|Title Report 3)(?: \\(R4\\))?"),
+          entry("TR1 Mobile", "(?:TR1|Title Report 1) Mobile(?: \\(R4\\))?"),
+          entry("TR3 Mobile", "(?:TR3|Title Report 3) Mobile(?: \\(R4\\))?"),
+          entry("PR1", "(?:PR1|Platform Report 1)(?: \\(R4\\))?"));
 
-  static {
-    mappingEntries.put(
-        "JR1", Arrays.asList("(?=\\bJR1\\b)((?!GOA).)*", "(?=\\bJournal Report 1\\b)((?!GOA).)*"));
-    mappingEntries.put("BR1", Arrays.asList("BR1.*", "Book Report 1.*"));
-    mappingEntries.put("BR2", Arrays.asList("BR2.*", "Book Report 2.*"));
-    mappingEntries.put("DB1", Arrays.asList("DB1.*", "Database Report 1.*"));
-    mappingEntries.put("PR1", Arrays.asList("PR1.*", "Platform Report.*"));
-  }
+  private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
 
   private Counter4Utils() {}
 
+  /**
+   * @deprecated
+   */
+  @Deprecated(since = "2.2.6", forRemoval = true)
   public static List<String> getTitlesForReportName(String reportName) {
-    return mappingEntries.get(reportName);
+    String result = mappingEntries.get(reportName);
+    return (result == null) ? null : List.of(result);
   }
 
   public static String getNameForReportTitle(String title) {
-    return mappingEntries.entrySet().stream()
-        .filter(e -> e.getValue().stream().anyMatch(title::matches))
-        .findFirst()
-        .map(Entry::getKey)
-        .orElse(null);
+    return (title == null)
+        ? null
+        : mappingEntries.entrySet().stream()
+            .filter(e -> title.matches(e.getValue()))
+            .map(Entry::getKey)
+            .findFirst()
+            .orElse(null);
   }
 
   public static ObjectMapper createObjectMapper() {
