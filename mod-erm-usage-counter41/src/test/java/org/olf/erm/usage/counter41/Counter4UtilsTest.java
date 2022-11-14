@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.chrono.HijrahDate;
-import java.util.Arrays;
 import java.util.List;
 import javax.xml.bind.JAXB;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -70,41 +69,50 @@ public class Counter4UtilsTest {
     assertThat(fromJSON).usingRecursiveComparison().isEqualTo(fromXML2);
   }
 
+  private void assertGetNameForReportTitle(String expected, String... args) {
+    for (String arg : args) {
+      assertThat(Counter4Utils.getNameForReportTitle(arg)).isEqualTo(expected);
+      assertThat(Counter4Utils.getNameForReportTitle(arg + " (R4)")).isEqualTo(expected);
+    }
+  }
+
   @Test
+  @SuppressWarnings("squid:S5961")
   public void testGetNameForReportTitle() {
-    assertThat(Counter4Utils.getNameForReportTitle("Journal Report 1 (R4)")).isEqualTo("JR1");
-    assertThat(Counter4Utils.getNameForReportTitle("Journal Report 1)")).isEqualTo("JR1");
-    assertThat(Counter4Utils.getNameForReportTitle("JR1")).isEqualTo("JR1");
-    assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isNull();
+    assertGetNameForReportTitle("JR1", "JR1", "Journal Report 1");
+    assertGetNameForReportTitle("JR2", "JR2", "Journal Report 2");
+    assertGetNameForReportTitle("JR3", "JR3", "Journal Report 3");
+    assertGetNameForReportTitle("JR4", "JR4", "Journal Report 4");
+    assertGetNameForReportTitle("JR5", "JR5", "Journal Report 5");
+    assertGetNameForReportTitle("JR1 GOA", "JR1 GOA", "Journal Report 1 GOA");
+    assertGetNameForReportTitle("JR1a", "JR1a", "Journal Report 1a");
+    assertGetNameForReportTitle("JR3 Mobile", "JR3 Mobile", "Journal Report 3 Mobile");
+    assertGetNameForReportTitle("BR1", "BR1", "Book Report 1");
+    assertGetNameForReportTitle("BR2", "BR2", "Book Report 2");
+    assertGetNameForReportTitle("BR3", "BR3", "Book Report 3");
+    assertGetNameForReportTitle("BR4", "BR4", "Book Report 4");
+    assertGetNameForReportTitle("BR5", "BR5", "Book Report 5");
+    assertGetNameForReportTitle("BR7", "BR7", "Book Report 7");
+    assertGetNameForReportTitle("DB1", "DB1", "Database Report 1");
+    assertGetNameForReportTitle("DB2", "DB2", "Database Report 2");
+    assertGetNameForReportTitle("MM1", "MM1", "Multimedia Report 1");
+    assertGetNameForReportTitle("MM2", "MM2", "Multimedia Report 2");
+    assertGetNameForReportTitle("TR1", "TR1", "Title Report 1");
+    assertGetNameForReportTitle("TR2", "TR2", "Title Report 2");
+    assertGetNameForReportTitle("TR3", "TR3", "Title Report 3");
+    assertGetNameForReportTitle("TR1 Mobile", "TR1 Mobile", "Title Report 1 Mobile");
+    assertGetNameForReportTitle("TR3 Mobile", "TR3 Mobile", "Title Report 3 Mobile");
+    assertGetNameForReportTitle("PR1", "PR1", "Platform Report 1");
 
-    assertThat(Counter4Utils.getNameForReportTitle("JR1 GOA")).isNull();
-    assertThat(Counter4Utils.getNameForReportTitle("JR1 GOA (R4)")).isNull();
-
-    assertThat(Counter4Utils.getNameForReportTitle("BR1")).isEqualTo("BR1");
-    assertThat(Counter4Utils.getNameForReportTitle("Book Report 1")).isEqualTo("BR1");
-    assertThat(Counter4Utils.getNameForReportTitle("Book Report 1 (R4)")).isEqualTo("BR1");
-
-    assertThat(Counter4Utils.getNameForReportTitle("BR2")).isEqualTo("BR2");
-    assertThat(Counter4Utils.getNameForReportTitle("Book Report 2")).isEqualTo("BR2");
-    assertThat(Counter4Utils.getNameForReportTitle("Book Report 2 (R4)")).isEqualTo("BR2");
-
-    assertThat(Counter4Utils.getNameForReportTitle("DB1")).isEqualTo("DB1");
-    assertThat(Counter4Utils.getNameForReportTitle("Database Report 1")).isEqualTo("DB1");
-    assertThat(Counter4Utils.getNameForReportTitle("Database Report 1 (R4)")).isEqualTo("DB1");
-
-    assertThat(Counter4Utils.getNameForReportTitle("PR1")).isEqualTo("PR1");
-    assertThat(Counter4Utils.getNameForReportTitle("Platform Report 1")).isEqualTo("PR1");
-    assertThat(Counter4Utils.getNameForReportTitle("Platform Report 1 (R4)")).isEqualTo("PR1");
-
+    assertThat(Counter4Utils.getNameForReportTitle(null)).isNull();
     assertThat(Counter4Utils.getNameForReportTitle("")).isNull();
+    assertThat(Counter4Utils.getNameForReportTitle("PR")).isNull();
     assertThat(Counter4Utils.getNameForReportTitle("a title that does not exist")).isNull();
+    assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isNull();
   }
 
   @Test
   public void testGetTitlesForReportName() {
-    assertThat(Counter4Utils.getTitlesForReportName("JR1"))
-        .isEqualTo(
-            Arrays.asList("(?=\\bJR1\\b)((?!GOA).)*", "(?=\\bJournal Report 1\\b)((?!GOA).)*"));
     assertThat(Counter4Utils.getTitlesForReportName("")).isNull();
     assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist")).isNull();
   }
@@ -117,8 +125,8 @@ public class Counter4UtilsTest {
     Report merge = Counter4Utils.merge(rep1, rep2);
     assertThat(merge.getCustomer()).isNotEmpty();
     List<ReportItem> reportItems = merge.getCustomer().get(0).getReportItems();
-    assertThat(reportItems.size()).isEqualTo(3);
-    assertThat(reportItems.get(0).getItemPerformance().size()).isEqualTo(2);
+    assertThat(reportItems).hasSize(3);
+    assertThat(reportItems.get(0).getItemPerformance()).hasSize(2);
   }
 
   @Test
@@ -155,9 +163,9 @@ public class Counter4UtilsTest {
             .get(0);
 
     List<Report> split = Counter4Utils.split(report);
-    assertThat(split.size()).isEqualTo(4);
 
     assertThat(split)
+        .hasSize(4)
         .allSatisfy(
             r -> {
               assertThat(r)
