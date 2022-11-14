@@ -1,7 +1,6 @@
 package org.olf.erm.usage.counter41.csv.mapper;
 
 import com.google.common.base.Strings;
-import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.niso.schemas.counter.Report;
 import org.olf.erm.usage.counter41.csv.mapper.csv2report.BR1ToReport;
@@ -18,12 +17,13 @@ import org.olf.erm.usage.counter41.csv.mapper.report2csv.PR1;
 import org.olf.erm.usage.counter41.csv.mapper.report2csv.ReportToCsvMapper;
 
 public class MapperFactory {
-  private static final String[] BR1 = new String[] {"BR1", "Book Report 1"};
-  private static final String[] BR2 = new String[] {"BR2", "Book Report 2"};
-  private static final String[] DB1 = new String[] {"DB1", "Database Report 1"};
-  private static final String[] JR1 = new String[] {"JR1", "Journal Report 1"};
-  private static final String[] PR1 = new String[] {"PR1", "Platform Report 1"};
+  private static final String BR1 = ".*(BR1|Book Report 1).*";
+  private static final String BR2 = ".*(BR2|Book Report 2).*";
+  private static final String DB1 = ".*(DB1|Database Report 1).*";
+  private static final String JR1 = ".*(JR1|Journal Report 1)(?!(a| GOA)).*";
+  private static final String PR1 = ".*(PR1|Platform Report 1).*";
 
+  @SuppressWarnings("squid:S5852")
   public static ReportToCsvMapper createCSVMapper(Report report) throws MapperException {
     String title = ObjectUtils.firstNonNull(report.getTitle(), report.getName(), report.getID());
     String version = report.getVersion();
@@ -31,19 +31,19 @@ public class MapperFactory {
       throw new MapperException("Report missing report version and/or title");
     }
     if (version.equals("4")) {
-      if (Stream.of(JR1).anyMatch(title::contains)) {
+      if (title.matches(JR1)) {
         return new JR1(report);
       }
-      if (Stream.of(DB1).anyMatch(title::contains)) {
+      if (title.matches(DB1)) {
         return new DB1(report);
       }
-      if (Stream.of(BR2).anyMatch(title::contains)) {
+      if (title.matches(BR2)) {
         return new BR2(report);
       }
-      if (Stream.of(PR1).anyMatch(title::contains)) {
+      if (title.matches(PR1)) {
         return new PR1(report);
       }
-      if (Stream.of(BR1).anyMatch(title::contains)) {
+      if (title.matches(BR1)) {
         return new BR1(report);
       }
     }
