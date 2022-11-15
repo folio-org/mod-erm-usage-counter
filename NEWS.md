@@ -1,3 +1,8 @@
+## 2.2.6
+
+* [MODEUSCNT-30](https://issues.folio.org/browse/MODEUSCNT-30) Update title matching in csv mapper
+* [MODEUSCNT-29](https://issues.folio.org/browse/MODEUSCNT-29) Missing report name/title definitions
+
 ## 2.2.5
 
 * [MODEUSCNT-27](https://issues.folio.org/browse/MODEUSCNT-27) Report date only updated when a performance period exists
