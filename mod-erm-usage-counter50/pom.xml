@@ -16,6 +16,7 @@
     <retrofit-version>2.9.0</retrofit-version>
     <rxjava-version>2.2.21</rxjava-version>
     <oltu-version>1.0.1</oltu-version>
+    <json-version>20220924</json-version> <!-- fixes https://security.snyk.io/vuln/SNYK-JAVA-ORGJSON-2841369 -->
   </properties>
 
   <dependencies>
@@ -71,6 +72,11 @@
       <groupId>org.apache.oltu.oauth2</groupId>
       <artifactId>org.apache.oltu.oauth2.client</artifactId>
       <version>${oltu-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>${json-version}</version>
     </dependency>
     <dependency>
       <groupId>io.gsonfire</groupId>
