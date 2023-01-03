@@ -10,7 +10,7 @@
   <artifactId>mod-erm-usage-counter50</artifactId>
 
   <properties>
-    <openapi.generator.version>5.4.0</openapi.generator.version>
+    <openapi.generator.version>6.2.1</openapi.generator.version>
     <gson-fire-version>1.8.5</gson-fire-version>
     <swagger-annotations-version>1.6.6</swagger-annotations-version>
     <retrofit-version>2.9.0</retrofit-version>
@@ -105,6 +105,23 @@
               <inputSpec>${project.basedir}/src/main/resources/counter-sushi_5_0_api/swagger.yaml
               </inputSpec>
               <generatorName>java</generatorName>
+              <inlineSchemaNameMappings>
+                <inlineSchemaNameMapping>
+                  COUNTER_item_performance_Instance_inner=COUNTERItemPerformanceInstance
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_report_header_Report_Filters_inner=SUSHIReportHeaderReportFilters
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_report_header_Report_Attributes_inner=SUSHIReportHeaderReportAttributes
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_service_status_Alerts_inner=SUSHIServiceStatusAlerts
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  COUNTER_item_performance_Period=COUNTERItemPerformancePeriod
+                </inlineSchemaNameMapping>
+              </inlineSchemaNameMappings>
               <configOptions>
                 <library>retrofit2</library>
                 <dateLibrary>java8</dateLibrary>
