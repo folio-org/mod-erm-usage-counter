@@ -20,8 +20,8 @@
     <slf4j.version>1.7.36</slf4j.version>
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.9.4</super-csv.beanutils.version>
-    <cxf.version>3.5.2</cxf.version>
-    <jackson-databind.version>2.13.3</jackson-databind.version>
+    <cxf.version>3.5.5</cxf.version>
+    <jackson-databind.version>2.14.1</jackson-databind.version>
   </properties>
 
   <dependencyManagement>
