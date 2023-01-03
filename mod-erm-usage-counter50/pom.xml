@@ -15,7 +15,6 @@
     <swagger-annotations-version>1.6.6</swagger-annotations-version>
     <retrofit-version>2.9.0</retrofit-version>
     <rxjava-version>2.2.21</rxjava-version>
-    <oltu-version>1.0.1</oltu-version>
   </properties>
 
   <dependencies>
@@ -68,11 +67,6 @@
       <version>${retrofit-version}</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.oltu.oauth2</groupId>
-      <artifactId>org.apache.oltu.oauth2.client</artifactId>
-      <version>${oltu-version}</version>
-    </dependency>
-    <dependency>
       <groupId>io.gsonfire</groupId>
       <artifactId>gson-fire</artifactId>
       <version>${gson-fire-version}</version>
@@ -112,6 +106,26 @@
               </configOptions>
               <generateApiTests>false</generateApiTests>
               <generateModelTests>false</generateModelTests>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <delete
+                  file="${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/client/auth/OAuthOkHttpClient.java"/>
+              </target>
             </configuration>
           </execution>
         </executions>
