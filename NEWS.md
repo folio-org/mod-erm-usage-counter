@@ -1,3 +1,10 @@
+## 2.2.7
+
+* [MODEUSCNT-35](https://issues.folio.org/browse/MODEUSCNT-35) Update dependencies with vulnerabilities
+* [MODEUSCNT-33](https://issues.folio.org/browse/MODEUSCNT-33) Replace retired Apache Oltu
+* [MODEUSCNT-32](https://issues.folio.org/browse/MODEUSCNT-32) Okhttp 3 Information Exposure from illegal character in a header
+* [MODEUSCNT-31](https://issues.folio.org/browse/MODEUSCNT-31) Remove unused dependencies
+
 ## 2.2.6
 
 * [MODEUSCNT-30](https://issues.folio.org/browse/MODEUSCNT-30) Update title matching in csv mapper
