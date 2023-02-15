@@ -1,16 +1,16 @@
 package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
-import static org.openapitools.client.model.COUNTERItemPerformanceInstance.SERIALIZED_NAME_METRIC_TYPE;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_CREATED;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_NAME;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_RELEASE;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_FILTERS;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_I_D;
-import static org.openapitools.client.model.SUSHIReportHeader.SERIALIZED_NAME_REPORT_NAME;
+import static org.openapitools.client.model.COUNTERItemPerformanceInstance.JSON_PROPERTY_METRIC_TYPE;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED_BY;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_EXCEPTIONS;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_NAME;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_RELEASE;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_ATTRIBUTES;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_FILTERS;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_NAME;
 
 import com.google.common.collect.Iterables;
 import java.io.IOException;
@@ -81,7 +81,7 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
 
   private String getMetricTypes() {
     return this.header.getReportFilters().stream()
-        .filter(f -> SERIALIZED_NAME_METRIC_TYPE.equals(f.getName()))
+        .filter(f -> JSON_PROPERTY_METRIC_TYPE.equals(f.getName()))
         .map(SUSHIReportHeaderReportFilters::getValue)
         .map(s -> s.replace("|", "; "))
         .findFirst()
@@ -104,22 +104,22 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
     StringWriter stringWriter = new StringWriter();
     try (CsvListWriter csvListWriter =
         new CsvListWriter(stringWriter, CsvPreference.STANDARD_PREFERENCE)) {
-      csvListWriter.write(SERIALIZED_NAME_REPORT_NAME, this.header.getReportName());
-      csvListWriter.write(SERIALIZED_NAME_REPORT_I_D, this.header.getReportID());
-      csvListWriter.write(SERIALIZED_NAME_RELEASE, this.header.getRelease());
-      csvListWriter.write(SERIALIZED_NAME_INSTITUTION_NAME, this.header.getInstitutionName());
-      csvListWriter.write(SERIALIZED_NAME_INSTITUTION_I_D, getInstitutionId());
+      csvListWriter.write(JSON_PROPERTY_REPORT_NAME, this.header.getReportName());
+      csvListWriter.write(JSON_PROPERTY_REPORT_I_D, this.header.getReportID());
+      csvListWriter.write(JSON_PROPERTY_RELEASE, this.header.getRelease());
+      csvListWriter.write(JSON_PROPERTY_INSTITUTION_NAME, this.header.getInstitutionName());
+      csvListWriter.write(JSON_PROPERTY_INSTITUTION_I_D, getInstitutionId());
       csvListWriter.write("Metric_Types", getMetricTypes());
-      csvListWriter.write(SERIALIZED_NAME_REPORT_FILTERS, getReportFilters());
-      csvListWriter.write(SERIALIZED_NAME_REPORT_ATTRIBUTES, getReportAttributes());
-      csvListWriter.write(SERIALIZED_NAME_EXCEPTIONS, getExceptions());
+      csvListWriter.write(JSON_PROPERTY_REPORT_FILTERS, getReportFilters());
+      csvListWriter.write(JSON_PROPERTY_REPORT_ATTRIBUTES, getReportAttributes());
+      csvListWriter.write(JSON_PROPERTY_EXCEPTIONS, getExceptions());
       String reportingPeriod =
           String.format(
               "Begin_Date=%s; End_Date=%s",
               yearMonths.get(0).atDay(1), Iterables.getLast(yearMonths).atEndOfMonth());
       csvListWriter.write("Reporting_Period", reportingPeriod);
-      csvListWriter.write(SERIALIZED_NAME_CREATED, LocalDate.now().toString());
-      csvListWriter.write(SERIALIZED_NAME_CREATED_BY, this.header.getCreatedBy());
+      csvListWriter.write(JSON_PROPERTY_CREATED, LocalDate.now().toString());
+      csvListWriter.write(JSON_PROPERTY_CREATED_BY, this.header.getCreatedBy());
       csvListWriter.write("");
       csvListWriter.flush();
     } catch (IOException e) {

@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter50.converter;
 
-import com.google.gson.Gson;
+import io.vertx.core.json.Json;
 import org.olf.erm.usage.counter50.converter.dr.DRD1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB3Converter;
@@ -11,8 +11,6 @@ import org.openapitools.client.model.COUNTERDatabaseReport;
 import org.openapitools.client.model.COUNTERTitleReport;
 
 public class ReportConverter {
-
-  private final Gson gson = new Gson();
 
   @SuppressWarnings("rawtypes")
   public static Converter create(String reportID) {
@@ -36,7 +34,7 @@ public class ReportConverter {
   }
 
   public COUNTERTitleReport convert(COUNTERTitleReport report, String reportID) {
-    COUNTERTitleReport clone = gson.fromJson(gson.toJson(report), COUNTERTitleReport.class);
+    COUNTERTitleReport clone = Json.decodeValue(Json.encode(report), COUNTERTitleReport.class);
 
     Converter<COUNTERTitleReport> converter;
     switch (reportID.toLowerCase()) {
@@ -63,7 +61,8 @@ public class ReportConverter {
   }
 
   public COUNTERDatabaseReport convert(COUNTERDatabaseReport report, String reportID) {
-    COUNTERDatabaseReport clone = gson.fromJson(gson.toJson(report), COUNTERDatabaseReport.class);
+    COUNTERDatabaseReport clone =
+        Json.decodeValue(Json.encode(report), COUNTERDatabaseReport.class);
 
     if ("dr_d1".equalsIgnoreCase(reportID)) {
       return new DRD1Converter().convert(clone);

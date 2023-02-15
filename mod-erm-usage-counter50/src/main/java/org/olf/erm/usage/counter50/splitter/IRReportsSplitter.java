@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter50.splitter;
 
-import com.google.gson.Gson;
+import io.vertx.core.json.Json;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,8 +20,7 @@ public class IRReportsSplitter extends AbstractReportsSplitter<COUNTERItemReport
     List<COUNTERItemReport> result = new ArrayList<>();
     yms.forEach(
         ym -> {
-          Gson gson = new Gson();
-          COUNTERItemReport clone = gson.fromJson(gson.toJson(report), COUNTERItemReport.class);
+          COUNTERItemReport clone = Json.decodeValue(Json.encode(report), COUNTERItemReport.class);
 
           COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
           period.setBeginDate(ym.atDay(1).format(DateTimeFormatter.ISO_DATE));
