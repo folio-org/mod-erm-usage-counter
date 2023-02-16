@@ -12,7 +12,7 @@
   <properties>
     <openapi.generator.version>6.2.1</openapi.generator.version>
     <swagger-annotations-version>1.5.22</swagger-annotations-version>
-    <vertx-version>3.4.2</vertx-version>
+    <vertx-version>4.3.8</vertx-version>
     <jackson-version>2.13.4</jackson-version>
     <jackson-databind>2.13.4.2</jackson-databind>
     <jackson-databind-nullable-version>0.2.4</jackson-databind-nullable-version>
