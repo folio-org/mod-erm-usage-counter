@@ -15,7 +15,6 @@
     <vertx-version>4.3.8</vertx-version>
     <jackson-version>2.13.4</jackson-version>
     <jackson-databind>2.13.4.2</jackson-databind>
-    <jackson-databind-nullable-version>0.2.4</jackson-databind-nullable-version>
   </properties>
 
   <dependencies>
@@ -67,11 +66,6 @@
       <version>${jackson-databind}</version>
     </dependency>
     <dependency>
-      <groupId>org.openapitools</groupId>
-      <artifactId>jackson-databind-nullable</artifactId>
-      <version>${jackson-databind-nullable-version}</version>
-    </dependency>
-    <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>${jackson-version}</version>
@@ -91,10 +85,14 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/counter-sushi_5_0_api/swagger.yaml
+              <inputSpec>
+                ${project.basedir}/src/main/resources/counter-sushi_5_0_api/counter5.0.2.yaml
               </inputSpec>
               <generatorName>java</generatorName>
               <library>vertx</library>
+              <configOptions>
+                <openApiNullable>false</openApiNullable>
+              </configOptions>
               <inlineSchemaNameMappings>
                 <inlineSchemaNameMapping>
                   COUNTER_item_performance_Instance_inner=COUNTERItemPerformanceInstance
