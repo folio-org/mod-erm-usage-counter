@@ -19,7 +19,7 @@ import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.CsvListWriter;
 import org.supercsv.prefs.CsvPreference;
@@ -73,12 +73,28 @@ public class ExcelUtil {
     }
   }
 
+  /**
+   * Converts a csv formatted Counter Report to Microsoft xlsx format using Apache Poi. SXSSF
+   * streaming extension is used that utilizes disk buffering to reduce memory consumption.
+   *
+   * @param csvString csv formatted string
+   * @return XLSX workbook as InputStream
+   * @throws IOException
+   */
   public static InputStream fromCSV(String csvString) throws IOException {
     csvString = csvString.concat(CSV_PREF.getEndOfLineSymbols());
     CsvListReader csvListReader = new CsvListReader(new StringReader(csvString), CSV_PREF);
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (Workbook wb = new XSSFWorkbook()) {
+
+    try (SXSSFWorkbook wb =
+        new SXSSFWorkbook(5000) {
+          @Override
+          public void close() throws IOException {
+            this.dispose();
+            super.close();
+          }
+        }) {
       Sheet sheet = wb.createSheet();
       CellStyle numberCellStyle = wb.createCellStyle();
       numberCellStyle.setDataFormat((short) 1);
