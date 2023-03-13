@@ -1,12 +1,11 @@
 package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
@@ -26,19 +25,15 @@ abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTERDatabas
   abstract List<Object> getValues(COUNTERDatabaseUsage dbUsage);
 
   @Override
-  List<Map<String, Object>> toMap(COUNTERDatabaseReport report) {
-    List<String> header = Arrays.asList(getHeader());
-
-    List<Map<String, Object>> result = new ArrayList<>();
-    report
-        .getReportItems()
-        .forEach(
+  Stream<Map<String, Object>> toMapStream(COUNTERDatabaseReport report) {
+    String[] header = getHeader();
+    return report.getReportItems().stream()
+        .flatMap(
             dbUsage -> {
               Map<MetricTypeEnum, Map<YearMonth, Integer>> performancesPerMetricType =
                   MetricTypeProcessor.getPerformancesPerMetricType(dbUsage.getPerformance());
-              performancesPerMetricType
-                  .keySet()
-                  .forEach(
+              return performancesPerMetricType.keySet().stream()
+                  .map(
                       metricTypeEnum -> {
                         List<Object> values = getValues(dbUsage);
                         Map<String, Object> itemMap =
@@ -46,7 +41,7 @@ abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTERDatabas
                                 .boxed()
                                 .collect(
                                     LinkedHashMap::new,
-                                    (m, i) -> m.put(header.get(i), values.get(i)),
+                                    (m, i) -> m.put(header[i], values.get(i)),
                                     LinkedHashMap::putAll);
                         itemMap.put("Metric_Type", metricTypeEnum);
                         itemMap.put(
@@ -58,9 +53,8 @@ abstract class AbstractDRMapper extends AbstractReportToCsvMapper<COUNTERDatabas
                             PerformanceProcessor.getPerformancePerMonth(
                                 performancesPerMetricType, metricTypeEnum, yearMonths, formatter));
 
-                        result.add(itemMap);
+                        return itemMap;
                       });
             });
-    return result;
   }
 }

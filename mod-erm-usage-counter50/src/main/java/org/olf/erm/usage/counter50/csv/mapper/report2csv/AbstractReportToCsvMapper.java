@@ -92,7 +92,13 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
     return Collections.nCopies(fullHeader.length, new Optional()).toArray(CellProcessor[]::new);
   }
 
-  abstract List<Map<String, Object>> toMap(T report);
+  /**
+   * Returns Counter ReportItems as Stream of Maps. Each Map represents a row in csv.
+   *
+   * @param report the Counter Report
+   * @return Stream of Map
+   */
+  abstract Stream<Map<String, Object>> toMapStream(T report);
 
   private String createReportHeader() {
     StringWriter stringWriter = new StringWriter();
@@ -169,13 +175,18 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
         .toArray(String[]::new);
   }
 
-  private void writeItems(ICsvMapWriter writer) throws IOException {
+  private void writeItems(ICsvMapWriter writer) {
     CellProcessor[] processors = createProcessors();
 
-    List<Map<String, Object>> entries = toMap(report);
-    for (final Map<String, Object> item : entries) {
-      writer.write(item, fullHeader, processors);
-    }
+    toMapStream(report)
+        .forEach(
+            map -> {
+              try {
+                writer.write(map, fullHeader, processors);
+              } catch (IOException e) {
+                throw new AbstractReportToCsvMapperException(e);
+              }
+            });
   }
 
   public String toCSV() {
@@ -195,6 +206,13 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
     } catch (Exception e) {
       logger.error(e.getMessage(), e);
       return null;
+    }
+  }
+
+  static class AbstractReportToCsvMapperException extends RuntimeException {
+
+    public AbstractReportToCsvMapperException(Throwable cause) {
+      super(cause);
     }
   }
 }
