@@ -92,6 +92,9 @@
               <library>vertx</library>
               <configOptions>
                 <openApiNullable>false</openApiNullable>
+                <additionalModelTypeAnnotations>
+                  <![CDATA[@JsonInclude(JsonInclude.Include.NON_NULL)]]>
+                </additionalModelTypeAnnotations>
               </configOptions>
               <inlineSchemaNameMappings>
                 <inlineSchemaNameMapping>
