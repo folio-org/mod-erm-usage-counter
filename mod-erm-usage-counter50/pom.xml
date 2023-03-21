@@ -3,19 +3,18 @@
   <parent>
     <artifactId>mod-erm-usage-counter</artifactId>
     <groupId>org.olf</groupId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>mod-erm-usage-counter50</artifactId>
 
   <properties>
-    <openapi.generator.version>5.4.0</openapi.generator.version>
-    <gson-fire-version>1.8.5</gson-fire-version>
-    <swagger-annotations-version>1.6.6</swagger-annotations-version>
-    <retrofit-version>2.9.0</retrofit-version>
-    <okhttp-version>4.10.0</okhttp-version>
-    <rxjava-version>2.2.21</rxjava-version>
+    <openapi.generator.version>6.2.1</openapi.generator.version>
+    <swagger-annotations-version>1.5.22</swagger-annotations-version>
+    <vertx-version>4.3.8</vertx-version>
+    <jackson-version>2.13.4</jackson-version>
+    <jackson-databind>2.13.4.2</jackson-databind>
   </properties>
 
   <dependencies>
@@ -37,55 +36,39 @@
     </dependency>
 
     <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-rx-java</artifactId>
+      <version>${vertx-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+      <version>${vertx-version}</version>
+    </dependency>
+    <dependency>
       <groupId>io.swagger</groupId>
       <artifactId>swagger-annotations</artifactId>
       <version>${swagger-annotations-version}</version>
     </dependency>
     <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>${okhttp-version}</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson-version}</version>
     </dependency>
     <dependency>
-      <groupId>com.squareup.retrofit2</groupId>
-      <artifactId>converter-gson</artifactId>
-      <version>${retrofit-version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson-version}</version>
     </dependency>
     <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.9.0</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson-databind}</version>
     </dependency>
     <dependency>
-      <groupId>com.squareup.retrofit2</groupId>
-      <artifactId>retrofit</artifactId>
-      <version>${retrofit-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup.retrofit2</groupId>
-      <artifactId>converter-scalars</artifactId>
-      <version>${retrofit-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.gsonfire</groupId>
-      <artifactId>gson-fire</artifactId>
-      <version>${gson-fire-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.reactivex.rxjava2</groupId>
-      <artifactId>rxjava</artifactId>
-      <version>${rxjava-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup.retrofit2</groupId>
-      <artifactId>adapter-rxjava2</artifactId>
-      <version>${retrofit-version}</version>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>${jackson-version}</version>
     </dependency>
   </dependencies>
 
@@ -102,36 +85,36 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/counter-sushi_5_0_api/swagger.yaml
+              <inputSpec>
+                ${project.basedir}/src/main/resources/counter-sushi_5_0_api/counter5.0.2.yaml
               </inputSpec>
               <generatorName>java</generatorName>
+              <library>vertx</library>
               <configOptions>
-                <library>retrofit2</library>
-                <dateLibrary>java8</dateLibrary>
-                <useRxJava2>true</useRxJava2>
+                <openApiNullable>false</openApiNullable>
+                <additionalModelTypeAnnotations>
+                  <![CDATA[@JsonInclude(JsonInclude.Include.NON_NULL)]]>
+                </additionalModelTypeAnnotations>
               </configOptions>
+              <inlineSchemaNameMappings>
+                <inlineSchemaNameMapping>
+                  COUNTER_item_performance_Instance_inner=COUNTERItemPerformanceInstance
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_report_header_Report_Filters_inner=SUSHIReportHeaderReportFilters
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_report_header_Report_Attributes_inner=SUSHIReportHeaderReportAttributes
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  SUSHI_service_status_Alerts_inner=SUSHIServiceStatusAlerts
+                </inlineSchemaNameMapping>
+                <inlineSchemaNameMapping>
+                  COUNTER_item_performance_Period=COUNTERItemPerformancePeriod
+                </inlineSchemaNameMapping>
+              </inlineSchemaNameMappings>
               <generateApiTests>false</generateApiTests>
               <generateModelTests>false</generateModelTests>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <delete
-                  file="${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/client/auth/OAuthOkHttpClient.java"/>
-              </target>
             </configuration>
           </execution>
         </executions>

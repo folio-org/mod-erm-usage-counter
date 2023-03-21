@@ -1,5 +1,15 @@
 package org.olf.erm.usage.counter50.csv.mapper.csv2report;
 
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED_BY;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_EXCEPTIONS;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_NAME;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_RELEASE;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_ATTRIBUTES;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_NAME;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,17 +32,14 @@ public class CsvHeaderToReportHeader {
 
   public static SUSHIReportHeader parseHeader(Map<String, String> headerColumns) {
     SUSHIReportHeader sushiReportHeader = new SUSHIReportHeader();
-    sushiReportHeader.setCreated(headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_CREATED));
-    sushiReportHeader.setCreatedBy(headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_CREATED_BY));
-    sushiReportHeader.setReportName(
-        headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_REPORT_NAME));
-    sushiReportHeader.setReportID(headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_REPORT_I_D));
-    sushiReportHeader.setRelease(headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_RELEASE));
-    sushiReportHeader.setInstitutionName(
-        headerColumns.get(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_NAME));
+    sushiReportHeader.setCreated(headerColumns.get(JSON_PROPERTY_CREATED));
+    sushiReportHeader.setCreatedBy(headerColumns.get(JSON_PROPERTY_CREATED_BY));
+    sushiReportHeader.setReportName(headerColumns.get(JSON_PROPERTY_REPORT_NAME));
+    sushiReportHeader.setReportID(headerColumns.get(JSON_PROPERTY_REPORT_I_D));
+    sushiReportHeader.setRelease(headerColumns.get(JSON_PROPERTY_RELEASE));
+    sushiReportHeader.setInstitutionName(headerColumns.get(JSON_PROPERTY_INSTITUTION_NAME));
 
-    String instID =
-        headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_INSTITUTION_I_D, "");
+    String instID = headerColumns.getOrDefault(JSON_PROPERTY_INSTITUTION_I_D, "");
     String[] splittedInstID = instID == null ? new String[0] : instID.split(";");
     List<SUSHIOrgIdentifiers> orgIdentifiers =
         Stream.of(splittedInstID)
@@ -64,8 +71,7 @@ public class CsvHeaderToReportHeader {
     sushiReportHeader.setReportFilters(
         (headerReportFilters.isEmpty()) ? null : headerReportFilters);
 
-    String reportAttrs =
-        headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_REPORT_ATTRIBUTES, "");
+    String reportAttrs = headerColumns.getOrDefault(JSON_PROPERTY_REPORT_ATTRIBUTES, "");
     String[] splitted = reportAttrs == null ? new String[0] : reportAttrs.split(";");
     List<SUSHIReportHeaderReportAttributes> headerReportAttributes =
         Stream.of(splitted)
@@ -82,7 +88,7 @@ public class CsvHeaderToReportHeader {
     sushiReportHeader.setReportAttributes(
         (headerReportAttributes.isEmpty()) ? null : headerReportAttributes);
 
-    String errors = headerColumns.getOrDefault(SUSHIReportHeader.SERIALIZED_NAME_EXCEPTIONS, "");
+    String errors = headerColumns.getOrDefault(JSON_PROPERTY_EXCEPTIONS, "");
     String[] splittedErrors = errors == null ? new String[0] : errors.split(";");
     List<SUSHIErrorModel> errorModels =
         Stream.of(splittedErrors)

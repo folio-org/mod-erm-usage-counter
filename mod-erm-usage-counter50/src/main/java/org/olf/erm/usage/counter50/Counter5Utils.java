@@ -1,10 +1,12 @@
 package org.olf.erm.usage.counter50;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import static org.openapitools.client.model.COUNTERTitleReport.JSON_PROPERTY_REPORT_HEADER;
+import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+
+import io.vertx.core.json.DecodeException;
+import io.vertx.core.json.EncodeException;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -38,9 +40,6 @@ public class Counter5Utils {
   private static final Logger LOG = LoggerFactory.getLogger(Counter5Utils.class);
 
   private static final List<String> PREFIXES = List.of("PR", "DR", "TR", "IR");
-  private static final Gson gson = new Gson();
-  private static final JsonParser parser = new JsonParser();
-  private static final String REPORT_HEADER = "Report_Header";
 
   private Counter5Utils() {}
 
@@ -54,9 +53,9 @@ public class Counter5Utils {
   public static SUSHIReportHeader getSushiReportHeader(String jsonContent)
       throws Counter5UtilsException {
     try {
-      JsonObject jsonObject = parser.parse(jsonContent).getAsJsonObject();
-      return gson.fromJson(jsonObject.getAsJsonObject(REPORT_HEADER), SUSHIReportHeader.class);
-    } catch (JsonParseException | IllegalStateException e) {
+      JsonObject header = new JsonObject(jsonContent).getJsonObject(JSON_PROPERTY_REPORT_HEADER);
+      return Json.decodeValue(Json.encode(header), SUSHIReportHeader.class);
+    } catch (DecodeException | EncodeException e) {
       throw new Counter5UtilsException(
           String.format("Error parsing SushiReportHeader: %s", e.getMessage()), e);
     }
@@ -87,25 +86,6 @@ public class Counter5Utils {
               "Error parsing SushiReportHeader. Report of unknown class: %s",
               report.getClass().toString()));
     }
-  }
-
-  /**
-   * @param content
-   * @return
-   * @deprecated As of 1.3.0, use {@link #getSushiReportHeader(String)} instead
-   */
-  @Deprecated
-  public static SUSHIReportHeader getReportHeader(String content) {
-    SUSHIReportHeader reportHeader;
-    try {
-      JsonObject jsonObject = parser.parse(content).getAsJsonObject();
-      reportHeader =
-          gson.fromJson(jsonObject.getAsJsonObject(REPORT_HEADER), SUSHIReportHeader.class);
-    } catch (Exception e) {
-      LOG.error(e.getMessage(), e);
-      return null;
-    }
-    return reportHeader;
   }
 
   /**
@@ -234,27 +214,25 @@ public class Counter5Utils {
   public static Object fromJSON(String json) throws Counter5UtilsException {
     Object result = null;
     try {
-      Gson gson = new Gson();
-      JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+      JsonObject jsonObject = new JsonObject(json);
       String reportID =
           jsonObject
-              .getAsJsonObject(REPORT_HEADER)
-              .getAsJsonPrimitive("Report_ID")
-              .getAsString()
+              .getJsonObject(JSON_PROPERTY_REPORT_HEADER)
+              .getString(JSON_PROPERTY_REPORT_I_D)
               .toUpperCase();
       if (reportID.startsWith("TR")) {
-        result = gson.fromJson(json, COUNTERTitleReport.class);
+        result = Json.decodeValue(json, COUNTERTitleReport.class);
       } else if (reportID.startsWith("PR")) {
-        result = gson.fromJson(json, COUNTERPlatformReport.class);
+        result = Json.decodeValue(json, COUNTERPlatformReport.class);
       } else if (reportID.startsWith("IR")) {
-        result = gson.fromJson(json, COUNTERItemReport.class);
+        result = Json.decodeValue(json, COUNTERItemReport.class);
       } else if (reportID.startsWith("DR")) {
-        result = gson.fromJson(json, COUNTERDatabaseReport.class);
+        result = Json.decodeValue(json, COUNTERDatabaseReport.class);
       } else {
         throw new Counter5UtilsException(
             String.format("Error converting report. Unknown report type: %s", reportID));
       }
-    } catch (JsonSyntaxException e) {
+    } catch (DecodeException | Counter5UtilsException e) {
       LOG.error(e.getMessage(), e);
     }
     return result;
