@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.openapitools.client.model.SUSHIOrgIdentifiers.TypeEnum;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
@@ -133,7 +134,14 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
     return java.util.Optional.ofNullable(this.header.getInstitutionID())
         .orElse(Collections.emptyList())
         .stream()
-        .map(instId -> String.format(FORMAT_EQUALS, instId.getType(), instId.getValue()))
+        .map(
+            instId -> {
+              if (TypeEnum.PROPRIETARY.equals(instId.getType())) {
+                return instId.getValue();
+              } else {
+                return String.join(":", instId.getType().getValue(), instId.getValue());
+              }
+            })
         .collect(Collectors.joining("; "));
   }
 

@@ -46,10 +46,15 @@ public class CsvHeaderToReportHeader {
     return Stream.of(splitted)
         .map(
             s -> {
-              String[] split = split(s, SUSHIOrgIdentifiers.class.getSimpleName(), "=");
+              String[] split = split(s, SUSHIOrgIdentifiers.class.getSimpleName(), ":");
               SUSHIOrgIdentifiers identifiers = new SUSHIOrgIdentifiers();
-              identifiers.setType(TypeEnum.fromValue(split[0]));
-              identifiers.setValue(split[1]);
+              try {
+                identifiers.setType(TypeEnum.fromValue(split[0]));
+                identifiers.setValue(split[1]);
+              } catch (IllegalArgumentException e) {
+                identifiers.setType(TypeEnum.PROPRIETARY);
+                identifiers.setValue(s);
+              }
               return identifiers;
             })
         .collect(Collectors.toList());
