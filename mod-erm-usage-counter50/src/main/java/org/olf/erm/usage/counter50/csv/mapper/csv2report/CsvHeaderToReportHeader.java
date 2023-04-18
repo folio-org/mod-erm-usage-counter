@@ -10,6 +10,7 @@ import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPO
 import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
 import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_NAME;
 
+import com.google.common.base.Splitter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,15 +31,25 @@ public class CsvHeaderToReportHeader {
 
   private CsvHeaderToReportHeader() {}
 
+  private static String[] split(String str, String className, String seperator)
+      throws CsvHeaderParseException {
+    String[] split = Splitter.on(seperator).trimResults().splitToStream(str).toArray(String[]::new);
+    if (split.length != 2) {
+      throw new CsvHeaderParseException(
+          String.format("Error parsing %s from string '%s'", className, str));
+    }
+    return split;
+  }
+
   private static List<SUSHIOrgIdentifiers> parseOrgIdentifiers(String str) {
     String[] splitted = str == null ? new String[0] : str.split(";");
     return Stream.of(splitted)
         .map(
             s -> {
-              String[] split = s.split("=");
+              String[] split = split(s, SUSHIOrgIdentifiers.class.getSimpleName(), "=");
               SUSHIOrgIdentifiers identifiers = new SUSHIOrgIdentifiers();
-              identifiers.setType(TypeEnum.fromValue(split[0].trim()));
-              identifiers.setValue(split[1].trim());
+              identifiers.setType(TypeEnum.fromValue(split[0]));
+              identifiers.setValue(split[1]);
               return identifiers;
             })
         .collect(Collectors.toList());
@@ -49,10 +60,10 @@ public class CsvHeaderToReportHeader {
     return Stream.of(splitted)
         .map(
             s -> {
-              String[] split = s.split("=");
+              String[] split = split(s, SUSHIReportHeaderReportFilters.class.getSimpleName(), "=");
               SUSHIReportHeaderReportFilters reportFilters = new SUSHIReportHeaderReportFilters();
-              reportFilters.setName(split[0].trim());
-              reportFilters.setValue(split[1].trim());
+              reportFilters.setName(split[0]);
+              reportFilters.setValue(split[1]);
               return reportFilters;
             })
         .collect(Collectors.toList());
@@ -64,11 +75,12 @@ public class CsvHeaderToReportHeader {
     return Stream.of(splitted)
         .map(
             s -> {
-              String[] split = s.split("=");
+              String[] split =
+                  split(s, SUSHIReportHeaderReportAttributes.class.getSimpleName(), "=");
               SUSHIReportHeaderReportAttributes attributes =
                   new SUSHIReportHeaderReportAttributes();
-              attributes.setName(split[0].trim());
-              attributes.setValue(split[1].trim());
+              attributes.setName(split[0]);
+              attributes.setValue(split[1]);
               return attributes;
             })
         .collect(Collectors.toList());
@@ -137,5 +149,12 @@ public class CsvHeaderToReportHeader {
     }
 
     return sushiReportHeader;
+  }
+
+  static class CsvHeaderParseException extends RuntimeException {
+
+    public CsvHeaderParseException(String message) {
+      super(message);
+    }
   }
 }
