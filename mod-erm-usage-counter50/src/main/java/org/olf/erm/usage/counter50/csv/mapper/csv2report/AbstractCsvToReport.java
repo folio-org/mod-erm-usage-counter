@@ -44,7 +44,8 @@ public abstract class AbstractCsvToReport implements CsvToReportMapper {
       Map<String, String> headerColumn = new HashMap<>();
       List<String> line;
       while ((line = csvListReader.read()) != null) {
-        headerColumn.put(line.get(0), line.get(1));
+        headerColumn.put(line.get(0), (line.size() >= 2) ? line.get(1) : null);
+        // headerColumn.put(line.get(0), line.get(1));
       }
       return headerColumn;
     } catch (IOException e) {
