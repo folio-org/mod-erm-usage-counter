@@ -30,7 +30,7 @@ public class ParseMetricTypes extends CellProcessorAdaptor {
 
   @Override
   public Object execute(Object value, CsvContext csvContext) {
-    if (value == null) {
+    if (value == null || String.valueOf(value).equals("0")) {
       return null;
     }
 
