@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
@@ -52,6 +53,15 @@ public class DRCsvToReport extends AbstractCsvToReport {
             createFieldMapping(yearMonths),
             createProcessors(yearMonths),
             createHintTypes(yearMonths));
+    databaseUsages.forEach(
+        ctu -> {
+          if (ctu.getItemID() != null) {
+            ctu.getItemID().removeIf(Objects::isNull);
+            if (ctu.getItemID().isEmpty()) {
+              ctu.setItemID(null);
+            }
+          }
+        });
     result.setReportItems(itemsMerger.mergeItems(databaseUsages));
     return result;
   }
@@ -62,7 +72,7 @@ public class DRCsvToReport extends AbstractCsvToReport {
       null, // Publisher
       null, // Publisher_ID
       null, // Platform
-      null, // Proprietary_ID
+      COUNTERItemIdentifiers.class, // Proprietary_ID
       DataTypeEnum.class, // Data_Type
       AccessMethodEnum.class, // Access_Method
       null,
@@ -121,7 +131,7 @@ public class DRCsvToReport extends AbstractCsvToReport {
           "Publisher",
           "PublisherID",
           "Platform",
-          null,
+          "itemID[0]",
           "DataType",
           "AccessMethod",
           null,
