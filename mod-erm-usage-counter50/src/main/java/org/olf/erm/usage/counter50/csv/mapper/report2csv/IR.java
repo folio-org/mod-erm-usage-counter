@@ -113,7 +113,14 @@ public class IR extends AbstractIRMapper {
   private String getAuthors(List<COUNTERItemContributors> contributors) {
     return contributors.stream()
         .filter(c -> c.getType() == TypeEnum.AUTHOR)
-        .map(COUNTERItemContributors::getName)
+        .map(
+            c -> {
+              if (c.getIdentifier() != null) {
+                return c.getName() + " (" + c.getIdentifier() + ")";
+              } else {
+                return c.getName();
+              }
+            })
         .collect(Collectors.joining("; "));
   }
 
