@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemComponent;
 import org.openapitools.client.model.COUNTERItemContributors;
 import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
 import org.openapitools.client.model.COUNTERItemDates;
@@ -50,16 +49,16 @@ public class IR extends AbstractIRMapper {
       "Parent_Print_ISSN",
       "Parent_Online_ISSN",
       "Parent_URI",
-      "Component_Title",
-      "Component_Authors",
-      "Component_Publication_Date",
-      "Component_Data_Type",
-      "Component_DOI",
-      "Component_Proprietary_DOI",
-      "Component_ISBN",
-      "Component_Print_ISSN",
-      "Component_Online_ISSN",
-      "Component_URI",
+      //      "Component_Title",
+      //      "Component_Authors",
+      //      "Component_Publication_Date",
+      //      "Component_Data_Type",
+      //      "Component_DOI",
+      //      "Component_Proprietary_DOI",
+      //      "Component_ISBN",
+      //      "Component_Print_ISSN",
+      //      "Component_Online_ISSN",
+      //      "Component_URI",
       "Data_Type",
       "YOP",
       "Access_Type",
@@ -94,16 +93,22 @@ public class IR extends AbstractIRMapper {
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.URI),
-        getComponentTitle(iu.getItemComponent()),
-        getComponentAuthors(iu.getItemComponent()),
-        getComponentPublicationDate(iu.getItemComponent()),
-        getComponentDataType(iu.getItemComponent()),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.DOI),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.ISBN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.URI),
+        //        getComponentTitle(iu.getItemComponent()),
+        //        getComponentAuthors(iu.getItemComponent()),
+        //        getComponentPublicationDate(iu.getItemComponent()),
+        //        getComponentDataType(iu.getItemComponent()),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.DOI),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.ISBN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.URI),
         iu.getDataType(),
         iu.getYOP(),
         iu.getAccessType(),
@@ -163,7 +168,7 @@ public class IR extends AbstractIRMapper {
     return (parent == null) ? null : getValue(parent.getItemID(), identifier);
   }
 
-  private String getComponentTitle(List<COUNTERItemComponent> components) {
+  /*private String getComponentTitle(List<COUNTERItemComponent> components) {
     if (components == null || components.isEmpty()) {
       return null;
     }
@@ -212,5 +217,5 @@ public class IR extends AbstractIRMapper {
         .filter(Objects::nonNull)
         .map(c -> getValue(c.getItemID(), identifier))
         .collect(Collectors.joining(", "));
-  }
+  }*/
 }

@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemAttributes;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemComponent;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemContributors;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemDates;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemIDs;
@@ -21,7 +20,6 @@ import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.ItemUsageMerger;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
 import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemComponent;
 import org.openapitools.client.model.COUNTERItemContributors;
 import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
 import org.openapitools.client.model.COUNTERItemDates;
@@ -105,16 +103,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
       null, // Parent_Print_ISSN
       null, // Parent_Online_ISSN
       null, // Parent_URI
-      COUNTERItemComponent.class, // Component_Title
-      null, // Component_Authors
-      null, // Component_Publication_Date
-      null, // Component_Data_Type
-      null, // Component_DOI
-      null, // Component_Proprietary_DOI
-      null, // Component_ISBN
-      null, // Component_Print_ISSN
-      null, // Component_Online_ISSN
-      null, // Component_URI
+      //      COUNTERItemComponent.class, // Component_Title
+      //      null, // Component_Authors
+      //      null, // Component_Publication_Date
+      //      null, // Component_Data_Type
+      //      null, // Component_DOI
+      //      null, // Component_Proprietary_DOI
+      //      null, // Component_ISBN
+      //      null, // Component_Print_ISSN
+      //      null, // Component_Online_ISSN
+      //      null, // Component_URI
       DataTypeEnum.class, // Data_Type
       null, // YOP
       AccessTypeEnum.class, // Access_Type
@@ -155,16 +153,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
           null, // Parent_Print_ISSN
           null, // Parent_Online_ISSN
           null, // Parent_URI
-          "ItemComponent", // Component_Title
-          null, // Component_Authors
-          null, // Component_Publication_Date
-          null, // Component_Data_Type
-          null, // Component_DOI
-          null, // Component_Proprietary_DOI
-          null, // Component_ISBN
-          null, // Component_Print_ISSN
-          null, // Component_Online_ISSN
-          null, // Component_URI
+          //          "ItemComponent", // Component_Title
+          //          null, // Component_Authors
+          //          null, // Component_Publication_Date
+          //          null, // Component_Data_Type
+          //          null, // Component_DOI
+          //          null, // Component_Proprietary_DOI
+          //          null, // Component_ISBN
+          //          null, // Component_Print_ISSN
+          //          null, // Component_Online_ISSN
+          //          null, // Component_URI
           "DataType",
           "YOP",
           "AccessType",
@@ -211,16 +209,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
             new Optional(), // Parent_Print_ISSN
             new Optional(), // Parent_Online_ISSN
             new Optional(), // Parent_URI
-            new Optional(new ParseItemComponent()), // Component_Title
-            new Optional(), // Component_Authors
-            new Optional(), // Component_Publication_Date
-            new Optional(), // Component_Data_Type
-            new Optional(), // Component_DOI
-            new Optional(), // Component_Proprietary_DOI
-            new Optional(), // Component_ISBN
-            new Optional(), // Component_Print_ISSN
-            new Optional(), // Component_Online_ISSN
-            new Optional(), // Component_URI
+            //            new Optional(new ParseItemComponent()), // Component_Title
+            //            new Optional(), // Component_Authors
+            //            new Optional(), // Component_Publication_Date
+            //            new Optional(), // Component_Data_Type
+            //            new Optional(), // Component_DOI
+            //            new Optional(), // Component_Proprietary_DOI
+            //            new Optional(), // Component_ISBN
+            //            new Optional(), // Component_Print_ISSN
+            //            new Optional(), // Component_Online_ISSN
+            //            new Optional(), // Component_URI
             new Optional(new ParseEnumType<>(COUNTERItemUsage.DataTypeEnum.class)), // Data_Type
             new Optional(), // YOP
             new Optional(new ParseEnumType<>(COUNTERItemUsage.AccessTypeEnum.class)), // Access_Type
@@ -263,16 +261,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
           "Parent_Print_ISSN",
           "Parent_Online_ISSN",
           "Parent_URI",
-          "Component_Title",
-          "Component_Authors",
-          "Component_Publication_Date",
-          "Component_Data_Type",
-          "Component_DOI",
-          "Component_Proprietary_DOI",
-          "Component_ISBN",
-          "Component_Print_ISSN",
-          "Component_Online_ISSN",
-          "Component_URI",
+          //          "Component_Title",
+          //          "Component_Authors",
+          //          "Component_Publication_Date",
+          //          "Component_Data_Type",
+          //          "Component_DOI",
+          //          "Component_Proprietary_DOI",
+          //          "Component_ISBN",
+          //          "Component_Print_ISSN",
+          //          "Component_Online_ISSN",
+          //          "Component_URI",
           "Data_Type",
           "YOP",
           "Access_Type",
