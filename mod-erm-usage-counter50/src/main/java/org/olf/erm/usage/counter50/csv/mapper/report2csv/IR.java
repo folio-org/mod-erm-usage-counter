@@ -86,7 +86,7 @@ public class IR extends AbstractIRMapper {
         getParentAuthors(iu.getItemParent()),
         getParentPublicationDate(iu.getItemParent()),
         getParentArticleVersion(iu.getItemParent()),
-        iu.getDataType(),
+        getParentDataType(iu.getItemParent()),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.DOI),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.ISBN),
@@ -116,35 +116,38 @@ public class IR extends AbstractIRMapper {
   }
 
   private String getAuthors(List<COUNTERItemContributors> contributors) {
-    return contributors.stream()
-        .filter(c -> c.getType() == TypeEnum.AUTHOR)
-        .map(
-            c -> {
-              if (c.getIdentifier() != null) {
-                return c.getName() + " (" + c.getIdentifier() + ")";
-              } else {
-                return c.getName();
-              }
-            })
-        .collect(Collectors.joining("; "));
+    return (contributors == null)
+        ? null
+        : contributors.stream()
+            .filter(c -> c.getType() == TypeEnum.AUTHOR)
+            .map(
+                c -> {
+                  if (c.getIdentifier() != null) {
+                    return c.getName() + " (" + c.getIdentifier() + ")";
+                  } else {
+                    return c.getName();
+                  }
+                })
+            .collect(Collectors.joining("; "));
   }
 
   private String getPublicationDate(List<COUNTERItemDates> dates) {
-    return dates.stream()
-        .filter(d -> d.getType() == COUNTERItemDates.TypeEnum.PUBLICATION_DATE)
-        .map(COUNTERItemDates::getValue)
-        .collect(Collectors.joining("; "));
+    return (dates == null)
+        ? null
+        : dates.stream()
+            .filter(d -> d.getType() == COUNTERItemDates.TypeEnum.PUBLICATION_DATE)
+            .map(COUNTERItemDates::getValue)
+            .collect(Collectors.joining("; "));
   }
 
   private String getArticleVersion(List<COUNTERItemAttributes> attrs) {
-    if (attrs == null) {
-      return null;
-    }
-    return attrs.stream()
-        .filter(Objects::nonNull)
-        .filter(a -> a.getType() == COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)
-        .map(COUNTERItemAttributes::getValue)
-        .collect(Collectors.joining("; "));
+    return (attrs == null)
+        ? null
+        : attrs.stream()
+            .filter(Objects::nonNull)
+            .filter(a -> a.getType() == COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)
+            .map(COUNTERItemAttributes::getValue)
+            .collect(Collectors.joining("; "));
   }
 
   private String getParentTitle(COUNTERItemParent parent) {
@@ -153,6 +156,12 @@ public class IR extends AbstractIRMapper {
 
   private String getParentAuthors(COUNTERItemParent parent) {
     return (parent == null) ? null : getAuthors(parent.getItemContributors());
+  }
+
+  private String getParentDataType(COUNTERItemParent parent) {
+    return (parent == null || parent.getDataType() == null)
+        ? null
+        : (parent.getDataType().getValue());
   }
 
   private String getParentPublicationDate(COUNTERItemParent parent) {
