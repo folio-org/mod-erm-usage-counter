@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.openapitools.client.model.COUNTERPublisherIdentifiers;
+import org.openapitools.client.model.COUNTERPublisherIdentifiers.TypeEnum;
 
 public final class PublisherIDProcessor {
 
@@ -13,7 +14,14 @@ public final class PublisherIDProcessor {
       return null;
     }
     return identifiers.stream()
-        .map(id -> String.format("%s=%s", id.getType(), id.getValue()))
+        .map(
+            id -> {
+              if (TypeEnum.PROPRIETARY.equals(id.getType())) {
+                return id.getValue();
+              } else {
+                return String.join(":", id.getType().getValue(), id.getValue());
+              }
+            })
         .collect(Collectors.joining("; "));
   }
 }
