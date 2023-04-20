@@ -25,7 +25,7 @@ public class IR extends AbstractIRMapper {
   @Override
   String[] getHeader() {
     return new String[] {
-      "Title",
+      "Item",
       "Publisher",
       "Publisher_ID",
       "Platform",

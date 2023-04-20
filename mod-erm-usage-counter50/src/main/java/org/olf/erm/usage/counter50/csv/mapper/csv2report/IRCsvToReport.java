@@ -265,7 +265,7 @@ public class IRCsvToReport extends AbstractCsvToReport {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
     String[] baseHeader =
         new String[] {
-          "Title",
+          "Item",
           "Publisher",
           "Publisher_ID",
           "Platform",
