@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter50.TestUtil.sort;
 
+import com.google.common.collect.Streams;
 import com.google.common.io.Resources;
+import io.vertx.core.json.Json;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
@@ -13,7 +15,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -31,6 +35,22 @@ import org.openapitools.client.model.SUSHIErrorModel;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
+
+  private static Class<?> getCounterClass(Object o) {
+    if (o instanceof COUNTERTitleReport) {
+      return COUNTERTitleReport.class;
+    }
+    if (o instanceof COUNTERDatabaseReport) {
+      return COUNTERDatabaseReport.class;
+    }
+    if (o instanceof COUNTERPlatformReport) {
+      return COUNTERPlatformReport.class;
+    }
+    if (o instanceof COUNTERItemReport) {
+      return COUNTERItemReport.class;
+    }
+    throw new IllegalArgumentException();
+  }
 
   @RunWith(Parameterized.class)
   public static class TestToAndFromCSV<T> {
@@ -128,6 +148,66 @@ public class MapperTest {
           new String(Resources.toByteArray(Resources.getResource(expected)))
               .replace("$$$date_run$$$", LocalDate.now().toString());
       assertThat(result).isEqualToIgnoringNewLines(expectedString);
+    }
+  }
+
+  @RunWith(Parameterized.class)
+  public static class TestPcSampleReports {
+    private final String input;
+
+    public TestPcSampleReports(String reportName) {
+      this.input = "reports/projectcounter-samples/Sample-" + reportName;
+    }
+
+    @Parameters(name = "{0}")
+    public static Collection<String> params() {
+      return Arrays.asList("TR", "DR", "PR", "IR");
+    }
+
+    @Test
+    public void testCsvToReport() throws MapperException, IOException {
+      String csvString =
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8)
+              .replace("$$$date_run$$$", LocalDate.now().toString());
+      CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
+      Object actualReport = mapper.toReport();
+
+      String jsonString =
+          Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
+      Object expectedReport =
+          Json.decodeValue(jsonString, MapperTest.getCounterClass(actualReport));
+
+      assertThat(actualReport).extracting("reportHeader.customerID").isNull();
+      assertThat(actualReport)
+          .usingRecursiveComparison()
+          .ignoringCollectionOrder()
+          .ignoringFields("reportHeader.customerID")
+          .isEqualTo(expectedReport);
+    }
+
+    @Test
+    public void testReportToCsv() throws IOException, MapperException, Counter5UtilsException {
+      URL url = Resources.getResource(input + ".json");
+      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      Object expectedReport = Counter5Utils.fromJSON(jsonString);
+      String result = MapperFactory.createReportToCsvMapper(expectedReport).toCSV();
+      String expectedString =
+          new String(Resources.toByteArray(Resources.getResource(input + ".csv")));
+
+      // test header, ignore trailing commas and Created date
+      Streams.zip(result.lines().limit(14), expectedString.lines().limit(14), List::of)
+          .forEach(
+              l -> {
+                String left = StringUtils.removeEnd(l.get(0), ",");
+                String right = StringUtils.removeEnd(l.get(1), ",");
+                if (left.startsWith("Created")) {
+                  return;
+                }
+                assertThat(left).isEqualTo(right);
+              });
+
+      assertThat(result.lines().skip(14).collect(Collectors.toList()))
+          .hasSameElementsAs(expectedString.lines().skip(14).collect(Collectors.toList()));
     }
   }
 
