@@ -8,15 +8,15 @@ import com.google.common.collect.Streams;
 import com.google.common.io.Resources;
 import io.vertx.core.json.Json;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -217,7 +217,7 @@ public class MapperTest {
     private final String input;
 
     public TestCsvToReport(String reportName) {
-      this.input = "reports/" + reportName + ".csv";
+      this.input = "reports/" + reportName;
     }
 
     @Parameters(name = "{0}")
@@ -228,34 +228,29 @@ public class MapperTest {
     @Test
     public void testToReports() throws IOException, MapperException {
       String csvString =
-          Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8)
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8)
               .replace("$$$date_run$$$", LocalDate.now().toString());
-      CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
-      Object resultReport = mapper.toReport();
-      String resultCSV = MapperFactory.createReportToCsvMapper(resultReport).toCSV();
+      Object actual = MapperFactory.createCsvToReportMapper(csvString).toReport();
 
-      StringReader stringReaderExpected = new StringReader(csvString);
-      List<String> linesExpected = IOUtils.readLines(stringReaderExpected);
+      String expectedReportStr =
+          Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
+      Object expected = Json.decodeValue(expectedReportStr, getCounterClass(actual));
 
-      StringReader stringReaderActual = new StringReader(resultCSV);
-      List<String> linesActual = IOUtils.readLines(stringReaderActual);
-
-      for (String expected : linesExpected) {
-        if (expected.startsWith("Metric_Types")) {
-          assertThatMetricTypesAreEqual(expected, linesActual);
-        } else {
-          assertThat(linesActual).contains(expected);
-        }
-      }
-    }
-
-    private void assertThatMetricTypesAreEqual(String expectedLine, List<String> actualReport) {
-      String actualLine =
-          actualReport.stream().filter(s -> s.startsWith("Metric_Types")).findFirst().orElse("");
-      String[] split = expectedLine.replace("Metric_Types,", "").split(";");
-      for (String s : split) {
-        assertThat(actualLine).contains(s.trim());
-      }
+      assertThat(actual)
+          .usingRecursiveComparison()
+          .ignoringCollectionOrder()
+          .withEqualsForFields(
+              (BiPredicate<List<?>, List<?>>)
+                  (l1, l2) -> {
+                    if (CollectionUtils.isEmpty(l1) && CollectionUtils.isEmpty(l2)) {
+                      return true;
+                    } else {
+                      return l1.equals(l2);
+                    }
+                  },
+              "reportHeader.exceptions")
+          .ignoringFields("reportHeader.created", "reportHeader.customerID")
+          .isEqualTo(expected);
     }
   }
 
