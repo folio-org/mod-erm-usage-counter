@@ -2,7 +2,7 @@ Report_Name,Platform Master Report
 Report_ID,PR
 Release,5
 Institution_Name,MY INSTITUION
-Institution_ID,Proprietary=mit:1234
+Institution_ID,mit:1234
 Metric_Types,
 Report_Filters,
 Report_Attributes,

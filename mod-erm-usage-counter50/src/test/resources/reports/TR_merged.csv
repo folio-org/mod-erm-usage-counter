@@ -2,7 +2,7 @@ Report_Name,Title Master Report
 Report_ID,TR
 Release,5
 Institution_Name,MY INSTITUION
-Institution_ID,Proprietary=mit:1234
+Institution_ID,mit:1234
 Metric_Types,
 Report_Filters,
 Report_Attributes,
@@ -12,29 +12,29 @@ Created,$$$date_run$$$
 Created_By,FooBar Systems
 
 Title,Publisher,Publisher_ID,Platform,DOI,Proprietary_ID,ISBN,Print_ISSN,Online_ISSN,URI,Data_Type,Section_Type,YOP,Access_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019,Oct-2019,Nov-2019
-Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Investigations,3,1,,2
-Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Requests,2,,,2
-Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Investigations,3,1,,2
-Title 6,My Press,Proprietary=my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Requests,2,,,2
-Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Total_Item_Investigations,16,3,4,9
-Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Total_Item_Requests,12,3,4,5
-Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Investigations,12,2,4,6
-Title 3,My Press,Proprietary=my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Requests,11,2,4,5
-Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Investigations,51,6,14,31
-Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Requests,17,2,2,13
-Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Unique_Item_Investigations,31,4,11,16
-Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Unique_Item_Requests,9,1,2,6
-Title 5,My Press,Proprietary=my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,No_License,30,5,8,17
-Title 2,My Press,Proprietary=my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Investigations,2,1,,1
-Title 2,My Press,Proprietary=my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Requests,1,1,,
-Title 2,My Press,Proprietary=my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Investigations,2,1,,1
-Title 2,My Press,Proprietary=my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Requests,1,1,,
-Title 1,My Press MyM,Proprietary=my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Investigations,9,3,,6
-Title 1,My Press MyM,Proprietary=my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Requests,9,3,,6
-Title 1,My Press MyM,Proprietary=my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Investigations,4,1,,3
-Title 1,My Press MyM,Proprietary=my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Requests,4,1,,3
-Title 4,My Press,Proprietary=my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Investigations,3,1,2,
-Title 4,My Press,Proprietary=my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Requests,1,,1,
-Title 4,My Press,Proprietary=my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Unique_Item_Investigations,3,1,2,
-Title 4,My Press,Proprietary=my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Unique_Item_Requests,1,,1,
+Title 6,My Press,my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Investigations,3,1,,2
+Title 6,My Press,my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Total_Item_Requests,2,,,2
+Title 6,My Press,my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Investigations,3,1,,2
+Title 6,My Press,my:mypress,My Journals,131415.DOI,my:abcde,,,0003-1114,,,,,,,Unique_Item_Requests,2,,,2
+Title 3,My Press,my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Total_Item_Investigations,16,3,4,9
+Title 3,My Press,my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Total_Item_Requests,12,3,4,5
+Title 3,My Press,my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Investigations,12,2,4,6
+Title 3,My Press,my:mypress,My Journals,101112.DOI,my:ab,,0000-1111,1111-2222,,,,,,,Unique_Item_Requests,11,2,4,5
+Title 5,My Press,my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Investigations,51,6,14,31
+Title 5,My Press,my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Total_Item_Requests,17,2,2,13
+Title 5,My Press,my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Unique_Item_Investigations,31,4,11,16
+Title 5,My Press,my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,Unique_Item_Requests,9,1,2,6
+Title 5,My Press,my:mypress,My Journals,121314.DOI,my:abcd,,0002-1113,3333-4444,,,,,,,No_License,30,5,8,17
+Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Investigations,2,1,,1
+Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Requests,1,1,,
+Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Investigations,2,1,,1
+Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Requests,1,1,,
+Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Investigations,9,3,,6
+Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Requests,9,3,,6
+Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Investigations,4,1,,3
+Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Requests,4,1,,3
+Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Investigations,3,1,2,
+Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Requests,1,,1,
+Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Unique_Item_Investigations,3,1,2,
+Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Unique_Item_Requests,1,,1,
 
