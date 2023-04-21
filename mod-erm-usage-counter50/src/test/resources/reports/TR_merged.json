@@ -99,7 +99,7 @@
       "Publisher_ID": [
         {
           "Type": "Proprietary",
-          "Value": "my:mypress; mym"
+          "Value": "my:mypress"
         }
       ],
       "Publisher": "My Press MyM",

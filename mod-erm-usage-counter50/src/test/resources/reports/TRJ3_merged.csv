@@ -2,7 +2,7 @@ Report_Name,Journal Usage by Access Type
 Report_ID,TR_J3
 Release,5
 Institution_Name,Sample University
-Institution_ID,ISNI=1234567890
+Institution_ID,ISNI:1234567890
 Metric_Types,Total_Item_Requests; Unique_Item_Requests; Total_Item_Investigations; Unique_Item_Investigations
 Report_Filters,Access_Method=Regular; Data_Type=Journal
 Report_Attributes,
@@ -12,19 +12,19 @@ Created,$$$date_run$$$
 Created_By,Sample Provider
 
 Title,Publisher,Publisher_ID,Platform,DOI,Proprietary_ID,Print_ISSN,Online_ISSN,URI,Access_Type,Metric_Type,Reporting_Period_Total,Jan-2021,Feb-2021,Mar-2021
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Total_Item_Investigations,9,2,3,4
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Total_Item_Requests,9,2,3,4
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Unique_Item_Investigations,4,1,2,1
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Unique_Item_Requests,5,1,2,2
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Total_Item_Investigations,9,2,3,4
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Total_Item_Requests,9,2,3,4
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Unique_Item_Investigations,4,1,2,1
-Journal A,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Unique_Item_Requests,5,1,2,2
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Total_Item_Investigations,9,2,3,4
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Total_Item_Requests,9,2,3,4
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Unique_Item_Investigations,4,1,2,1
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Unique_Item_Requests,5,1,2,2
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Total_Item_Investigations,9,2,3,4
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Total_Item_Requests,9,2,3,4
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Unique_Item_Investigations,4,1,2,1
-Journal B,Publisher X,ISNI=1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Unique_Item_Requests,5,1,2,2
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Total_Item_Investigations,9,2,3,4
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Total_Item_Requests,9,2,3,4
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Unique_Item_Investigations,4,1,2,1
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,Controlled,Unique_Item_Requests,5,1,2,2
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Total_Item_Investigations,9,2,3,4
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Total_Item_Requests,9,2,3,4
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Unique_Item_Investigations,4,1,2,1
+Journal A,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlA,1111-22222,1111-1223,uri:pubx:jnlA,OA_Gold,Unique_Item_Requests,5,1,2,2
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Total_Item_Investigations,9,2,3,4
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Total_Item_Requests,9,2,3,4
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Unique_Item_Investigations,4,1,2,1
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,Controlled,Unique_Item_Requests,5,1,2,2
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Total_Item_Investigations,9,2,3,4
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Total_Item_Requests,9,2,3,4
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Unique_Item_Investigations,4,1,2,1
+Journal B,Publisher X,ISNI:1234123412341234,PlatformX,/12.1.0.1/1111.2.222,pubx:jnlB,1111-22211,1111-1213,uri:pubx:jnlB,OA_Gold,Unique_Item_Requests,5,1,2,2

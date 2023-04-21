@@ -29,10 +29,10 @@ Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Inv
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Requests,1,1,,
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Investigations,2,1,,1
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Requests,1,1,,
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Investigations,9,3,,6
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Requests,9,3,,6
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Investigations,4,1,,3
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Requests,4,1,,3
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Investigations,9,3,,6
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Total_Item_Requests,9,3,,6
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Investigations,4,1,,3
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,,,,,Unique_Item_Requests,4,1,,3
 Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Investigations,3,1,2,
 Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Total_Item_Requests,1,,1,
 Title 4,My Press,my:mypress,My Journals,111213.DOI,my:abc,,0001-1112,2222-3333,,,,,,,Unique_Item_Investigations,3,1,2,

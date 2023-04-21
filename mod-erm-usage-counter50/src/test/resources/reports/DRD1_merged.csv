@@ -2,7 +2,7 @@ Report_Name,Database Search and Item Usage
 Report_ID,DR_D1
 Release,5
 Institution_Name,Sample University
-Institution_ID,ISNI=1234567890
+Institution_ID,ISNI:1234567890
 Metric_Types,Searches_Automated; Searches_Federated; Searches_Regular; Total_Item_Investigations; Total_Item_Requests
 Report_Filters,Access_Method=Regular
 Report_Attributes,
@@ -12,13 +12,13 @@ Created,$$$date_run$$$
 Created_By,Sample Provider
 
 Database,Publisher,Publisher_ID,Platform,Proprietary_ID,Metric_Type,Reporting_Period_Total,Jan-2021,Feb-2021,Mar-2021
-Database A,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbA,Searches_Automated,669,123,223,323
-Database A,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbA,Searches_Federated,540,80,180,280
-Database A,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbA,Searches_Regular,1287,329,429,529
-Database A,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbA,Total_Item_Investigations,1743,481,581,681
-Database A,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbA,Total_Item_Requests,1845,515,615,715
-Database B,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbB,Searches_Automated,6690,1230,2230,3230
-Database B,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbB,Searches_Federated,5400,800,1800,2800
-Database B,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbB,Searches_Regular,12870,3290,4290,5290
-Database B,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbB,Total_Item_Investigations,17430,4810,5810,6810
-Database B,DB Publisher X,ISNI=1234123412341234,PlatformX,pubx:dbB,Total_Item_Requests,18450,5150,6150,7150
+Database A,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbA,Searches_Automated,669,123,223,323
+Database A,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbA,Searches_Federated,540,80,180,280
+Database A,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbA,Searches_Regular,1287,329,429,529
+Database A,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbA,Total_Item_Investigations,1743,481,581,681
+Database A,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbA,Total_Item_Requests,1845,515,615,715
+Database B,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbB,Searches_Automated,6690,1230,2230,3230
+Database B,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbB,Searches_Federated,5400,800,1800,2800
+Database B,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbB,Searches_Regular,12870,3290,4290,5290
+Database B,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbB,Total_Item_Investigations,17430,4810,5810,6810
+Database B,DB Publisher X,ISNI:1234123412341234,PlatformX,pubx:dbB,Total_Item_Requests,18450,5150,6150,7150

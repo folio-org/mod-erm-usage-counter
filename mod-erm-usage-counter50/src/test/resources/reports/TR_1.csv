@@ -12,10 +12,10 @@ Created,$$$date_run$$$
 Created_By,FooBar Systems
 
 Title,Publisher,Publisher_ID,Platform,DOI,Proprietary_ID,ISBN,Print_ISSN,Online_ISSN,URI,Data_Type,Section_Type,YOP,Access_Type,Access_Method,Metric_Type,Reporting_Period_Total,Sep-2019
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Total_Item_Investigations,3,3
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Total_Item_Requests,3,3
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Unique_Item_Investigations,1,1
-Title 1,My Press MyM,my:mypress; mym,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Unique_Item_Requests,1,1
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Total_Item_Investigations,3,3
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Total_Item_Requests,3,3
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Unique_Item_Investigations,1,1
+Title 1,My Press MyM,my:mypress,My Journals,8910.DOI,my:foo,,0011-1122,0123-4567,,,Book,,,,Unique_Item_Requests,1,1
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Investigations,1,1
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Total_Item_Requests,1,1
 Title 2,My Press,my:mypress,My Journals,91011.DOI,my:bar,,,,,,,,,,Unique_Item_Investigations,1,1
