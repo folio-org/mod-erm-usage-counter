@@ -10,7 +10,6 @@ import io.vertx.core.json.Json;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -140,14 +139,19 @@ public class MapperTest {
 
     @Test
     public void testToCSV() throws IOException, MapperException, Counter5UtilsException {
-      URL url = Resources.getResource(input);
-      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      String jsonString = Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8);
       Object report = Counter5Utils.fromJSON(jsonString);
-      String result = MapperFactory.createReportToCsvMapper(report).toCSV();
+      String actualString = MapperFactory.createReportToCsvMapper(report).toCSV();
       String expectedString =
-          new String(Resources.toByteArray(Resources.getResource(expected)))
-              .replace("$$$date_run$$$", LocalDate.now().toString());
-      assertThat(result).isEqualToIgnoringNewLines(expectedString);
+          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
+
+      List<String> actualLines = actualString.lines().collect(Collectors.toList());
+      List<String> expectedLines = expectedString.lines().collect(Collectors.toList());
+      String actualCreated = actualLines.remove(10);
+      expectedLines.remove(10);
+
+      assertThat(actualLines).containsExactlyElementsOf(expectedLines);
+      assertThat(actualCreated).matches("Created,\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z");
     }
   }
 
@@ -167,8 +171,7 @@ public class MapperTest {
     @Test
     public void testCsvToReport() throws MapperException, IOException {
       String csvString =
-          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8)
-              .replace("$$$date_run$$$", LocalDate.now().toString());
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8);
       CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
       Object actualReport = mapper.toReport();
 
@@ -228,8 +231,7 @@ public class MapperTest {
     @Test
     public void testToReports() throws IOException, MapperException {
       String csvString =
-          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8)
-              .replace("$$$date_run$$$", LocalDate.now().toString());
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8);
       Object actual = MapperFactory.createCsvToReportMapper(csvString).toReport();
 
       String expectedReportStr =
