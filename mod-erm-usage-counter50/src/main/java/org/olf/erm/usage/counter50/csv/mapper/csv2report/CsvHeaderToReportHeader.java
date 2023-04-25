@@ -1,5 +1,6 @@
 package org.olf.erm.usage.counter50.csv.mapper.csv2report;
 
+import static java.util.Objects.requireNonNull;
 import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED;
 import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED_BY;
 import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_EXCEPTIONS;
@@ -120,6 +121,31 @@ public class CsvHeaderToReportHeader {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Checks that required attributes for {@link SUSHIReportHeader} are not null.<br>
+   * If a required attribute is null a {@link CsvHeaderParseException} is thrown, otherwise the
+   * header is returned unchanged.
+   *
+   * @param header the header object to validate
+   * @return the valid header object
+   * @throws CsvHeaderParseException if a required attribute is null
+   */
+  public static SUSHIReportHeader validateRequiredHeaderAttribues(SUSHIReportHeader header)
+      throws CsvHeaderParseException {
+    try {
+      requireNonNull(header.getCreated(), "Created");
+      requireNonNull(header.getCreatedBy(), "Created_By");
+      requireNonNull(header.getReportID(), "Report_ID");
+      requireNonNull(header.getReportName(), "Report_Name");
+      requireNonNull(header.getRelease(), "Release");
+      requireNonNull(header.getInstitutionName(), "Institution_Name");
+      requireNonNull(header.getReportFilters(), "Report_Filters");
+    } catch (NullPointerException e) {
+      throw new CsvHeaderParseException("'" + e.getMessage() + "' cant be null");
+    }
+    return header;
+  }
+
   public static SUSHIReportHeader parseHeader(Map<String, String> headerColumns) {
     SUSHIReportHeader sushiReportHeader = new SUSHIReportHeader();
     sushiReportHeader.setCreated(headerColumns.get(JSON_PROPERTY_CREATED));
@@ -153,7 +179,7 @@ public class CsvHeaderToReportHeader {
       sushiReportHeader.setExceptions(errorModels);
     }
 
-    return sushiReportHeader;
+    return validateRequiredHeaderAttribues(sushiReportHeader);
   }
 
   static class CsvHeaderParseException extends RuntimeException {
