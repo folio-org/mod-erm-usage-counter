@@ -13638,7 +13638,8 @@
       "Item_Contributors": [
         {
           "Type": "Author",
-          "Name": "David A. Weitz, Peter J. Lu (陸述義)"
+          "Name": "David A. Weitz, Peter J. Lu",
+          "Identifier": "陸述義"
         }
       ],
       "Item_Dates": [

@@ -4,16 +4,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter50.TestUtil.sort;
 
+import com.google.common.collect.Streams;
 import com.google.common.io.Resources;
+import io.vertx.core.json.Json;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import org.apache.commons.io.IOUtils;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -31,6 +34,22 @@ import org.openapitools.client.model.SUSHIErrorModel;
 
 @RunWith(Enclosed.class)
 public class MapperTest {
+
+  private static Class<?> getCounterClass(Object o) {
+    if (o instanceof COUNTERTitleReport) {
+      return COUNTERTitleReport.class;
+    }
+    if (o instanceof COUNTERDatabaseReport) {
+      return COUNTERDatabaseReport.class;
+    }
+    if (o instanceof COUNTERPlatformReport) {
+      return COUNTERPlatformReport.class;
+    }
+    if (o instanceof COUNTERItemReport) {
+      return COUNTERItemReport.class;
+    }
+    throw new IllegalArgumentException();
+  }
 
   @RunWith(Parameterized.class)
   public static class TestToAndFromCSV<T> {
@@ -120,14 +139,78 @@ public class MapperTest {
 
     @Test
     public void testToCSV() throws IOException, MapperException, Counter5UtilsException {
-      URL url = Resources.getResource(input);
-      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      String jsonString = Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8);
       Object report = Counter5Utils.fromJSON(jsonString);
-      String result = MapperFactory.createReportToCsvMapper(report).toCSV();
+      String actualString = MapperFactory.createReportToCsvMapper(report).toCSV();
       String expectedString =
-          new String(Resources.toByteArray(Resources.getResource(expected)))
-              .replace("$$$date_run$$$", LocalDate.now().toString());
-      assertThat(result).isEqualToIgnoringNewLines(expectedString);
+          Resources.toString(Resources.getResource(expected), StandardCharsets.UTF_8);
+
+      List<String> actualLines = actualString.lines().collect(Collectors.toList());
+      List<String> expectedLines = expectedString.lines().collect(Collectors.toList());
+      String actualCreated = actualLines.remove(10);
+      expectedLines.remove(10);
+
+      assertThat(actualLines).containsExactlyElementsOf(expectedLines);
+      assertThat(actualCreated).matches("Created,\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z");
+    }
+  }
+
+  @RunWith(Parameterized.class)
+  public static class TestPcSampleReports {
+    private final String input;
+
+    public TestPcSampleReports(String reportName) {
+      this.input = "reports/projectcounter-samples/Sample-" + reportName;
+    }
+
+    @Parameters(name = "{0}")
+    public static Collection<String> params() {
+      return Arrays.asList("TR", "DR", "PR", "IR");
+    }
+
+    @Test
+    public void testCsvToReport() throws MapperException, IOException {
+      String csvString =
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8);
+      CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
+      Object actualReport = mapper.toReport();
+
+      String jsonString =
+          Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
+      Object expectedReport =
+          Json.decodeValue(jsonString, MapperTest.getCounterClass(actualReport));
+
+      assertThat(actualReport).extracting("reportHeader.customerID").isNull();
+      assertThat(actualReport)
+          .usingRecursiveComparison()
+          .ignoringCollectionOrder()
+          .ignoringFields("reportHeader.customerID")
+          .isEqualTo(expectedReport);
+    }
+
+    @Test
+    public void testReportToCsv() throws IOException, MapperException, Counter5UtilsException {
+      URL url = Resources.getResource(input + ".json");
+      String jsonString = Resources.toString(url, StandardCharsets.UTF_8);
+      Object expectedReport = Counter5Utils.fromJSON(jsonString);
+      String result = MapperFactory.createReportToCsvMapper(expectedReport).toCSV();
+      String expectedString =
+          new String(Resources.toByteArray(Resources.getResource(input + ".csv")));
+
+      // test header, ignore trailing commas and Created date
+      Streams.zip(result.lines().limit(14), expectedString.lines().limit(14), List::of)
+          .forEach(
+              l -> {
+                String left = StringUtils.removeEnd(l.get(0), ",");
+                String right = StringUtils.removeEnd(l.get(1), ",");
+                if (left.startsWith("Created")) {
+                  return;
+                }
+                assertThat(left).isEqualTo(right);
+              });
+
+      assertThat(result.lines().skip(14).collect(Collectors.toList()))
+          .hasSameElementsAs(expectedString.lines().skip(14).collect(Collectors.toList()));
     }
   }
 
@@ -137,7 +220,7 @@ public class MapperTest {
     private final String input;
 
     public TestCsvToReport(String reportName) {
-      this.input = "reports/" + reportName + ".csv";
+      this.input = "reports/" + reportName;
     }
 
     @Parameters(name = "{0}")
@@ -148,34 +231,28 @@ public class MapperTest {
     @Test
     public void testToReports() throws IOException, MapperException {
       String csvString =
-          Resources.toString(Resources.getResource(input), StandardCharsets.UTF_8)
-              .replace("$$$date_run$$$", LocalDate.now().toString());
-      CsvToReportMapper mapper = MapperFactory.createCsvToReportMapper(csvString);
-      Object resultReport = mapper.toReport();
-      String resultCSV = MapperFactory.createReportToCsvMapper(resultReport).toCSV();
+          Resources.toString(Resources.getResource(input + ".csv"), StandardCharsets.UTF_8);
+      Object actual = MapperFactory.createCsvToReportMapper(csvString).toReport();
 
-      StringReader stringReaderExpected = new StringReader(csvString);
-      List<String> linesExpected = IOUtils.readLines(stringReaderExpected);
+      String expectedReportStr =
+          Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
+      Object expected = Json.decodeValue(expectedReportStr, getCounterClass(actual));
 
-      StringReader stringReaderActual = new StringReader(resultCSV);
-      List<String> linesActual = IOUtils.readLines(stringReaderActual);
-
-      for (String expected : linesExpected) {
-        if (expected.startsWith("Metric_Types")) {
-          assertThatMetricTypesAreEqual(expected, linesActual);
-        } else {
-          assertThat(linesActual).contains(expected);
-        }
-      }
-    }
-
-    private void assertThatMetricTypesAreEqual(String expectedLine, List<String> actualReport) {
-      String actualLine =
-          actualReport.stream().filter(s -> s.startsWith("Metric_Types")).findFirst().orElse("");
-      String[] split = expectedLine.replace("Metric_Types,", "").split(";");
-      for (String s : split) {
-        assertThat(actualLine).contains(s.trim());
-      }
+      assertThat(actual)
+          .usingRecursiveComparison()
+          .ignoringCollectionOrder()
+          .withEqualsForFields(
+              (BiPredicate<List<?>, List<?>>)
+                  (l1, l2) -> {
+                    if (CollectionUtils.isEmpty(l1) && CollectionUtils.isEmpty(l2)) {
+                      return true;
+                    } else {
+                      return l1.equals(l2);
+                    }
+                  },
+              "reportHeader.exceptions")
+          .ignoringFields("reportHeader.created", "reportHeader.customerID")
+          .isEqualTo(expected);
     }
   }
 

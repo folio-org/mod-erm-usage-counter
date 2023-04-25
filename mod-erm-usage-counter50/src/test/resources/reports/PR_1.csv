@@ -2,7 +2,7 @@ Report_Name,Platform Master Report
 Report_ID,PR
 Release,5
 Institution_Name,MY INSTITUION
-Institution_ID,Proprietary=mit:1234
+Institution_ID,mit:1234
 Metric_Types,
 Report_Filters,
 Report_Attributes,
@@ -17,4 +17,3 @@ My Journals,Journal,Regular,Total_Item_Investigations,221,221
 My Journals,Journal,Regular,Total_Item_Requests,141,141
 My Journals,Journal,Regular,Unique_Item_Investigations,159,159
 My Journals,Journal,Regular,Unique_Item_Requests,111,111
-

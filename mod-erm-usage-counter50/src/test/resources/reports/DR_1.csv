@@ -2,7 +2,7 @@ Report_Name,Database Master Report
 Report_ID,DR
 Release,5
 Institution_Name,My Institution
-Institution_ID,Proprietary=ServiceMy Customer
+Institution_ID,service:My Customer
 Metric_Types,
 Report_Filters,
 Report_Attributes,
@@ -30,4 +30,3 @@ Database 3,My Publisher 2,,My Platform,,,,Total_Item_Requests,1166,1166
 Database 3,My Publisher 2,,My Platform,,,,Unique_Item_Investigations,3530,3530
 Database 3,My Publisher 2,,My Platform,,,,Unique_Item_Requests,1100,1100
 Database 4,My Publisher 2,,My Platform,,,,Searches_Regular,436,436
-

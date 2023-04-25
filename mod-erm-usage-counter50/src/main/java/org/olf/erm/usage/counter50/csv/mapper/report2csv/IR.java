@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
 import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemComponent;
 import org.openapitools.client.model.COUNTERItemContributors;
 import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
 import org.openapitools.client.model.COUNTERItemDates;
@@ -17,6 +16,7 @@ import org.openapitools.client.model.COUNTERItemParent;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERItemUsage;
 
+@SuppressWarnings("java:S125")
 public class IR extends AbstractIRMapper {
 
   public IR(COUNTERItemReport report) {
@@ -26,7 +26,7 @@ public class IR extends AbstractIRMapper {
   @Override
   String[] getHeader() {
     return new String[] {
-      "Title",
+      "Item",
       "Publisher",
       "Publisher_ID",
       "Platform",
@@ -50,16 +50,16 @@ public class IR extends AbstractIRMapper {
       "Parent_Print_ISSN",
       "Parent_Online_ISSN",
       "Parent_URI",
-      "Component_Title",
-      "Component_Authors",
-      "Component_Publication_Date",
-      "Component_Data_Type",
-      "Component_DOI",
-      "Component_Proprietary_DOI",
-      "Component_ISBN",
-      "Component_Print_ISSN",
-      "Component_Online_ISSN",
-      "Component_URI",
+      //      "Component_Title",
+      //      "Component_Authors",
+      //      "Component_Publication_Date",
+      //      "Component_Data_Type",
+      //      "Component_DOI",
+      //      "Component_Proprietary_DOI",
+      //      "Component_ISBN",
+      //      "Component_Print_ISSN",
+      //      "Component_Online_ISSN",
+      //      "Component_URI",
       "Data_Type",
       "YOP",
       "Access_Type",
@@ -87,23 +87,29 @@ public class IR extends AbstractIRMapper {
         getParentAuthors(iu.getItemParent()),
         getParentPublicationDate(iu.getItemParent()),
         getParentArticleVersion(iu.getItemParent()),
-        iu.getDataType(),
+        getParentDataType(iu.getItemParent()),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.DOI),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.ISBN),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
         getParentIdentifier(iu.getItemParent(), COUNTERItemIdentifiers.TypeEnum.URI),
-        getComponentTitle(iu.getItemComponent()),
-        getComponentAuthors(iu.getItemComponent()),
-        getComponentPublicationDate(iu.getItemComponent()),
-        getComponentDataType(iu.getItemComponent()),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.DOI),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.ISBN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
-        getComponentIdentifier(iu.getItemComponent(), COUNTERItemIdentifiers.TypeEnum.URI),
+        //        getComponentTitle(iu.getItemComponent()),
+        //        getComponentAuthors(iu.getItemComponent()),
+        //        getComponentPublicationDate(iu.getItemComponent()),
+        //        getComponentDataType(iu.getItemComponent()),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.DOI),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.PROPRIETARY),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.ISBN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN),
+        //        getComponentIdentifier(iu.getItemComponent(),
+        // COUNTERItemIdentifiers.TypeEnum.URI),
         iu.getDataType(),
         iu.getYOP(),
         iu.getAccessType(),
@@ -111,28 +117,38 @@ public class IR extends AbstractIRMapper {
   }
 
   private String getAuthors(List<COUNTERItemContributors> contributors) {
-    return contributors.stream()
-        .filter(c -> c.getType() == TypeEnum.AUTHOR)
-        .map(COUNTERItemContributors::getName)
-        .collect(Collectors.joining("; "));
+    return (contributors == null)
+        ? null
+        : contributors.stream()
+            .filter(c -> c.getType() == TypeEnum.AUTHOR)
+            .map(
+                c -> {
+                  if (c.getIdentifier() != null) {
+                    return c.getName() + " (" + c.getIdentifier() + ")";
+                  } else {
+                    return c.getName();
+                  }
+                })
+            .collect(Collectors.joining("; "));
   }
 
   private String getPublicationDate(List<COUNTERItemDates> dates) {
-    return dates.stream()
-        .filter(d -> d.getType() == COUNTERItemDates.TypeEnum.PUBLICATION_DATE)
-        .map(COUNTERItemDates::getValue)
-        .collect(Collectors.joining("; "));
+    return (dates == null)
+        ? null
+        : dates.stream()
+            .filter(d -> d.getType() == COUNTERItemDates.TypeEnum.PUBLICATION_DATE)
+            .map(COUNTERItemDates::getValue)
+            .collect(Collectors.joining("; "));
   }
 
   private String getArticleVersion(List<COUNTERItemAttributes> attrs) {
-    if (attrs == null) {
-      return null;
-    }
-    return attrs.stream()
-        .filter(Objects::nonNull)
-        .filter(a -> a.getType() == COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)
-        .map(COUNTERItemAttributes::getValue)
-        .collect(Collectors.joining("; "));
+    return (attrs == null)
+        ? null
+        : attrs.stream()
+            .filter(Objects::nonNull)
+            .filter(a -> a.getType() == COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)
+            .map(COUNTERItemAttributes::getValue)
+            .collect(Collectors.joining("; "));
   }
 
   private String getParentTitle(COUNTERItemParent parent) {
@@ -141,6 +157,12 @@ public class IR extends AbstractIRMapper {
 
   private String getParentAuthors(COUNTERItemParent parent) {
     return (parent == null) ? null : getAuthors(parent.getItemContributors());
+  }
+
+  private String getParentDataType(COUNTERItemParent parent) {
+    return (parent == null || parent.getDataType() == null)
+        ? null
+        : (parent.getDataType().getValue());
   }
 
   private String getParentPublicationDate(COUNTERItemParent parent) {
@@ -156,7 +178,7 @@ public class IR extends AbstractIRMapper {
     return (parent == null) ? null : getValue(parent.getItemID(), identifier);
   }
 
-  private String getComponentTitle(List<COUNTERItemComponent> components) {
+  /*private String getComponentTitle(List<COUNTERItemComponent> components) {
     if (components == null || components.isEmpty()) {
       return null;
     }
@@ -205,5 +227,5 @@ public class IR extends AbstractIRMapper {
         .filter(Objects::nonNull)
         .map(c -> getValue(c.getItemID(), identifier))
         .collect(Collectors.joining(", "));
-  }
+  }*/
 }

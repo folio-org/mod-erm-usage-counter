@@ -10,18 +10,15 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseEnumType;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemAttributes;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemComponent;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemContributors;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemDates;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemIDs;
-import org.olf.erm.usage.counter50.csv.cellprocessor.ParseItemParent;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParseMetricTypes;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParsePublisherID;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.ItemUsageMerger;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.merger.Merger;
 import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemComponent;
 import org.openapitools.client.model.COUNTERItemContributors;
 import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
 import org.openapitools.client.model.COUNTERItemDates;
@@ -73,6 +70,25 @@ public class IRCsvToReport extends AbstractCsvToReport {
               ciu.setItemID(null);
             }
           }
+          COUNTERItemParent itemParent = ciu.getItemParent();
+          if (itemParent.getItemID() != null) {
+            itemParent.getItemID().removeIf(Objects::isNull);
+            if (itemParent.getItemID().isEmpty()) {
+              itemParent.setItemID(null);
+            }
+          }
+          boolean isAllParentAttributesNull =
+              Stream.of(
+                      itemParent.getItemID(),
+                      itemParent.getItemAttributes(),
+                      itemParent.getItemDates(),
+                      itemParent.getDataType(),
+                      itemParent.getItemContributors(),
+                      itemParent.getItemName())
+                  .allMatch(Objects::isNull);
+          if (isAllParentAttributesNull) {
+            ciu.setItemParent(null);
+          }
         });
 
     result.setReportItems(itemsMerger.mergeItems(itemUsages));
@@ -95,26 +111,26 @@ public class IRCsvToReport extends AbstractCsvToReport {
       COUNTERItemIdentifiers.class, // Online_ISSN
       COUNTERItemIdentifiers.class, // URI
       COUNTERItemParent.class, // Parent_Title
-      null, // Parent_Authors
-      null, // Parent_Publication_Date
-      null, // Parent_Article_Version
-      null, // Parent_Data_Type
-      null, // Parent_DOI
-      null, // Parent_Proprietary_ID
-      null, // Parent_ISBN
-      null, // Parent_Print_ISSN
-      null, // Parent_Online_ISSN
-      null, // Parent_URI
-      COUNTERItemComponent.class, // Component_Title
-      null, // Component_Authors
-      null, // Component_Publication_Date
-      null, // Component_Data_Type
-      null, // Component_DOI
-      null, // Component_Proprietary_DOI
-      null, // Component_ISBN
-      null, // Component_Print_ISSN
-      null, // Component_Online_ISSN
-      null, // Component_URI
+      COUNTERItemContributors.class, // Parent_Authors
+      COUNTERItemDates.class, // Parent_Publication_Date
+      COUNTERItemAttributes.class, // Parent_Article_Version
+      COUNTERItemParent.DataTypeEnum.class, // Parent_Data_Type
+      COUNTERItemIdentifiers.class, // Parent_DOI
+      COUNTERItemIdentifiers.class, // Parent_Proprietary_ID
+      COUNTERItemIdentifiers.class, // Parent_ISBN
+      COUNTERItemIdentifiers.class, // Parent_Print_ISSN
+      COUNTERItemIdentifiers.class, // Parent_Online_ISSN
+      COUNTERItemIdentifiers.class, // Parent_URI
+      //      COUNTERItemComponent.class, // Component_Title
+      //      null, // Component_Authors
+      //      null, // Component_Publication_Date
+      //      null, // Component_Data_Type
+      //      null, // Component_DOI
+      //      null, // Component_Proprietary_DOI
+      //      null, // Component_ISBN
+      //      null, // Component_Print_ISSN
+      //      null, // Component_Online_ISSN
+      //      null, // Component_URI
       DataTypeEnum.class, // Data_Type
       null, // YOP
       AccessTypeEnum.class, // Access_Type
@@ -144,27 +160,27 @@ public class IRCsvToReport extends AbstractCsvToReport {
           "ItemID[3]",
           "ItemID[4]",
           "ItemID[5]",
-          "ItemParent", // Parent_Title
-          null, // Parent_Authors
-          null, // Parent_Publication_Date
-          null, // Parent_Article_Version
-          null, // Parent_Data_Type
-          null, // Parent_DOI
-          null, // Parent_Proprietary_ID
-          null, // Parent_ISBN
-          null, // Parent_Print_ISSN
-          null, // Parent_Online_ISSN
-          null, // Parent_URI
-          "ItemComponent", // Component_Title
-          null, // Component_Authors
-          null, // Component_Publication_Date
-          null, // Component_Data_Type
-          null, // Component_DOI
-          null, // Component_Proprietary_DOI
-          null, // Component_ISBN
-          null, // Component_Print_ISSN
-          null, // Component_Online_ISSN
-          null, // Component_URI
+          "ItemParent[0].ItemName", // Parent_Title
+          "ItemParent[0].ItemContributors", // Parent_Authors
+          "ItemParent[0].ItemDates", // Parent_Publication_Date
+          "ItemParent[0].ItemAttributes", // Parent_Article_Version
+          "ItemParent[0].DataType", // Parent_Data_Type
+          "ItemParent[0].ItemID[0]", // Parent_DOI
+          "ItemParent[0].ItemID[1]", // Parent_Proprietary_ID
+          "ItemParent[0].ItemID[2]", // Parent_ISBN
+          "ItemParent[0].ItemID[3]", // Parent_Print_ISSN
+          "ItemParent[0].ItemID[4]", // Parent_Online_ISSN
+          "ItemParent[0].ItemID[5]", // Parent_URI
+          //          "ItemComponent", // Component_Title
+          //          null, // Component_Authors
+          //          null, // Component_Publication_Date
+          //          null, // Component_Data_Type
+          //          null, // Component_DOI
+          //          null, // Component_Proprietary_DOI
+          //          null, // Component_ISBN
+          //          null, // Component_Print_ISSN
+          //          null, // Component_Online_ISSN
+          //          null, // Component_URI
           "DataType",
           "YOP",
           "AccessType",
@@ -200,27 +216,37 @@ public class IRCsvToReport extends AbstractCsvToReport {
             new Optional(new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN)),
             // Online_ISSN
             new Optional(new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.URI)), // URI
-            new Optional(new ParseItemParent()), // Parent_Title
-            new Optional(), // Parent_Authors
-            new Optional(), // Parent_Publication_Date
-            new Optional(), // Parent_Article_Version
-            new Optional(), // Parent_Data_Type
-            new Optional(), // Parent_DOI
-            new Optional(), // Parent_Proprietary_ID
-            new Optional(), // Parent_ISBN
-            new Optional(), // Parent_Print_ISSN
-            new Optional(), // Parent_Online_ISSN
-            new Optional(), // Parent_URI
-            new Optional(new ParseItemComponent()), // Component_Title
-            new Optional(), // Component_Authors
-            new Optional(), // Component_Publication_Date
-            new Optional(), // Component_Data_Type
-            new Optional(), // Component_DOI
-            new Optional(), // Component_Proprietary_DOI
-            new Optional(), // Component_ISBN
-            new Optional(), // Component_Print_ISSN
-            new Optional(), // Component_Online_ISSN
-            new Optional(), // Component_URI
+            new Optional(), // Parent_Title
+            new Optional(new ParseItemContributors(TypeEnum.AUTHOR)), // Parent_Authors
+            new Optional(
+                new ParseItemDates(
+                    COUNTERItemDates.TypeEnum.PUBLICATION_DATE)), // Parent_Publication_Date
+            new Optional(
+                new ParseItemAttributes(
+                    COUNTERItemAttributes.TypeEnum.ARTICLE_VERSION)), // Parent_Article_Version
+            new Optional(
+                new ParseEnumType<>(COUNTERItemUsage.DataTypeEnum.class)), // Parent_Data_Type
+            new Optional(new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.DOI)), // Parent_DOI
+            new Optional(
+                new ParseItemIDs(
+                    COUNTERItemIdentifiers.TypeEnum.PROPRIETARY)), // Parent_Proprietary_ID
+            new Optional(new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.ISBN)), // Parent_ISBN
+            new Optional(
+                new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.PRINT_ISSN)), // Parent_Print_ISSN
+            new Optional(
+                new ParseItemIDs(
+                    COUNTERItemIdentifiers.TypeEnum.ONLINE_ISSN)), // Parent_Online_ISSN
+            new Optional(new ParseItemIDs(COUNTERItemIdentifiers.TypeEnum.URI)), // Parent_URI
+            //            new Optional(new ParseItemComponent()), // Component_Title
+            //            new Optional(), // Component_Authors
+            //            new Optional(), // Component_Publication_Date
+            //            new Optional(), // Component_Data_Type
+            //            new Optional(), // Component_DOI
+            //            new Optional(), // Component_Proprietary_DOI
+            //            new Optional(), // Component_ISBN
+            //            new Optional(), // Component_Print_ISSN
+            //            new Optional(), // Component_Online_ISSN
+            //            new Optional(), // Component_URI
             new Optional(new ParseEnumType<>(COUNTERItemUsage.DataTypeEnum.class)), // Data_Type
             new Optional(), // YOP
             new Optional(new ParseEnumType<>(COUNTERItemUsage.AccessTypeEnum.class)), // Access_Type
@@ -239,7 +265,7 @@ public class IRCsvToReport extends AbstractCsvToReport {
     String[] y = yearMonths.stream().map(YearMonth::toString).toArray(String[]::new);
     String[] baseHeader =
         new String[] {
-          "Title",
+          "Item",
           "Publisher",
           "Publisher_ID",
           "Platform",
@@ -263,16 +289,16 @@ public class IRCsvToReport extends AbstractCsvToReport {
           "Parent_Print_ISSN",
           "Parent_Online_ISSN",
           "Parent_URI",
-          "Component_Title",
-          "Component_Authors",
-          "Component_Publication_Date",
-          "Component_Data_Type",
-          "Component_DOI",
-          "Component_Proprietary_DOI",
-          "Component_ISBN",
-          "Component_Print_ISSN",
-          "Component_Online_ISSN",
-          "Component_URI",
+          //          "Component_Title",
+          //          "Component_Authors",
+          //          "Component_Publication_Date",
+          //          "Component_Data_Type",
+          //          "Component_DOI",
+          //          "Component_Proprietary_DOI",
+          //          "Component_ISBN",
+          //          "Component_Print_ISSN",
+          //          "Component_Online_ISSN",
+          //          "Component_URI",
           "Data_Type",
           "YOP",
           "Access_Type",

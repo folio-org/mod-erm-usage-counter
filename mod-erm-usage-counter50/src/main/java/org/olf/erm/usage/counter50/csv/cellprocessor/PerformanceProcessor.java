@@ -30,7 +30,7 @@ public final class PerformanceProcessor {
         yearMonth ->
             collected.put(
                 yearMonth.format(formatter),
-                performancesPerMetricType.get(metricTypeEnum).getOrDefault(yearMonth, null)));
+                performancesPerMetricType.get(metricTypeEnum).getOrDefault(yearMonth, 0)));
     return collected;
   }
 }

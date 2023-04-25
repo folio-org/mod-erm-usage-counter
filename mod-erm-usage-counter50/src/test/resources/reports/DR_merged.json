@@ -10,7 +10,7 @@
     "Institution_ID": [
       {
         "Type": "Proprietary",
-        "Value": "ServiceMy Customer"
+        "Value": "service:My Customer"
       }
     ],
     "Report_Filters": [

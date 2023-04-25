@@ -133,50 +133,6 @@
           }
         ]
       },
-      "Item_Component": [
-        {
-          "Item_Name": "Component Title 1",
-          "Item_Contributors": [
-            {
-              "Type": "Author",
-              "Name": "Comp Authors"
-            }
-          ],
-          "Item_Dates": [
-            {
-              "Type": "Publication_Date",
-              "Value": "2017-10-03"
-            }
-          ],
-          "Data_Type": "Book",
-          "Item_ID": [
-            {
-              "Type": "DOI",
-              "Value": "comp.DOI"
-            },
-            {
-              "Type": "Proprietary",
-              "Value": "CompId.3"
-            },
-            {
-              "Type": "ISBN",
-              "Value": "948-3-86680-192-9"
-            },
-            {
-              "Type": "Print_ISSN",
-              "Value": "7254-5679"
-            },
-            {
-              "Type": "Online_ISSN",
-              "Value": "7234-5877"
-            },
-            {
-              "Type": "URI",
-              "Value": "foo://item.1.comp"
-            }
-          ]
-        }
-      ],
       "Data_Type": "Book",
       "YOP": "2019",
       "Item": "Item 1",

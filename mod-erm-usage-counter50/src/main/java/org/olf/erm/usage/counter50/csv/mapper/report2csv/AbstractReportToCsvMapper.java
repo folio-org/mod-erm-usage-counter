@@ -15,8 +15,9 @@ import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPO
 import com.google.common.collect.Iterables;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.YearMonth;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.openapitools.client.model.SUSHIOrgIdentifiers.TypeEnum;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
@@ -40,6 +42,7 @@ import org.supercsv.prefs.CsvPreference;
 
 abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
 
+  public static final String CREATED_PATTERN = "yyyy-MM-dd'T'HH:mm:ssX";
   static final DateTimeFormatter formatter =
       DateTimeFormatter.ofPattern("MMM-uuuu", Locale.ENGLISH);
   private static final String FORMAT_EQUALS = "%s=%s";
@@ -118,7 +121,9 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
               "Begin_Date=%s; End_Date=%s",
               yearMonths.get(0).atDay(1), Iterables.getLast(yearMonths).atEndOfMonth());
       csvListWriter.write("Reporting_Period", reportingPeriod);
-      csvListWriter.write(JSON_PROPERTY_CREATED, LocalDate.now().toString());
+      csvListWriter.write(
+          JSON_PROPERTY_CREATED,
+          OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern(CREATED_PATTERN)));
       csvListWriter.write(JSON_PROPERTY_CREATED_BY, this.header.getCreatedBy());
       csvListWriter.write("");
       csvListWriter.flush();
@@ -133,7 +138,14 @@ abstract class AbstractReportToCsvMapper<T> implements ReportToCsvMapper {
     return java.util.Optional.ofNullable(this.header.getInstitutionID())
         .orElse(Collections.emptyList())
         .stream()
-        .map(instId -> String.format(FORMAT_EQUALS, instId.getType(), instId.getValue()))
+        .map(
+            instId -> {
+              if (TypeEnum.PROPRIETARY.equals(instId.getType())) {
+                return instId.getValue();
+              } else {
+                return String.join(":", instId.getType().getValue(), instId.getValue());
+              }
+            })
         .collect(Collectors.joining("; "));
   }
 
