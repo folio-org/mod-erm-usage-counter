@@ -16,6 +16,7 @@ import org.openapitools.client.model.COUNTERItemParent;
 import org.openapitools.client.model.COUNTERItemReport;
 import org.openapitools.client.model.COUNTERItemUsage;
 
+@SuppressWarnings("java:S125")
 public class IR extends AbstractIRMapper {
 
   public IR(COUNTERItemReport report) {
