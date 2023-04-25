@@ -11,7 +11,7 @@ import org.supercsv.util.CsvContext;
 
 public class ParseItemContributors extends CellProcessorAdaptor {
 
-  private static final Pattern PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?$");
+  private static final Pattern PATTERN = Pattern.compile("^(.*?)(?: \\((.*)\\))?$"); // NOSONAR
   private final TypeEnum type;
 
   public ParseItemContributors(TypeEnum type) {
