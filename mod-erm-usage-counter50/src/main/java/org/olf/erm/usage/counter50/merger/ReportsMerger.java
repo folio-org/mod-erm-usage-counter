@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.Counter5Utils;
+import org.openapitools.client.model.SUSHIErrorModel;
 import org.openapitools.client.model.SUSHIOrgIdentifiers;
 import org.openapitools.client.model.SUSHIReportHeader;
 import org.openapitools.client.model.SUSHIReportHeaderReportAttributes;
@@ -18,6 +18,10 @@ public abstract class ReportsMerger<T> {
   public abstract T merge(List<T> reports);
 
   protected SUSHIReportHeader mergeHeaders(List<SUSHIReportHeader> headers) {
+    if (headers == null || headers.contains(null)) {
+      throw new IllegalArgumentException("Provided header list or list element is null");
+    }
+
     SUSHIReportHeader result = new SUSHIReportHeader();
     result.setReportName(headers.get(0).getReportName());
     result.setReportID(headers.get(0).getReportID());
@@ -26,35 +30,35 @@ public abstract class ReportsMerger<T> {
 
     List<SUSHIOrgIdentifiers> institutionIds =
         headers.stream()
-            .flatMap(h -> h.getInstitutionID().stream())
+            .map(SUSHIReportHeader::getInstitutionID)
+            .filter(Objects::nonNull)
+            .flatMap(Collection::stream)
             .distinct()
             .collect(Collectors.toList());
-    result.setInstitutionID(institutionIds);
+    result.setInstitutionID(institutionIds.isEmpty() ? null : institutionIds);
+
     result.setCreated(headers.get(0).getCreated());
     result.setCreatedBy(headers.get(0).getCreatedBy());
     result.setCustomerID(headers.get(0).getCustomerID());
 
     List<SUSHIReportHeaderReportAttributes> reportAttributes =
         headers.stream()
-            .flatMap(
-                h ->
-                    Optional.ofNullable(h.getReportAttributes())
-                        .orElse(Collections.emptyList())
-                        .stream())
+            .map(SUSHIReportHeader::getReportAttributes)
+            .filter(Objects::nonNull)
+            .flatMap(Collection::stream)
             .distinct()
             .collect(Collectors.toList());
-    result.setReportAttributes((reportAttributes.isEmpty()) ? null : reportAttributes);
+    result.setReportAttributes(reportAttributes.isEmpty() ? null : reportAttributes);
 
     result.setReportFilters(mergeReportFilters(headers));
-    result.setExceptions(
+    List<SUSHIErrorModel> exceptions =
         headers.stream()
             .map(SUSHIReportHeader::getExceptions)
             .filter(Objects::nonNull)
             .flatMap(Collection::stream)
             .distinct()
-            .collect(
-                Collectors.collectingAndThen(
-                    Collectors.toList(), list -> (list.isEmpty()) ? null : list)));
+            .collect(Collectors.toList());
+    result.setExceptions(exceptions.isEmpty() ? null : exceptions);
     return result;
   }
 
@@ -74,6 +78,9 @@ public abstract class ReportsMerger<T> {
         headers.stream()
             .flatMap(h -> Counter5Utils.getLocalDateFromReportHeader(h).stream())
             .collect(Collectors.toList());
+    if (allDates.isEmpty()) {
+      return filtersWithoutDates;
+    }
     LocalDate min = Collections.min(allDates);
     LocalDate max = Collections.max(allDates);
     SUSHIReportHeaderReportFilters beginFilter = new SUSHIReportHeaderReportFilters();
