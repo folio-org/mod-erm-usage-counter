@@ -1,3 +1,10 @@
+## 3.0.0
+
+* [MODEUSCNT-8](https://issues.folio.org/browse/MODEUSCNT-8) Switch OpenAPI generator to java/vertx
+* [MODEUSCNT-37](https://issues.folio.org/browse/MODEUSCNT-37) Reduce memory usage when creating csv and xlsx data
+* [MODEUSCNT-39](https://issues.folio.org/browse/MODEUSCNT-39) Incorrect format in csv/xlsx
+* [MODEUSCNT-41](https://issues.folio.org/browse/MODEUSCNT-41) Merging reports fails if `Institution_ID` is missing in report header
+
 ## 2.2.7
 
 * [MODEUSCNT-35](https://issues.folio.org/browse/MODEUSCNT-35) Update dependencies with vulnerabilities
