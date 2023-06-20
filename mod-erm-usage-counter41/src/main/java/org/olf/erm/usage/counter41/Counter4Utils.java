@@ -297,8 +297,8 @@ public class Counter4Utils {
         ym -> {
           Report clone = SerializationUtils.clone(report);
           DateRange dateRange = new DateRange();
-          dateRange.setBegin(toXMLGregorianCalendar(ym.atDay(1)));
-          dateRange.setEnd(toXMLGregorianCalendar(ym.atEndOfMonth()));
+          dateRange.setBegin(ym.atDay(1));
+          dateRange.setEnd(ym.atEndOfMonth());
 
           List<ReportItem> reportItems = clone.getCustomer().get(0).getReportItems();
           reportItems.removeIf(
@@ -316,6 +316,7 @@ public class Counter4Utils {
     return resultList;
   }
 
+  @Deprecated(forRemoval = true, since = "3.1.0")
   /**
    * Converts a {@link Temporal} into {@link XMLGregorianCalendar}.
    *
@@ -340,8 +341,8 @@ public class Counter4Utils {
    */
   public static DateRange getDateRangeForYearMonth(YearMonth yearMonth) {
     DateRange dateRange = new DateRange();
-    dateRange.setBegin(toXMLGregorianCalendar(yearMonth.atDay(1)));
-    dateRange.setEnd(toXMLGregorianCalendar(yearMonth.atEndOfMonth()));
+    dateRange.setBegin(yearMonth.atDay(1));
+    dateRange.setEnd(yearMonth.atEndOfMonth());
     return dateRange;
   }
 

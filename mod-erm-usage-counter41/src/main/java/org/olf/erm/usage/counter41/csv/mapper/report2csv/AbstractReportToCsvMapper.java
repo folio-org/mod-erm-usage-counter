@@ -123,18 +123,8 @@ public abstract class AbstractReportToCsvMapper implements ReportToCsvMapper {
         .filter(
             ip ->
                 month == null
-                    || (ip.getPeriod()
-                            .getBegin()
-                            .toGregorianCalendar()
-                            .toZonedDateTime()
-                            .toLocalDate()
-                            .equals(month.atDay(1))
-                        && ip.getPeriod()
-                            .getEnd()
-                            .toGregorianCalendar()
-                            .toZonedDateTime()
-                            .toLocalDate()
-                            .equals(month.atEndOfMonth())))
+                    || (ip.getPeriod().getBegin().equals(month.atDay(1))
+                        && ip.getPeriod().getEnd().equals(month.atEndOfMonth())))
         .flatMap(m -> m.getInstance().stream())
         .filter(pc -> pc.getMetricType().equals(metricType))
         .map(PerformanceCounter::getCount)

@@ -240,15 +240,11 @@ public class Counter4UtilsTest {
   @Test
   public void testGetDateRangeFromYearMonth() {
     DateRange dr = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 2));
-    assertThat(dr.getBegin())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 1)));
-    assertThat(dr.getEnd())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 29)));
+    assertThat(dr.getBegin()).isEqualTo(LocalDate.of(2020, 2, 1));
+    assertThat(dr.getEnd()).isEqualTo(LocalDate.of(2020, 2, 29));
 
     DateRange dr2 = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 3));
-    assertThat(dr2.getBegin())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 1)));
-    assertThat(dr2.getEnd())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 31)));
+    assertThat(dr2.getBegin()).isEqualTo(LocalDate.of(2020, 3, 1));
+    assertThat(dr2.getEnd()).isEqualTo(LocalDate.of(2020, 3, 31));
   }
 }
