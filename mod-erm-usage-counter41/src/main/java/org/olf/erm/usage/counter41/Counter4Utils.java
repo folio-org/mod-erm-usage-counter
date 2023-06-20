@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -100,6 +102,7 @@ public class Counter4Utils {
     module.addDeserializer(XMLGregorianCalendar.class, new XMLGregorianCalendarDeserializer());
     mapper.registerModule(module);
     mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.registerModule(new JavaTimeModule());
     return mapper;
   }
 
