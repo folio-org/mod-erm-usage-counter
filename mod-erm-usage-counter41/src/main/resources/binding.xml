@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
-  elementFormDefault="qualified" attributeFormDefault="unqualified"
-  jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.1">
-  <xs:annotation>
-    <xs:appinfo>
-      <jaxb:globalBindings>
-        <xjc:serializable/>
-      </jaxb:globalBindings>
-    </xs:appinfo>
-  </xs:annotation>
-</xs:schema>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb" version="2.1"
+          xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc">
+  <globalBindings
+          xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xjc:javaType name="java.time.ZonedDateTime" xmlType="xs:dateTime"
+                  adapter="org.olf.erm.usage.counter41.adapters.ZonedDateTimeAdapter"/>
+    <xjc:javaType name="java.time.LocalDate" xmlType="xs:date"
+                  adapter="org.olf.erm.usage.counter41.adapters.LocalDateAdapter"/>
+    <xjc:serializable/>
+  </globalBindings>
+</bindings>

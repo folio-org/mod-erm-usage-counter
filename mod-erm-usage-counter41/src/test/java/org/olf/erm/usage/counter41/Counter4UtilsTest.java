@@ -5,17 +5,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.chrono.HijrahDate;
 import java.util.List;
 import javax.xml.bind.JAXB;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.niso.schemas.counter.DateRange;
@@ -112,12 +109,6 @@ public class Counter4UtilsTest {
   }
 
   @Test
-  public void testGetTitlesForReportName() {
-    assertThat(Counter4Utils.getTitlesForReportName("")).isNull();
-    assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist")).isNull();
-  }
-
-  @Test
   public void testMergeReports() throws ReportMergeException {
     Report rep1 = Counter4Utils.fromJSON(new JsonObject(json1).getJsonObject("report").encode());
     Report rep2 = Counter4Utils.fromJSON(new JsonObject(json2).getJsonObject("report").encode());
@@ -198,8 +189,6 @@ public class Counter4UtilsTest {
         JAXB.unmarshal(Resources.getResource("split/reportJSTORMultiMonth.xml"), Report.class);
 
     List<Report> split = Counter4Utils.split(report);
-    System.out.println(Json.encodePrettily(split.get(0)));
-
     assertThat(split)
         .hasSize(2)
         .allSatisfy(r -> assertThat(r.getCustomer().get(0).getReportItems()).hasSize(1));
@@ -225,30 +214,13 @@ public class Counter4UtilsTest {
   }
 
   @Test
-  public void testToXMLGregorianCalendar() {
-    YearMonth ym = YearMonth.of(2018, 7);
-    XMLGregorianCalendar ymResult = Counter4Utils.toXMLGregorianCalendar(ym);
-    assertThat(ymResult).isNotNull().hasToString("2018-07");
-
-    LocalDate ld = LocalDate.of(2018, 7, 14);
-    XMLGregorianCalendar ldResult = Counter4Utils.toXMLGregorianCalendar(ld);
-    assertThat(ldResult).isNotNull().hasToString("2018-07-14");
-
-    assertThat(Counter4Utils.toXMLGregorianCalendar(HijrahDate.now())).isNull();
-  }
-
-  @Test
   public void testGetDateRangeFromYearMonth() {
     DateRange dr = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 2));
-    assertThat(dr.getBegin())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 1)));
-    assertThat(dr.getEnd())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 2, 29)));
+    assertThat(dr.getBegin()).isEqualTo(LocalDate.of(2020, 2, 1));
+    assertThat(dr.getEnd()).isEqualTo(LocalDate.of(2020, 2, 29));
 
     DateRange dr2 = Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2020, 3));
-    assertThat(dr2.getBegin())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 1)));
-    assertThat(dr2.getEnd())
-        .isEqualTo(Counter4Utils.toXMLGregorianCalendar(LocalDate.of(2020, 3, 31)));
+    assertThat(dr2.getBegin()).isEqualTo(LocalDate.of(2020, 3, 1));
+    assertThat(dr2.getEnd()).isEqualTo(LocalDate.of(2020, 3, 31));
   }
 }

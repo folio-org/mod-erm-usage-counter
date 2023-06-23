@@ -6,13 +6,14 @@ import static java.util.Map.entry;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.YearMonth;
-import java.time.temporal.Temporal;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -23,8 +24,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.SerializationUtils;
 import org.niso.schemas.counter.DateRange;
 import org.niso.schemas.counter.Metric;
@@ -35,6 +34,8 @@ import org.niso.schemas.sushi.ExceptionSeverity;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 import org.olf.erm.usage.counter41.csv.mapper.MapperFactory;
+import org.olf.erm.usage.counter41.serialization.ZonedDateTimeDeserializer;
+import org.olf.erm.usage.counter41.serialization.ZonedDateTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -74,15 +75,6 @@ public class Counter4Utils {
 
   private Counter4Utils() {}
 
-  /**
-   * @deprecated
-   */
-  @Deprecated(since = "2.2.6", forRemoval = true)
-  public static List<String> getTitlesForReportName(String reportName) {
-    String result = mappingEntries.get(reportName);
-    return (result == null) ? null : List.of(result);
-  }
-
   public static String getNameForReportTitle(String title) {
     return (title == null)
         ? null
@@ -95,11 +87,12 @@ public class Counter4Utils {
 
   public static ObjectMapper createObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(new XMLGregorianCalendarSerializer());
-    module.addDeserializer(XMLGregorianCalendar.class, new XMLGregorianCalendarDeserializer());
-    mapper.registerModule(module);
     mapper.setSerializationInclusion(Include.NON_NULL);
+    mapper.registerModule(
+        new JavaTimeModule()
+            .addSerializer(new ZonedDateTimeSerializer())
+            .addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer()));
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     return mapper;
   }
 
@@ -177,7 +170,7 @@ public class Counter4Utils {
             e ->
                 e.getSeverity().equals(ExceptionSeverity.ERROR)
                     || e.getSeverity().equals(ExceptionSeverity.FATAL))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static String getErrorMessages(List<Exception> exs) {
@@ -185,8 +178,8 @@ public class Counter4Utils {
         .map(
             e -> {
               String data = null;
-              if (e.getData() != null && e.getData().getValue() instanceof Element) {
-                Node n = ((Element) e.getData().getValue()).getFirstChild();
+              if (e.getData() != null && e.getData().getValue() instanceof Element element) {
+                Node n = element.getFirstChild();
                 if (n != null && !n.getTextContent().isEmpty()) data = n.getTextContent();
               }
               String helpUrl =
@@ -217,7 +210,7 @@ public class Counter4Utils {
                         m.getPeriod().getEnd().getYear(), m.getPeriod().getEnd().getMonth())))
         .distinct()
         .sorted()
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /** Same as {@link Counter4Utils#merge(Report...)} */
@@ -268,7 +261,7 @@ public class Counter4Utils {
             .values()
             .stream()
             .sorted(Comparator.comparing(ReportItem::getItemName))
-            .collect(Collectors.toList());
+            .toList();
 
     clonedReports[0].getCustomer().get(0).getReportItems().addAll(sortedCombinedReportItems);
     return clonedReports[0];
@@ -294,8 +287,8 @@ public class Counter4Utils {
         ym -> {
           Report clone = SerializationUtils.clone(report);
           DateRange dateRange = new DateRange();
-          dateRange.setBegin(toXMLGregorianCalendar(ym.atDay(1)));
-          dateRange.setEnd(toXMLGregorianCalendar(ym.atEndOfMonth()));
+          dateRange.setBegin(ym.atDay(1));
+          dateRange.setEnd(ym.atEndOfMonth());
 
           List<ReportItem> reportItems = clone.getCustomer().get(0).getReportItems();
           reportItems.removeIf(
@@ -314,21 +307,6 @@ public class Counter4Utils {
   }
 
   /**
-   * Converts a {@link Temporal} into {@link XMLGregorianCalendar}.
-   *
-   * @param temporal {@link Temporal}
-   * @return {@link XMLGregorianCalendar}
-   */
-  public static XMLGregorianCalendar toXMLGregorianCalendar(Temporal temporal) {
-    try {
-      return DatatypeFactory.newInstance().newXMLGregorianCalendar(temporal.toString());
-    } catch (java.lang.Exception e) {
-      log.error("Error creating XMLGregorianCalendar from Temporal: {}", e.getMessage(), e);
-      return null;
-    }
-  }
-
-  /**
    * Creates a {@link DateRange} object with begin at first and end at last day from supplied {@link
    * YearMonth}.
    *
@@ -337,8 +315,8 @@ public class Counter4Utils {
    */
   public static DateRange getDateRangeForYearMonth(YearMonth yearMonth) {
     DateRange dateRange = new DateRange();
-    dateRange.setBegin(toXMLGregorianCalendar(yearMonth.atDay(1)));
-    dateRange.setEnd(toXMLGregorianCalendar(yearMonth.atEndOfMonth()));
+    dateRange.setBegin(yearMonth.atDay(1));
+    dateRange.setEnd(yearMonth.atEndOfMonth());
     return dateRange;
   }
 

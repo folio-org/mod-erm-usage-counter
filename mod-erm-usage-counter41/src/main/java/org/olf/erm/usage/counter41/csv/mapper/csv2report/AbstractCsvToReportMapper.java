@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.olf.erm.usage.counter41.csv.mapper.DozerMappingUtil.createDozerBeanMapper;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
 import org.apache.commons.io.IOUtils;
@@ -112,7 +112,8 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     try (ICsvDozerBeanReader beanReader =
         new CsvDozerBeanReader(
             new StringReader(StringUtils.join(contentLines, System.lineSeparator())),
-            CsvPreference.STANDARD_PREFERENCE)) {
+            CsvPreference.STANDARD_PREFERENCE,
+            createDozerBeanMapper())) {
       beanReader.configureBeanMapping(
           ReportItem.class, createFieldMapping(yearMonths), createHintTypes(yearMonths));
       List<ReportItem> reportItems = new ArrayList<>();
@@ -174,14 +175,12 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
   private boolean hasValidDates(String dateRangeString) {
     try {
       List<LocalDate> dates =
-          getFound(dateRangeString, "\\d{4}-\\d{2}-\\d{2}").stream()
-              .map(LocalDate::parse)
-              .collect(Collectors.toList());
+          getFound(dateRangeString, "\\d{4}-\\d{2}-\\d{2}").stream().map(LocalDate::parse).toList();
       return dates.size() == 2
           && dates.get(0).getDayOfMonth() == 1
           && dates.get(1).getDayOfMonth()
               == YearMonth.from(dates.get(1)).atEndOfMonth().getDayOfMonth()
-          && dates.get(0).compareTo(dates.get(1)) < 0;
+          && dates.get(0).isBefore(dates.get(1));
     } catch (Exception e) {
       log.error("Error getting DateRange");
       return false;
@@ -193,12 +192,10 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     YearMonth start = YearMonth.parse(strings.get(0));
     YearMonth end = YearMonth.parse(strings.get(1));
     long diff = start.until(end, ChronoUnit.MONTHS);
-    return Stream.iterate(start, next -> next.plusMonths(1))
-        .limit(diff + 1)
-        .collect(Collectors.toList());
+    return Stream.iterate(start, next -> next.plusMonths(1)).limit(diff + 1).toList();
   }
 
-  public AbstractCsvToReportMapper(String csvString) {
+  protected AbstractCsvToReportMapper(String csvString) {
     this.csvString = csvString;
   }
 }
