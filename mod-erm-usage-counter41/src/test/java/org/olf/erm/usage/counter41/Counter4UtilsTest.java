@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.chrono.HijrahDate;
 import java.util.List;
 import javax.xml.bind.JAXB;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.niso.schemas.counter.DateRange;
@@ -108,12 +106,6 @@ public class Counter4UtilsTest {
     assertThat(Counter4Utils.getNameForReportTitle("PR")).isNull();
     assertThat(Counter4Utils.getNameForReportTitle("a title that does not exist")).isNull();
     assertThat(Counter4Utils.getNameForReportTitle("some title with JR1")).isNull();
-  }
-
-  @Test
-  public void testGetTitlesForReportName() {
-    assertThat(Counter4Utils.getTitlesForReportName("")).isNull();
-    assertThat(Counter4Utils.getTitlesForReportName("a report name that does not exist")).isNull();
   }
 
   @Test
@@ -219,19 +211,6 @@ public class Counter4UtilsTest {
         .ignoringCollectionOrder()
         .ignoringFields("id", "created", "vendor")
         .isEqualTo(mergedReport);
-  }
-
-  @Test
-  public void testToXMLGregorianCalendar() {
-    YearMonth ym = YearMonth.of(2018, 7);
-    XMLGregorianCalendar ymResult = Counter4Utils.toXMLGregorianCalendar(ym);
-    assertThat(ymResult).isNotNull().hasToString("2018-07");
-
-    LocalDate ld = LocalDate.of(2018, 7, 14);
-    XMLGregorianCalendar ldResult = Counter4Utils.toXMLGregorianCalendar(ld);
-    assertThat(ldResult).isNotNull().hasToString("2018-07-14");
-
-    assertThat(Counter4Utils.toXMLGregorianCalendar(HijrahDate.now())).isNull();
   }
 
   @Test

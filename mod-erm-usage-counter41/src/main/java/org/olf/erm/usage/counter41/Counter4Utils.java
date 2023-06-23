@@ -14,7 +14,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -25,8 +24,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.bind.JAXB;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.SerializationUtils;
 import org.niso.schemas.counter.DateRange;
 import org.niso.schemas.counter.Metric;
@@ -77,15 +74,6 @@ public class Counter4Utils {
   private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
 
   private Counter4Utils() {}
-
-  /**
-   * @deprecated
-   */
-  @Deprecated(since = "2.2.6", forRemoval = true)
-  public static List<String> getTitlesForReportName(String reportName) {
-    String result = mappingEntries.get(reportName);
-    return (result == null) ? null : List.of(result);
-  }
 
   public static String getNameForReportTitle(String title) {
     return (title == null)
@@ -316,22 +304,6 @@ public class Counter4Utils {
           resultList.add(clone);
         });
     return resultList;
-  }
-
-  @Deprecated(forRemoval = true, since = "3.1.0")
-  /**
-   * Converts a {@link Temporal} into {@link XMLGregorianCalendar}.
-   *
-   * @param temporal {@link Temporal}
-   * @return {@link XMLGregorianCalendar}
-   */
-  public static XMLGregorianCalendar toXMLGregorianCalendar(Temporal temporal) {
-    try {
-      return DatatypeFactory.newInstance().newXMLGregorianCalendar(temporal.toString());
-    } catch (java.lang.Exception e) {
-      log.error("Error creating XMLGregorianCalendar from Temporal: {}", e.getMessage(), e);
-      return null;
-    }
   }
 
   /**
