@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
+import io.vertx.core.json.JsonObject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -48,6 +49,8 @@ public class SerializationTest {
     Report report = JAXB.unmarshal(uri, Report.class);
 
     String json = Counter4Utils.toJSON(report);
+    assertThat(new JsonObject(json).getString("created"))
+        .isEqualTo("2018-10-24T08:37:25.730+01:00");
     Report fromJSON = Counter4Utils.fromJSON(json);
 
     assertThat(fromJSON).usingRecursiveComparison().isEqualTo(report);

@@ -6,6 +6,7 @@ import static java.util.Map.entry;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Strings;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +38,8 @@ import org.niso.schemas.sushi.ExceptionSeverity;
 import org.niso.schemas.sushi.counter.CounterReportResponse;
 import org.olf.erm.usage.counter41.csv.mapper.MapperException;
 import org.olf.erm.usage.counter41.csv.mapper.MapperFactory;
+import org.olf.erm.usage.counter41.serialization.ZonedDateTimeDeserializer;
+import org.olf.erm.usage.counter41.serialization.ZonedDateTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -102,7 +105,11 @@ public class Counter4Utils {
     module.addDeserializer(XMLGregorianCalendar.class, new XMLGregorianCalendarDeserializer());
     mapper.registerModule(module);
     mapper.setSerializationInclusion(Include.NON_NULL);
-    mapper.registerModule(new JavaTimeModule());
+    mapper.registerModule(
+        new JavaTimeModule()
+            .addSerializer(new ZonedDateTimeSerializer())
+            .addDeserializer(ZonedDateTime.class, new ZonedDateTimeDeserializer()));
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     return mapper;
   }
 

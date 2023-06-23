@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.olf.erm.usage.counter41.csv.mapper.DozerMappingUtil.createDozerBeanMapper;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -112,7 +113,8 @@ public abstract class AbstractCsvToReportMapper implements CsvToReportMapper {
     try (ICsvDozerBeanReader beanReader =
         new CsvDozerBeanReader(
             new StringReader(StringUtils.join(contentLines, System.lineSeparator())),
-            CsvPreference.STANDARD_PREFERENCE)) {
+            CsvPreference.STANDARD_PREFERENCE,
+            createDozerBeanMapper())) {
       beanReader.configureBeanMapping(
           ReportItem.class, createFieldMapping(yearMonths), createHintTypes(yearMonths));
       List<ReportItem> reportItems = new ArrayList<>();

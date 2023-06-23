@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import java.io.File;
 import java.io.IOException;
@@ -198,8 +197,6 @@ public class Counter4UtilsTest {
         JAXB.unmarshal(Resources.getResource("split/reportJSTORMultiMonth.xml"), Report.class);
 
     List<Report> split = Counter4Utils.split(report);
-    System.out.println(Json.encodePrettily(split.get(0)));
-
     assertThat(split)
         .hasSize(2)
         .allSatisfy(r -> assertThat(r.getCustomer().get(0).getReportItems()).hasSize(1));
