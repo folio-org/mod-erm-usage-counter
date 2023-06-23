@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Strings;
 import java.io.IOException;
@@ -100,10 +99,6 @@ public class Counter4Utils {
 
   public static ObjectMapper createObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(new XMLGregorianCalendarSerializer());
-    module.addDeserializer(XMLGregorianCalendar.class, new XMLGregorianCalendarDeserializer());
-    mapper.registerModule(module);
     mapper.setSerializationInclusion(Include.NON_NULL);
     mapper.registerModule(
         new JavaTimeModule()
