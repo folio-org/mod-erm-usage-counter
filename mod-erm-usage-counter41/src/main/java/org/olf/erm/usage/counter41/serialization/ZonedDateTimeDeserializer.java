@@ -14,7 +14,6 @@ public class ZonedDateTimeDeserializer extends StdDeserializer<ZonedDateTime> {
 
   @Override
   public ZonedDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-    String value = p.getValueAsString();
     return ZonedDateTime.parse(p.getValueAsString());
   }
 }

@@ -170,7 +170,7 @@ public class Counter4Utils {
             e ->
                 e.getSeverity().equals(ExceptionSeverity.ERROR)
                     || e.getSeverity().equals(ExceptionSeverity.FATAL))
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public static String getErrorMessages(List<Exception> exs) {
@@ -178,8 +178,8 @@ public class Counter4Utils {
         .map(
             e -> {
               String data = null;
-              if (e.getData() != null && e.getData().getValue() instanceof Element) {
-                Node n = ((Element) e.getData().getValue()).getFirstChild();
+              if (e.getData() != null && e.getData().getValue() instanceof Element element) {
+                Node n = element.getFirstChild();
                 if (n != null && !n.getTextContent().isEmpty()) data = n.getTextContent();
               }
               String helpUrl =
@@ -210,7 +210,7 @@ public class Counter4Utils {
                         m.getPeriod().getEnd().getYear(), m.getPeriod().getEnd().getMonth())))
         .distinct()
         .sorted()
-        .collect(Collectors.toList());
+        .toList();
   }
 
   /** Same as {@link Counter4Utils#merge(Report...)} */
@@ -261,7 +261,7 @@ public class Counter4Utils {
             .values()
             .stream()
             .sorted(Comparator.comparing(ReportItem::getItemName))
-            .collect(Collectors.toList());
+            .toList();
 
     clonedReports[0].getCustomer().get(0).getReportItems().addAll(sortedCombinedReportItems);
     return clonedReports[0];

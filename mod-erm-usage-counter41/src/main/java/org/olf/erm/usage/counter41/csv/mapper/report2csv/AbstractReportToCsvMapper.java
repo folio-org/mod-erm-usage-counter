@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.niso.schemas.counter.MetricType;
 import org.niso.schemas.counter.PerformanceCounter;
@@ -98,7 +97,7 @@ public abstract class AbstractReportToCsvMapper implements ReportToCsvMapper {
         report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPublisher)
             .distinct()
-            .collect(Collectors.toList());
+            .toList();
     log.info("Found {} publishers: {}", uniquePublishers.size(), uniquePublishers);
     return (uniquePublishers.size() == 1) ? uniquePublishers.get(0) : null;
   }
@@ -108,7 +107,7 @@ public abstract class AbstractReportToCsvMapper implements ReportToCsvMapper {
         report.getCustomer().get(0).getReportItems().stream()
             .map(ReportItem::getItemPlatform)
             .distinct()
-            .collect(Collectors.toList());
+            .toList();
     log.info("Found {} platforms: {}", uniquePlatforms.size(), uniquePlatforms);
     return (uniquePlatforms.size() == 1) ? uniquePlatforms.get(0) : null;
   }
@@ -179,9 +178,7 @@ public abstract class AbstractReportToCsvMapper implements ReportToCsvMapper {
       YearMonth first = uniqueSortedYearMonths.get(0);
       YearMonth last = uniqueSortedYearMonths.get(uniqueSortedYearMonths.size() - 1);
       long diff = first.until(last, ChronoUnit.MONTHS);
-      return Stream.iterate(first, next -> next.plusMonths(1))
-          .limit(diff + 1)
-          .collect(Collectors.toList());
+      return Stream.iterate(first, next -> next.plusMonths(1)).limit(diff + 1).toList();
     }
   }
 
