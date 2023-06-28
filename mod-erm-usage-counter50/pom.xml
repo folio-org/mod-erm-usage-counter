@@ -86,7 +86,7 @@
             </goals>
             <configuration>
               <inputSpec>
-                ${project.basedir}/src/main/resources/counter-sushi_5_0_api/counter5.0.2.yaml
+                ${project.basedir}/src/main/resources/counter-sushi_5_0_api/COUNTER-counter-sushi_5_0_api-5.0.3-swagger.yaml
               </inputSpec>
               <generatorName>java</generatorName>
               <library>vertx</library>
