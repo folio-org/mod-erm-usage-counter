@@ -102,7 +102,8 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/counter-sushi_5_0_api/swagger.yaml
+              <inputSpec>
+                ${project.basedir}/src/main/resources/counter-sushi_5_0_api/COUNTER-counter-sushi_5_0_api-5.0.3-swagger.yaml
               </inputSpec>
               <generatorName>java</generatorName>
               <configOptions>

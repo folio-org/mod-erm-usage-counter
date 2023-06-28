@@ -8,11 +8,11 @@ info:
   contact:
     name: Project COUNTER
     url: 'https://www.projectcounter.org/'
-    email: lorraine.estelle@counterusage.org
+    email:  tasha.mellins-cohen@counterusage.org
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  version: "1.0.0"
+  version: 5.0.3
 # host: sushi.sample.com
 # basePath: /counter/r5
 schemes:
@@ -31,8 +31,8 @@ securityDefinitions:
     name: requestor_id
     in: query
 security:
-  - api_key: [ ]
-  - requestor_id: [ ]
+  - api_key: []
+  - requestor_id: []
 paths:
   /status:
     get:
@@ -930,15 +930,16 @@ paths:
 definitions:
   SUSHI_error_model:
     type: object
-    description: Generalized format for presenting errors and exceptions.
+    description: Generalized format for presenting errors and warnings.
     required:
       - Code
+      - Severity
       - Message
     properties:
       Code:
         type: integer
         format: int32
-        description: Exception Number. See Table F.1 in the Code of Practice, Appendix F
+        description: Exception Code. See Table F.1 in the Code of Practice, Appendix F.
         example: 3031
       Severity:
         type: string
@@ -952,7 +953,7 @@ definitions:
           - Info
       Message:
         type: string
-        description: Exception Description. See Table F.1 in the Code of Practice, Appendix F
+        description: Exception Message. See Table F.1 in the Code of Practice, Appendix F.
         example: Usage Not Ready for Requested Dates
       Help_URL:
         type: string
@@ -960,7 +961,7 @@ definitions:
       Data:
         type: string
         description: Additional data provided by the server to clarify the Exception.
-        example: request was for 2016-01-01 to 2016-12-31; however, usage is only available to 2016-08-31
+        example: Request was for 2016-01-01 to 2016-12-31; however, usage is only available to 2016-08-31.
   SUSHI_report_header:
     type: object
     description: >-
@@ -1115,7 +1116,7 @@ definitions:
               type: string
               format: dateTime
               description: Date-time of the alert.
-              example: '2016-08-02: 12:54'
+              example: '2016-08-02T12:54:05Z'
             Alert:
               type: string
               description: Text of the alert.
@@ -1167,6 +1168,7 @@ definitions:
           - ISNI
           - ISIL
           - OCLC
+          - ROR
           - Proprietary
       Value:
         type: string
@@ -1215,6 +1217,7 @@ definitions:
           - Report
           - Repository_Item
           - Thesis_or_Dissertation
+          - Unspecified
         example: Platform
       Access_Method:
         type: string
@@ -1223,7 +1226,7 @@ definitions:
         enum:
           - Regular
           - TDM
-        example: Journal
+        example: Regular
       Performance:
         type: array
         items:
@@ -1279,18 +1282,15 @@ definitions:
         type: string
         description: Nature of the item being reported.
         enum:
-          - Article
           - Book
-          - Book_Segment
           - Database
-          - Dataset
           - Journal
           - Multimedia
           - Newspaper_or_Newsletter
           - Other
           - Report
-          - Repository Item
           - Thesis_or_Dissertation
+          - Unspecified
         example: Database
       Access_Method:
         type: string
@@ -1354,17 +1354,14 @@ definitions:
         type: string
         description: Nature of the item being reported.
         enum:
-          - Article
           - Book
-          - Book_Segment
-          - Dataset
+          - Database
           - Journal
-          - Multimedia
           - Newspaper_or_Newsletter
           - Other
           - Report
-          - Repository_Item
           - Thesis_or_Dissertation
+          - Unspecified
         example: Journal
       Section_Type:
         type: string
@@ -1486,7 +1483,8 @@ definitions:
           - Report
           - Repository_Item
           - Thesis_or_Dissertation
-        example: Journal
+          - Unspecified
+        example: Article
       YOP:
         type: string
         description: >-
@@ -1546,9 +1544,7 @@ definitions:
         type: string
         description: Nature of the parent item.
         enum:
-          - Article
           - Book
-          - Book_Segment
           - Dataset
           - Journal
           - Multimedia
@@ -1557,6 +1553,7 @@ definitions:
           - Report
           - Repository_Item
           - Thesis_or_Dissertation
+          - Unspecified
         example: Journal
   COUNTER_item_component:
     type: object
@@ -1603,7 +1600,8 @@ definitions:
           - Report
           - Repository_Item
           - Thesis_or_Dissertation
-        example: Journal
+          - Unspecified
+        example: Dataset
       Performance:
         type: array
         items:
@@ -1641,6 +1639,7 @@ definitions:
         example: ISNI
         enum:
           - ISNI
+          - ROR
           - Proprietary
       Value:
         type: string
@@ -1754,4 +1753,4 @@ definitions:
               example: 21
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /COUNTER/counter-sushi_5_0_api/1.0.0
+basePath: /COUNTER/counter-sushi_5_0_api/5.0.3

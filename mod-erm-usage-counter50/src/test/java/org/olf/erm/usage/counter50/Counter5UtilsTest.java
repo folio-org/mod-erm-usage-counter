@@ -160,4 +160,13 @@ public class Counter5UtilsTest {
           .isEqualTo(expectedReport);
     }
   }
+
+  public static class UpdatedSpecificationTest {
+    @Test
+    public void testDatabaseDataTypeForTitleUsage() throws IOException, Counter5UtilsException {
+      String json =
+          Resources.toString(Resources.getResource("wiley_tr.json"), StandardCharsets.UTF_8);
+      assertThat(Counter5Utils.fromJSON(json)).isNotNull();
+    }
+  }
 }
