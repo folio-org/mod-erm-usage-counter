@@ -1,0 +1,155 @@
+{
+  "Report_Header": {
+    "Institution_Name": "institutionName",
+    "Customer_ID": "customerId",
+    "Institution_ID": [
+      {
+        "Type": "Proprietary",
+        "Value": "Wiley:customerId"
+      },
+      {
+        "Type": "ISNI",
+        "Value": "0000000012345678"
+      }
+    ],
+    "Report_Filters": [
+      {
+        "Name": "End_Date",
+        "Value": "2022-12-31"
+      },
+      {
+        "Name": "Begin_Date",
+        "Value": "2022-12-01"
+      }
+    ],
+    "Report_Attributes": [
+      {
+        "Name": "Attributes_To_Show",
+        "Value": "Data_Type|Section_Type|YOP|Access_Type|Access_Method"
+      }
+    ],
+    "Created": "2023-06-28T08:16:12Z",
+    "Created_By": "Atypon Systems LLC.",
+    "Release": "5",
+    "Report_Name": "Title Master Report",
+    "Report_ID": "TR"
+  },
+  "Report_Items": [
+    {
+      "Platform": "Wiley Online Library",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2022-12-01",
+            "End_Date": "2022-12-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 1
+            },
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 1
+            },
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 1
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 1
+            }
+          ]
+        }
+      ],
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "10.1002/(ISSN)2475-0360"
+        },
+        {
+          "Type": "Proprietary",
+          "Value": "Wiley:AGM2"
+        },
+        {
+          "Type": "Online_ISSN",
+          "Value": "2475-0360"
+        },
+        {
+          "Type": "Print_ISSN",
+          "Value": "2475-0360"
+        }
+      ],
+      "Section_Type": "Article",
+      "Access_Method": "Regular",
+      "Access_Type": "OA_Gold",
+      "YOP": "2018",
+      "Title": "AGING MEDICINE",
+      "Publisher": "Wiley",
+      "Publisher_ID": [
+        {
+          "Type": "ISNI",
+          "Value": "0000000403801313"
+        }
+      ],
+      "Data_Type": "Journal"
+    },
+    {
+      "Platform": "Cochrane Library",
+      "Performance": [
+        {
+          "Period": {
+            "Begin_Date": "2022-12-01",
+            "End_Date": "2022-12-31"
+          },
+          "Instance": [
+            {
+              "Metric_Type": "Total_Item_Investigations",
+              "Count": 2
+            },
+            {
+              "Metric_Type": "Unique_Item_Investigations",
+              "Count": 2
+            },
+            {
+              "Metric_Type": "Unique_Item_Requests",
+              "Count": 2
+            },
+            {
+              "Metric_Type": "Total_Item_Requests",
+              "Count": 2
+            }
+          ]
+        }
+      ],
+      "Item_ID": [
+        {
+          "Type": "DOI",
+          "Value": "10.1002/central"
+        },
+        {
+          "Type": "Proprietary",
+          "Value": "Wiley:central"
+        },
+        {
+          "Type": "Online_ISSN",
+          "Value": "1465-1858"
+        }
+      ],
+      "Section_Type": "Other",
+      "Access_Method": "Regular",
+      "Access_Type": "Controlled",
+      "YOP": "2022",
+      "Title": "The Cochrane Register of Controlled Trials (CENTRAL)",
+      "Publisher": "Wiley",
+      "Publisher_ID": [
+        {
+          "Type": "ISNI",
+          "Value": "0000000403801313"
+        }
+      ],
+      "Data_Type": "Database"
+    }
+  ]
+}
