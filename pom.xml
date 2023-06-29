@@ -5,7 +5,7 @@
   <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter</artifactId>
   <packaging>pom</packaging>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
@@ -197,7 +197,7 @@
     <connection>scm:git:git://github.com/folio-org/${project.artifactId}.git</connection>
     <developerConnection>scm:git:git@github.com:folio-org/${project.artifactId}.git
     </developerConnection>
-    <tag>v3.0.0</tag>
+    <tag>v3.0.1</tag>
   </scm>
 
 </project>
