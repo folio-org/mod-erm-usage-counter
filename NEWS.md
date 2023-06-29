@@ -1,3 +1,7 @@
+## 2.2.8
+* Bump guava from 30.1.1-jre to 32.0.1-jre
+* [MODEUSCNT-45](https://issues.folio.org/browse/MODEUSCNT-45) Update to latest counter openapi specification
+
 ## 2.2.7
 
 * [MODEUSCNT-35](https://issues.folio.org/browse/MODEUSCNT-35) Update dependencies with vulnerabilities
