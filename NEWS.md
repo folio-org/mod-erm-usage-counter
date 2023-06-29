@@ -1,3 +1,7 @@
+## 3.0.1
+* Bump guava from 30.1.1-jre to 32.0.1-jre
+* [MODEUSCNT-45](https://issues.folio.org/browse/MODEUSCNT-45) Update to latest counter openapi specification
+
 ## 3.0.0
 
 * [MODEUSCNT-8](https://issues.folio.org/browse/MODEUSCNT-8) Switch OpenAPI generator to java/vertx
