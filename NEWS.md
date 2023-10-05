@@ -1,3 +1,9 @@
+## 4.0.0
+
+* [MODEUSCNT-45](https://issues.folio.org/browse/MODEUSCNT-45) Update Counter OpenAPI specification
+* Bump Guava to 32.0.1-jre
+* [MODEUSCNT-44](https://issues.folio.org/browse/MODEUSCNT-44) Update to Java 17
+
 ## 3.0.0
 
 * [MODEUSCNT-8](https://issues.folio.org/browse/MODEUSCNT-8) Switch OpenAPI generator to java/vertx
