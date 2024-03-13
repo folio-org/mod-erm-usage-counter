@@ -21,7 +21,8 @@
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.9.4</super-csv.beanutils.version>
     <cxf.version>3.5.5</cxf.version>
-    <jackson-databind.version>2.14.1</jackson-databind.version>
+    <vertx.version>4.5.4</vertx.version>
+    <jackson.version>2.16.1</jackson.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
@@ -33,29 +34,33 @@
         <version>32.0.1-jre</version>
       </dependency>
       <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.15.1</version>
+      </dependency>
+      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
     <dependency>
-      <groupId>net.sf.supercsv</groupId>
-      <artifactId>super-csv-dozer</artifactId>
-      <version>${super-csv.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-beanutils</groupId>
-          <artifactId>commons-beanutils</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
       <version>${super-csv.beanutils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.supercsv</groupId>
+      <artifactId>super-csv-dozer</artifactId>
+      <version>${super-csv.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
