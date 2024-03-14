@@ -1,3 +1,6 @@
+## 4.1.0
+* [MODEUSCNT-47](https://folio-org.atlassian.net/browse/MODEUSCNT-47) Update dependencies for Q release
+
 ## 4.0.0
 
 * [MODEUSCNT-45](https://issues.folio.org/browse/MODEUSCNT-45) Update Counter OpenAPI specification
