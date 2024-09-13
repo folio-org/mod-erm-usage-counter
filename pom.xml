@@ -10,6 +10,7 @@
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
     <module>mod-erm-usage-counter-common</module>
+    <module>mod-erm-usage-counter51</module>
   </modules>
 
   <properties>
@@ -22,7 +23,7 @@
     <super-csv.beanutils.version>1.9.4</super-csv.beanutils.version>
     <cxf.version>3.5.5</cxf.version>
     <vertx.version>4.5.4</vertx.version>
-    <jackson.version>2.16.1</jackson.version>
+    <jackson.version>2.17.1</jackson.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
@@ -44,9 +45,11 @@
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-jsr310</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -89,6 +92,16 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>3.2.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.4.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>3.1.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
