@@ -14,12 +14,12 @@ import jakarta.validation.Validator;
 import java.io.IOException;
 import java.util.Set;
 
-class BeanDeserializerModifierWithValidation extends BeanDeserializerModifier {
+class ValidationBeanDeserializerModifier extends BeanDeserializerModifier {
 
   public static final String VALIDATION_FAILED_MSG = "Validation failed for object: ";
   private final transient Validator validator;
 
-  public BeanDeserializerModifierWithValidation(Validator validator) {
+  public ValidationBeanDeserializerModifier(Validator validator) {
     this.validator = validator;
   }
 
