@@ -2,7 +2,7 @@ package org.olf.erm.usage.counter51;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.olf.erm.usage.counter51.BeanDeserializerModifierWithValidation.VALIDATION_FAILED_MSG;
+import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VALIDATION_FAILED_MSG;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

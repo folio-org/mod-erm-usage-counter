@@ -13,6 +13,12 @@ class ObjectMapperFactory {
 
   private ObjectMapperFactory() {}
 
+  /**
+   * Creates a {@link ObjectMapper} instance that is configured with validation support for COUNTER
+   * 5.1 report models.
+   *
+   * @return a configured {@link ObjectMapper} instance.
+   */
   public static ObjectMapper createDefault() {
     Validator validator;
     try (ValidatorFactory validatorFactory =
@@ -24,7 +30,7 @@ class ObjectMapperFactory {
     }
 
     SimpleModule simpleModule = new SimpleModule();
-    simpleModule.setDeserializerModifier(new BeanDeserializerModifierWithValidation(validator));
+    simpleModule.setDeserializerModifier(new ValidationBeanDeserializerModifier(validator));
 
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(simpleModule);
