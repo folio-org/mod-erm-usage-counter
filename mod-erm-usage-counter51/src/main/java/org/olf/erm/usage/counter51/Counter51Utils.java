@@ -1,8 +1,19 @@
 package org.olf.erm.usage.counter51;
 
+import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
+import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
+import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
+import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Stream;
 import org.olf.erm.usage.counter51.ReportMerger.MergerException;
 import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
 
@@ -57,5 +68,40 @@ public class Counter51Utils {
    */
   public static ObjectNode mergeReports(List<ObjectNode> reports) {
     return reportMerger.mergeReports(reports);
+  }
+
+  private static List<YearMonth> getYearMonths(YearMonth begin, YearMonth end) {
+    return Stream.iterate(begin, next -> next.plusMonths(1))
+        .limit(begin.until(end, ChronoUnit.MONTHS) + 1)
+        .toList();
+  }
+
+  /**
+   * Retrieves a list of {@link YearMonth} objects representing all the months between the start and
+   * end dates found in the specified {@link ObjectNode}.
+   *
+   * <p>The method expects the JSON structure to contain a {@link JsonProperties#REPORT_HEADER}
+   * object, which in turn contains {@link JsonProperties#REPORT_FILTERS} with {@link
+   * JsonProperties#BEGIN_DATE} and {@link JsonProperties#END_DATE} fields. These dates are parsed
+   * as {@link LocalDate} and converted into {@link YearMonth}.
+   *
+   * <p>The dates are used to create a list of {@link YearMonth} objects, which span from the start
+   * month to the end month, inclusive.
+   *
+   * @param objectNode the {@link ObjectNode} that contains the JSON structure with report header,
+   *     filters, and date fields
+   * @return a list of {@link YearMonth} objects from the begin date to the end date
+   * @throws NullPointerException if the expected fields (report header, report filters, begin date,
+   *     or end date) are missing
+   * @throws DateTimeParseException if the date strings cannot be parsed into {@link LocalDate}
+   */
+  public static List<YearMonth> getYearMonths(ObjectNode objectNode) {
+    JsonNode reportHeader = objectNode.get(REPORT_HEADER);
+    JsonNode reportFilters = reportHeader.get(REPORT_FILTERS);
+    String beginDate = reportFilters.get(BEGIN_DATE).asText();
+    String endDate = reportFilters.get(END_DATE).asText();
+    YearMonth beginMonth = YearMonth.from(LocalDate.parse(beginDate));
+    YearMonth endMonth = YearMonth.from(LocalDate.parse(endDate));
+    return getYearMonths(beginMonth, endMonth);
   }
 }
