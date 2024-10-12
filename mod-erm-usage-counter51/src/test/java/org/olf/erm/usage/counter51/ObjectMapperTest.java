@@ -1,17 +1,15 @@
 package org.olf.erm.usage.counter51;
 
+import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VALIDATION_FAILED_MSG;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -37,7 +35,7 @@ class ObjectMapperTest {
   }
 
   private static Stream<String> getSampleReports() throws IOException {
-    URL reportFolder = Resources.getResource(REPORT_BASE_PATH);
+    URL reportFolder = getResource(REPORT_BASE_PATH);
 
     Path path = new File(reportFolder.getFile()).toPath();
     Stream<String> result;
@@ -57,9 +55,7 @@ class ObjectMapperTest {
   @MethodSource("getSampleReports")
   void testDeserializationWithSampleReports(String filename)
       throws IOException, ClassNotFoundException {
-    String input =
-        Resources.toString(
-            Resources.getResource(REPORT_BASE_PATH + filename), StandardCharsets.UTF_8);
+    URL input = getResource(REPORT_BASE_PATH + filename);
     ObjectNode expected = new ObjectMapper().readValue(input, ObjectNode.class);
 
     String reportId = filename.split("_")[0];
@@ -67,14 +63,6 @@ class ObjectMapperTest {
     ObjectNode actual = mapper.convertValue(o, ObjectNode.class);
 
     assertThat(actual).isEqualTo(expected);
-  }
-
-  private String getReportFromResource(String resourceName) {
-    try {
-      return Resources.toString(Resources.getResource(resourceName), StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
   }
 
   @Nested
@@ -89,10 +77,9 @@ class ObjectMapperTest {
     }
 
     @Test
-    void invalidStringSize() throws JsonProcessingException {
-      String titleReportStr =
-          getReportFromResource(REPORT_BASE_PATH + TR_FILENAME + EXTENSION_JSON);
-      TR titleReport = mapper.readValue(titleReportStr, TR.class);
+    void invalidStringSize() throws IOException {
+      TR titleReport =
+          mapper.readValue(getResource(REPORT_BASE_PATH + TR_FILENAME + EXTENSION_JSON), TR.class);
       titleReport.getReportHeader().setCreatedBy("A");
 
       assertThatThrownBy(() -> mapper.convertValue(titleReport, TR.class))
@@ -101,9 +88,10 @@ class ObjectMapperTest {
 
     @Test
     void deserializeToIncorrectReportType() {
-      String input = getReportFromResource(REPORT_BASE_PATH + TRJ1_FILENAME + EXTENSION_JSON);
-
-      assertThatThrownBy(() -> mapper.readValue(input, TR.class))
+      assertThatThrownBy(
+              () ->
+                  mapper.readValue(
+                      getResource(REPORT_BASE_PATH + TRJ1_FILENAME + EXTENSION_JSON), TR.class))
           .hasMessageContaining(VALIDATION_FAILED_MSG);
     }
   }
