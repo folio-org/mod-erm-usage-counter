@@ -7,11 +7,12 @@ import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VAL
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +24,7 @@ import org.openapitools.counter51client.model.TR;
 class ObjectMapperTest {
 
   private static final String PACKAGE_PREFIX = "org.openapitools.counter51client.model.";
-  private static final String REPORT_BASE_PATH = "report/";
+  private static final String REPORT_BASE_PATH = "sample-reports/";
   private static final String TR_FILENAME = "TR_sample_r51";
   private static final String TRJ1_FILENAME = "TRJ1_sample_r51";
   private static final String EXTENSION_JSON = ".json";
@@ -34,31 +35,39 @@ class ObjectMapperTest {
     mapper = ObjectMapperFactory.createDefault();
   }
 
-  private static Stream<String> getSampleReports() throws IOException {
-    URL reportFolder = getResource(REPORT_BASE_PATH);
+  private static Path getPathForResource(String resourceName) {
+    URL url = getResource(resourceName);
+    try {
+      return Paths.get(url.toURI());
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+  }
 
-    Path path = new File(reportFolder.getFile()).toPath();
-    Stream<String> result;
-    try (Stream<Path> paths = Files.walk(path)) {
-      result =
+  private static Stream<Path> getSampleReports() throws IOException, URISyntaxException {
+    Path sampleReportsDir = Paths.get(getResource(REPORT_BASE_PATH).toURI());
+    Stream<Path> sampleReports;
+    try (Stream<Path> paths = Files.walk(sampleReportsDir)) {
+      sampleReports =
           paths
               .filter(Files::isRegularFile)
               .filter(p -> p.toString().endsWith(EXTENSION_JSON))
-              .map(p -> p.getFileName().toString())
               .toList()
               .stream();
     }
-    return result;
+    Stream<Path> additionalReports =
+        Stream.of("TR_r51_with_exception.json").map(ObjectMapperTest::getPathForResource);
+    return Stream.concat(sampleReports, additionalReports);
   }
 
   @ParameterizedTest
   @MethodSource("getSampleReports")
-  void testDeserializationWithSampleReports(String filename)
+  void testDeserializationWithSampleReports(Path path)
       throws IOException, ClassNotFoundException {
-    URL input = getResource(REPORT_BASE_PATH + filename);
+    URL input = path.toUri().toURL();
     ObjectNode expected = new ObjectMapper().readValue(input, ObjectNode.class);
 
-    String reportId = filename.split("_")[0];
+    String reportId = path.getFileName().toString().split("_")[0];
     Object o = mapper.readValue(input, Class.forName(PACKAGE_PREFIX + reportId));
     ObjectNode actual = mapper.convertValue(o, ObjectNode.class);
 
