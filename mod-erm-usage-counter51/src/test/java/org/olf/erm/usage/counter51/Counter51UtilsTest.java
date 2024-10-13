@@ -47,10 +47,10 @@ class Counter51UtilsTest {
   @ParameterizedTest
   @ValueSource(
       strings = {
-        "report/TR_sample_r51.json",
-        "report/DR_sample_r51.json",
-        "report/PR_sample_r51.json",
-        "report/IR_sample_r51.json"
+        "sample-reports/TR_sample_r51.json",
+        "sample-reports/DR_sample_r51.json",
+        "sample-reports/PR_sample_r51.json",
+        "sample-reports/IR_sample_r51.json"
       })
   void testSplitReportAndMergeReports(String filePath) throws IOException {
     ObjectNode expectedReport = (ObjectNode) om.readTree(Resources.getResource(filePath));
