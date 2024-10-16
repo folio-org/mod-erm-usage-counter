@@ -163,6 +163,34 @@
               <modelNameMappings>
                 <!-- clashes with java.lang.Exception in generated code -->
                 <modelNameMapping>Exception=CounterException</modelNameMapping>
+                <!--
+                OpenAPI 'const' keyword is not taken into account during code generation, so
+                there is no way for Jackson to be able to distinguish between these classes.
+                I did not find a way to turn off the creation of inner class
+                'BaseReportHeaderExceptionsInner'.
+                 -->
+                <modelNameMapping>Exception_0=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1-999=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1000=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1010=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1011=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1020=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_1030=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_2000=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_2010=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_2011=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_2020=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3020=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3030=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3031=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3032=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3040=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3050=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3060=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3061=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3062=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3063=CounterException</modelNameMapping>
+                <modelNameMapping>Exception_3070=CounterException</modelNameMapping>
               </modelNameMappings>
             </configuration>
           </execution>
