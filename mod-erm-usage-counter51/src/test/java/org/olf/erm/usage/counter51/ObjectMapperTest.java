@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openapitools.counter51client.model.TR;
 
@@ -44,7 +45,7 @@ class ObjectMapperTest {
     }
   }
 
-  private static Stream<Path> getSampleReports() throws IOException, URISyntaxException {
+  private static Stream<Arguments> getSampleReports() throws IOException, URISyntaxException {
     Path sampleReportsDir = Paths.get(getResource(REPORT_BASE_PATH).toURI());
     Stream<Path> sampleReports;
     try (Stream<Path> paths = Files.walk(sampleReportsDir)) {
@@ -57,17 +58,18 @@ class ObjectMapperTest {
     }
     Stream<Path> additionalReports =
         Stream.of("TR_r51_with_exception.json").map(ObjectMapperTest::getPathForResource);
-    return Stream.concat(sampleReports, additionalReports);
+    return Stream.concat(sampleReports, additionalReports)
+        .map(p -> Arguments.of(p, p.getFileName().toString()));
   }
 
-  @ParameterizedTest
+  @ParameterizedTest(name = "[{index}] {1}")
   @MethodSource("getSampleReports")
-  void testDeserializationWithSampleReports(Path path)
+  void testDeserializationWithSampleReports(Path path, String filename)
       throws IOException, ClassNotFoundException {
     URL input = path.toUri().toURL();
     ObjectNode expected = new ObjectMapper().readValue(input, ObjectNode.class);
 
-    String reportId = path.getFileName().toString().split("_")[0];
+    String reportId = filename.split("_")[0];
     Object o = mapper.readValue(input, Class.forName(PACKAGE_PREFIX + reportId));
     ObjectNode actual = mapper.convertValue(o, ObjectNode.class);
 
