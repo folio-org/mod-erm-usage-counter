@@ -1,5 +1,6 @@
 package org.olf.erm.usage.counter51;
 
+import static org.olf.erm.usage.counter51.Counter51Utils.getYearMonths;
 import static org.olf.erm.usage.counter51.JsonProperties.ATTRIBUTE_PERFORMANCE;
 import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
@@ -14,11 +15,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Streams;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Stream;
 
 class ReportSplitter {
 
@@ -72,21 +70,6 @@ class ReportSplitter {
     return filteredReport;
   }
 
-  private List<YearMonth> getYearMonths(YearMonth begin, YearMonth end) {
-    return Stream.iterate(begin, next -> next.plusMonths(1))
-        .limit(begin.until(end, ChronoUnit.MONTHS) + 1)
-        .toList();
-  }
-
-  private List<YearMonth> getYearMonthsFromReportHeader(JsonNode reportHeader) {
-    JsonNode reportFilters = reportHeader.get(REPORT_FILTERS);
-    String beginDate = reportFilters.get(BEGIN_DATE).asText();
-    String endDate = reportFilters.get(END_DATE).asText();
-    YearMonth beginMonth = YearMonth.from(LocalDate.parse(beginDate));
-    YearMonth endMonth = YearMonth.from(LocalDate.parse(endDate));
-    return getYearMonths(beginMonth, endMonth);
-  }
-
   /**
    * Splits a COUNTER report into multiple COUNTER reports that each span a single month.
    *
@@ -96,7 +79,7 @@ class ReportSplitter {
    */
   public List<ObjectNode> splitReport(ObjectNode report) {
     try {
-      List<YearMonth> months = getYearMonthsFromReportHeader(report.get(REPORT_HEADER));
+      List<YearMonth> months = getYearMonths(report);
       return months.stream().map(yearMonth -> filterReport(report, yearMonth)).toList();
     } catch (Exception e) {
       throw new SplitterException(e);
