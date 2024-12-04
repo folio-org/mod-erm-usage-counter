@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter51;
 import static com.google.common.io.Resources.getResource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_EXCEPTION;
 import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VALIDATION_FAILED_MSG;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +58,7 @@ class ObjectMapperTest {
               .stream();
     }
     Stream<Path> additionalReports =
-        Stream.of("TR_r51_with_exception.json").map(ObjectMapperTest::getPathForResource);
+        Stream.of(TR_WITH_EXCEPTION).map(ObjectMapperTest::getPathForResource);
     return Stream.concat(sampleReports, additionalReports)
         .map(p -> Arguments.of(p, p.getFileName().toString()));
   }
