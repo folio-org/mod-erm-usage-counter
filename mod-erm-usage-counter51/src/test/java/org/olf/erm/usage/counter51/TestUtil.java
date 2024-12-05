@@ -38,7 +38,8 @@ class TestUtil {
   }
 
   static Path getSampleReportPath(ReportType reportType) {
-    return getResourcePath(SAMPLE_REPORTS_PATH_TEMPLATE.formatted(reportType));
+    String reportName = reportType.toString().replace("_", "");
+    return getResourcePath(SAMPLE_REPORTS_PATH_TEMPLATE.formatted(reportName));
   }
 
   static Path getResourcePath(String resourceName) {

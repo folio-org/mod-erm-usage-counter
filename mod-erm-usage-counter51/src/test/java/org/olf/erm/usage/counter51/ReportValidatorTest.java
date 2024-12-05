@@ -13,18 +13,14 @@ import static org.olf.erm.usage.counter51.ReportValidator.ERR_REPORT_ATTRIBUTES_
 import static org.olf.erm.usage.counter51.ReportValidator.ERR_REPORT_ID_TEMPLATE;
 import static org.olf.erm.usage.counter51.ReportValidator.ERR_UNSUPPORTED_REPORT_ID_TEMPLATE;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_HEADER;
-import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getReportValidator;
 import static org.olf.erm.usage.counter51.TestUtil.getResourcePath;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.io.Resources;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import org.assertj.core.api.ThrowingConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,10 +34,7 @@ class ReportValidatorTest {
   @ParameterizedTest
   @EnumSource(ReportType.class)
   void testValidReports(ReportType reportType) throws IOException {
-    String reportName = reportType.toString().replace("_", "");
-    String reportSamplePath = "sample-reports/%s_sample_r51.json".formatted(reportName);
-
-    File reportFile = Paths.get(Resources.getResource(reportSamplePath).getPath()).toFile();
+    File reportFile = getSampleReportPath(reportType).toFile();
     ObjectNode report = readFileAsObjectNode(reportFile);
     ObjectNode reportClone = report.deepCopy();
 

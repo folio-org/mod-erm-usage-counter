@@ -17,22 +17,24 @@ import static org.olf.erm.usage.counter51.ReportMerger.MSG_PROPERTIES_DO_NOT_MAT
 import static org.olf.erm.usage.counter51.ReportMerger.MSG_REPORT_SPANS_MULTIPLE_MONTHS;
 import static org.olf.erm.usage.counter51.ReportMerger.MergerException.MSG_ERROR_MERGING_REPORT;
 import static org.olf.erm.usage.counter51.ReportSplitter.SplitterException.MSG_ERROR_SPLITTING_REPORT;
+import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
+import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
+import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.io.Resources;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 class Counter51UtilsTest {
 
-  ObjectMapper om = createDefaultObjectMapper();
+  private final ObjectMapper objectMapper = getObjectMapper();
 
   @Test
   void testCreateDefaultObjectMapper() {
@@ -45,15 +47,9 @@ class Counter51UtilsTest {
   }
 
   @ParameterizedTest
-  @ValueSource(
-      strings = {
-        "sample-reports/TR_sample_r51.json",
-        "sample-reports/DR_sample_r51.json",
-        "sample-reports/PR_sample_r51.json",
-        "sample-reports/IR_sample_r51.json"
-      })
-  void testSplitReportAndMergeReports(String filePath) throws IOException {
-    ObjectNode expectedReport = (ObjectNode) om.readTree(Resources.getResource(filePath));
+  @EnumSource(ReportType.class)
+  void testSplitReportAndMergeReports(ReportType reportType) throws IOException {
+    ObjectNode expectedReport = readFileAsObjectNode(getSampleReportPath(reportType).toFile());
     ObjectNode expectedReportOriginal = expectedReport.deepCopy();
 
     List<ObjectNode> splitReports = splitReport(expectedReport);
@@ -75,13 +71,13 @@ class Counter51UtilsTest {
 
   @Test
   void testMergeReportsThatSpanMultipleMonths() {
-    ObjectNode report1 = om.createObjectNode();
+    ObjectNode report1 = objectMapper.createObjectNode();
     report1
         .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
         .put(BEGIN_DATE, "2022-01-01")
         .put(END_DATE, "2022-03-31");
 
-    ObjectNode report2 = om.createObjectNode();
+    ObjectNode report2 = objectMapper.createObjectNode();
     report2
         .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
         .put(BEGIN_DATE, "2022-04-01")
@@ -93,14 +89,14 @@ class Counter51UtilsTest {
 
   @Test
   void testMergeReportsWithDifferentProperties() {
-    ObjectNode report1 = om.createObjectNode();
+    ObjectNode report1 = objectMapper.createObjectNode();
     report1
         .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
         .put(BEGIN_DATE, "2022-01-01")
         .put(END_DATE, "2022-01-31");
     report1.withObject(REPORT_HEADER).put(REPORT_ID, "TR");
 
-    ObjectNode report2 = om.createObjectNode();
+    ObjectNode report2 = objectMapper.createObjectNode();
     report2
         .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
         .put(BEGIN_DATE, "2022-02-01")
@@ -113,7 +109,7 @@ class Counter51UtilsTest {
 
   @Test
   void testSplitReportWithInvalidReport() {
-    ObjectNode report = om.createObjectNode();
+    ObjectNode report = objectMapper.createObjectNode();
 
     assertThatThrownBy(() -> splitReport(report))
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);

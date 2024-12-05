@@ -10,7 +10,7 @@ import static org.olf.erm.usage.counter51.ReportType.DR_D2;
 import static org.olf.erm.usage.counter51.ReportType.TR;
 import static org.olf.erm.usage.counter51.ReportType.TR_J1;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_HEADER;
-import static org.olf.erm.usage.counter51.TestUtil.createEmptyObjectNode;
+import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getReportConverter;
 import static org.olf.erm.usage.counter51.TestUtil.getResourcePath;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
@@ -23,8 +23,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.EnumSource.Mode;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
 
 class ReportConverterTest {
@@ -34,7 +33,7 @@ class ReportConverterTest {
   private final List<ReportType> skipReportTypes = List.of(DR_D1, DR_D2, TR_J1);
 
   @ParameterizedTest
-  @EnumSource(value = ReportType.class, names = ".*_.*", mode = Mode.MATCH_ANY)
+  @MethodSource("org.olf.erm.usage.counter51.ReportType#getStandardViews")
   void testThatReportConversionPreservesOriginalAndMatchesExpected(ReportType reportType)
       throws IOException {
     Assumptions.assumeFalse(skipReportTypes.contains(reportType), "ReportType is on ignore list");
@@ -67,7 +66,7 @@ class ReportConverterTest {
 
   @Test
   void testThatOnlyStandardViewsAreSupported() {
-    ObjectNode report = createEmptyObjectNode();
+    ObjectNode report = getObjectMapper().createObjectNode();
     assertThatThrownBy(() -> reportConverter.convert(report, TR))
         .isInstanceOf(ReportConverterException.class)
         .hasMessage(
