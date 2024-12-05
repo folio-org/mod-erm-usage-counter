@@ -27,6 +27,14 @@ public enum ReportType {
     this.reportName = reportName;
   }
 
+  public static List<ReportType> getStandardViews() {
+    return Arrays.stream(ReportType.values()).filter(rt -> rt.toString().contains("_")).toList();
+  }
+
+  public static List<ReportType> getMasterReports() {
+    return Arrays.stream(ReportType.values()).filter(rt -> !rt.toString().contains("_")).toList();
+  }
+
   public String getReportName() {
     return reportName;
   }
@@ -37,14 +45,6 @@ public enum ReportType {
 
   ReportProperties getProperties() {
     return ReportProperties.valueOf(this.name());
-  }
-
-  public static List<ReportType> getStandardViews() {
-    return Arrays.stream(ReportType.values()).filter(rt -> rt.toString().contains("_")).toList();
-  }
-
-  public static List<ReportType> getMasterReports() {
-    return Arrays.stream(ReportType.values()).filter(rt -> !rt.toString().contains("_")).toList();
   }
 
   public boolean isItemReport() {
