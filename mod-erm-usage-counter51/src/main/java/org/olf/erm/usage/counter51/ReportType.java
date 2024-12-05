@@ -1,5 +1,8 @@
 package org.olf.erm.usage.counter51;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum ReportType {
   DR("Database Report"),
   DR_D1("Database Search and Item Usage"),
@@ -34,6 +37,10 @@ public enum ReportType {
 
   public ReportProperties getProperties() {
     return ReportProperties.valueOf(this.name());
+  }
+
+  public static List<ReportType> getStandardViews() {
+    return Arrays.stream(ReportType.values()).filter(rt -> rt.toString().contains("_")).toList();
   }
 
   public boolean isItemReport() {

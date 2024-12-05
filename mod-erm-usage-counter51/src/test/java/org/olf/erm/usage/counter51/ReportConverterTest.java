@@ -10,6 +10,7 @@ import static org.olf.erm.usage.counter51.ReportType.DR_D2;
 import static org.olf.erm.usage.counter51.ReportType.TR;
 import static org.olf.erm.usage.counter51.ReportType.TR_J1;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_HEADER;
+import static org.olf.erm.usage.counter51.TestUtil.createEmptyObjectNode;
 import static org.olf.erm.usage.counter51.TestUtil.getReportConverter;
 import static org.olf.erm.usage.counter51.TestUtil.getResourcePath;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
@@ -60,7 +61,17 @@ class ReportConverterTest {
     ObjectNode report = readFileAsObjectNode(inputReportFilePath.toFile());
 
     assertThatThrownBy(() -> reportConverter.convert(report, TR_J1))
-        .isInstanceOf(ReportConverterException.class);
+        .isInstanceOf(ReportConverterException.class)
+        .hasMessageContaining(ReportConverter.ERR_INVALID_REPORT_TEMPLATE.formatted(""));
+  }
+
+  @Test
+  void testThatOnlyStandardViewsAreSupported() {
+    ObjectNode report = createEmptyObjectNode();
+    assertThatThrownBy(() -> reportConverter.convert(report, TR))
+        .isInstanceOf(ReportConverterException.class)
+        .hasMessage(
+            ReportConverter.ERR_STANDARD_VIEW_TEMPLATE.formatted(ReportType.getStandardViews()));
   }
 
   @Test

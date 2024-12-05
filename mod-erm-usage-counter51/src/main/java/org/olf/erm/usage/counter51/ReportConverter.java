@@ -25,6 +25,9 @@ import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
 public class ReportConverter {
 
+  static final String ERR_STANDARD_VIEW_TEMPLATE =
+      "Report conversion is only supported for Standard Views: %s";
+  static final String ERR_INVALID_REPORT_TEMPLATE = "Supplied report is not valid: %s";
   private final ObjectMapper objectMapper;
   private final ReportValidator validator;
 
@@ -34,6 +37,11 @@ public class ReportConverter {
   }
 
   public ObjectNode convert(ObjectNode report, ReportType reportType) {
+    if (!ReportType.getStandardViews().contains(reportType)) {
+      throw new ReportConverterException(
+          ERR_STANDARD_VIEW_TEMPLATE.formatted(ReportType.getStandardViews()));
+    }
+
     ValidationResult validationResult =
         validator.validateReportHeader(report, reportType.getParentReportType());
 
@@ -47,7 +55,8 @@ public class ReportConverter {
 
       return result;
     } else {
-      throw new ReportConverterException(validationResult.getErrorMessage());
+      throw new ReportConverterException(
+          ERR_INVALID_REPORT_TEMPLATE.formatted(validationResult.getErrorMessage()));
     }
   }
 
