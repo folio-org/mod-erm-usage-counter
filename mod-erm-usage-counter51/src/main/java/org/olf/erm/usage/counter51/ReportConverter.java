@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
-public class ReportConverter {
+class ReportConverter {
 
   static final String ERR_STANDARD_VIEW_TEMPLATE =
       "Report conversion is only supported for Standard Views: %s";
@@ -36,6 +36,17 @@ public class ReportConverter {
     this.validator = new ReportValidator(objectMapper);
   }
 
+  /**
+   * Converts a given master report into a standard view.
+   *
+   * @param report The original master report represented as an ObjectNode. This is the JSON
+   *     structure that needs to be converted.
+   * @param reportType The type of report to convert to. This determines the structure and
+   *     attributes of the resulting report.
+   * @return An ObjectNode representing the converted report.
+   * @throws ReportConverterException if the target report type is not a standard view or if the
+   *     master report is considered invalid according to the target report type.
+   */
   public ObjectNode convert(ObjectNode report, ReportType reportType) {
     if (!ReportType.getStandardViews().contains(reportType)) {
       throw new ReportConverterException(
