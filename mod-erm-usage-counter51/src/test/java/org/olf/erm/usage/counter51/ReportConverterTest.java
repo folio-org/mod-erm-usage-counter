@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter51.JsonProperties.COUNTRY_CODE;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
-import static org.olf.erm.usage.counter51.ReportType.DR_D1;
-import static org.olf.erm.usage.counter51.ReportType.DR_D2;
 import static org.olf.erm.usage.counter51.ReportType.TR;
 import static org.olf.erm.usage.counter51.ReportType.TR_J1;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_HEADER;
@@ -19,8 +17,6 @@ import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,14 +25,11 @@ import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
 class ReportConverterTest {
 
   private final ReportConverter reportConverter = getReportConverter();
-  // TODO: sample data is not valid for these reports, remove once sample data is fixed
-  private final List<ReportType> skipReportTypes = List.of(DR_D1, DR_D2, TR_J1);
 
   @ParameterizedTest
   @MethodSource("org.olf.erm.usage.counter51.ReportType#getStandardViews")
   void testThatReportConversionPreservesOriginalAndMatchesExpected(ReportType reportType)
       throws IOException {
-    Assumptions.assumeFalse(skipReportTypes.contains(reportType), "ReportType is on ignore list");
     Path inputReportFilePath = getSampleReportPath(reportType.toString().substring(0, 2));
     Path expectedReportFilePath = getSampleReportPath(reportType.toString().replace("_", ""));
 
