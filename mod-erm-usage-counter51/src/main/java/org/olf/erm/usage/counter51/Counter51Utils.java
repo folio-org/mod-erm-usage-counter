@@ -14,6 +14,7 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Stream;
+import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
 import org.olf.erm.usage.counter51.ReportMerger.MergerException;
 import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
 
@@ -21,8 +22,25 @@ public class Counter51Utils {
 
   private static final ReportSplitter reportSplitter = new ReportSplitter();
   private static final ReportMerger reportMerger = new ReportMerger();
+  private static final ReportConverter reportConverter =
+      new ReportConverter(createDefaultObjectMapper());
 
   private Counter51Utils() {}
+
+  /**
+   * Converts a given master report into a standard view.
+   *
+   * @param report The original master report represented as an ObjectNode. This is the JSON
+   *     structure that needs to be converted.
+   * @param reportType The type of report to convert to. This determines the structure and
+   *     attributes of the resulting report.
+   * @return An ObjectNode representing the converted report.
+   * @throws ReportConverterException if the target report type is not a standard view or if the
+   *     master report is considered invalid according to the target report type.
+   */
+  public static ObjectNode convertReport(ObjectNode report, ReportType reportType) {
+    return reportConverter.convert(report, reportType);
+  }
 
   /**
    * Creates a {@link ObjectMapper} instance that is configured with validation support for COUNTER

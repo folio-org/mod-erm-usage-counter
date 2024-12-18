@@ -138,7 +138,7 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/COUNTER_SUSHI_API.json</inputSpec>
+              <inputSpec>${project.basedir}/src/main/resources/COUNTER_API.json</inputSpec>
               <generatorName>java</generatorName>
               <configOptions>
                 <library>native</library>
@@ -208,8 +208,8 @@
             </goals>
             <configuration>
               <target>
-                <replace token="^10\\.[1-9][0-9]{3}[0-9.]*_/.+$"
-                  value="^10\\.[1-9][0-9]{3}[0-9.]*/.+$"
+                <replace token="^10\\.[1-9][0-9]{2}[0-9.]*_/.+$"
+                  value="^10\\.[1-9][0-9]{2}[0-9.]*/.+$"
                   dir="${client.directory}/model"
                   includes="*.java"
                   failOnNoReplacements="true"/>
