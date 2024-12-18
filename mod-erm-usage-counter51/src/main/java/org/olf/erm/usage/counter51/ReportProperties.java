@@ -190,7 +190,7 @@ enum ReportProperties {
               AttributesToShowEnum.ACCESS_TYPE.getValue(),
               AttributesToShowEnum.ACCESS_METHOD.getValue())));
 
-  private final List<String> DEFAULT_REPORT_FILTERS = List.of(BEGIN_DATE, END_DATE);
+  private static final List<String> DEFAULT_REPORT_FILTERS = List.of(BEGIN_DATE, END_DATE);
   private final List<String> metricTypes;
   private final List<String> dataTypes;
   private final List<String> accessTypes;
