@@ -8,12 +8,14 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Stream;
+import org.apache.commons.csv.CSVFormat;
 import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
 import org.olf.erm.usage.counter51.ReportMerger.MergerException;
 import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
@@ -24,6 +26,7 @@ public class Counter51Utils {
   private static final ReportMerger reportMerger = new ReportMerger();
   private static final ReportConverter reportConverter =
       new ReportConverter(createDefaultObjectMapper());
+  private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter();
 
   private Counter51Utils() {}
 
@@ -40,6 +43,10 @@ public class Counter51Utils {
    */
   public static ObjectNode convertReport(ObjectNode report, ReportType reportType) {
     return reportConverter.convert(report, reportType);
+  }
+
+  public static void writeReportAsCsv(JsonNode report, Appendable writer) throws IOException {
+    reportCsvConverter.convert(report, writer, CSVFormat.DEFAULT);
   }
 
   /**
@@ -121,5 +128,15 @@ public class Counter51Utils {
     YearMonth beginMonth = YearMonth.from(LocalDate.parse(beginDate));
     YearMonth endMonth = YearMonth.from(LocalDate.parse(endDate));
     return getYearMonths(beginMonth, endMonth);
+  }
+
+  /**
+   * Gets the report type of the given COUNTER report.
+   *
+   * @param reportNode COUNTER report JSON node including Report_Header properties.
+   * @return the report type as {@link ReportType}
+   */
+  public static ReportType getReportType(JsonNode reportNode) {
+    return ReportType.valueOf(reportNode.at("/Report_Header/Report_ID").asText());
   }
 }

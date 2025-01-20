@@ -1,0 +1,34 @@
+﻿Report_Name	Database Search and Item Usage																	
+Report_ID	DR_D1																	
+Release	5.1																	
+Institution_Name	Sample Institution																	
+Institution_ID	ISNI:1234123412341234																	
+Metric_Types	Searches_Automated; Searches_Federated; Searches_Regular; Total_Item_Investigations; Total_Item_Requests; Unique_Item_Investigations; Unique_Item_Requests																	
+Report_Filters	Access_Method=Regular																	
+Report_Attributes																		
+Exceptions																		
+Reporting_Period	Begin_Date=2022-01-01; End_Date=2022-12-31																	
+Created	2023-02-15T09:11:12Z																	
+Created_By	Sample Publisher																	
+Registry_Record	https://registry.countermetrics.org/platform/99999999-9999-9999-9999-999999999999																	
+																		
+Database	Publisher	Publisher_ID	Platform	Proprietary_ID	Metric_Type	Reporting_Period_Total	Jan-2022	Feb-2022	Mar-2022	Apr-2022	May-2022	Jun-2022	Jul-2022	Aug-2022	Sep-2022	Oct-2022	Nov-2022	Dec-2022
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Searches_Automated	192008	15888	14802	15488	18033	14967	15623	16431	16616	19358	14271	14756	15775
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Searches_Federated	199413	17178	17517	18637	15315	13473	18671	17637	14521	18237	16167	13961	18099
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Searches_Regular	185698	13878	13332	19412	13640	17924	14614	13959	13926	18215	13925	13872	19001
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Total_Item_Investigations	213928	17546	18074	18284	17334	18567	17043	17912	18763	17302	18030	16717	18356
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Total_Item_Requests	128358	10528	10845	10971	10401	11140	10226	10748	11257	10383	10818	10028	11013
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Unique_Item_Investigations	160460	13162	13558	13714	13002	13926	12784	13435	14072	12977	13523	12539	13768
+Database 1	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB1	Unique_Item_Requests	96396	7897	8136	8229	7801	8358	7671	8062	8443	7789	8116	7524	8370
+Database 2	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB2	Searches_Automated	195502	18260	15802	13441	17708	19131	16656	18537	16193	16495	13810	16130	13339
+Database 2	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB2	Searches_Federated	187475	16894	16869	15396	12989	18541	12806	14672	15133	18890	19192	12898	13195
+Database 2	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB2	Searches_Regular	197245	16221	14212	18909	14855	15420	18830	17507	14787	17906	16765	18887	12946
+Database 2	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB2	Total_Item_Investigations	72179	6240	6369	6530	5599	4897	6290	5725	6116	5986	6521	6076	5830
+Database 2	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB2	Unique_Item_Investigations	54144	4680	4777	4898	4200	3674	4719	4294	4587	4491	4892	4558	4374
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Searches_Automated	194034	14663	19209	16943	17089	14656	14698	18234	14554	12787	15871	19034	16296
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Searches_Federated	203905	17030	14920	14380	19308	14942	19391	18875	15282	18107	15731	17634	18305
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Searches_Regular	189376	14784	13761	15650	15816	18865	15753	15935	16500	13759	15697	13991	18865
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Total_Item_Investigations	16981	1094	1325	1730	1062	1278	1861	1252	1371	1890	1462	1231	1425
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Total_Item_Requests	10189	656	795	1038	637	767	1117	751	823	1134	877	739	855
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Unique_Item_Investigations	12739	821	994	1298	797	959	1396	939	1028	1418	1097	923	1069
+Database 3	Sample Publisher	ISNI:4321432143214321	Platform 1	P1:DB3	Unique_Item_Requests	7642	492	596	779	478	575	838	563	617	851	658	554	641

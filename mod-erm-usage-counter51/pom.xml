@@ -19,6 +19,7 @@
     <mockito.version>5.13.0</mockito.version>
     <junit-bom.version>5.11.0</junit-bom.version>
     <json-unit-assertj.version>3.4.1</json-unit-assertj.version>
+    <commons-csv.version>1.12.0</commons-csv.version>
     <client.package>org.openapitools.counter51client</client.package>
     <client.directory>
       ${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/counter51client
@@ -42,6 +43,14 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
+
+    <!-- CSV processing -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-csv</artifactId>
+      <version>${commons-csv.version}</version>
+    </dependency>
+
     <!-- JSON processing: jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

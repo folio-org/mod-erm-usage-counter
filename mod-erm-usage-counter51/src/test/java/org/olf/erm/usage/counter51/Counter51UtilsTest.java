@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter51.Counter51Utils.createDefaultObjectMapper;
 import static org.olf.erm.usage.counter51.Counter51Utils.mergeReports;
 import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
+import static org.olf.erm.usage.counter51.Counter51Utils.writeReportAsCsv;
 import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.CREATED;
 import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
@@ -18,14 +19,21 @@ import static org.olf.erm.usage.counter51.ReportMerger.MSG_PROPERTIES_DO_NOT_MAT
 import static org.olf.erm.usage.counter51.ReportMerger.MSG_REPORT_SPANS_MULTIPLE_MONTHS;
 import static org.olf.erm.usage.counter51.ReportMerger.MergerException.MSG_ERROR_MERGING_REPORT;
 import static org.olf.erm.usage.counter51.ReportSplitter.SplitterException.MSG_ERROR_SPLITTING_REPORT;
+import static org.olf.erm.usage.counter51.ReportType.DR;
+import static org.olf.erm.usage.counter51.TestUtil.assertThatReportLinesAreEqualIgnoringOrder;
+import static org.olf.erm.usage.counter51.TestUtil.getLinesFromString;
 import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
+import static org.olf.erm.usage.counter51.TestUtil.readFileAsLines;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
+import static org.olf.erm.usage.counter51.TestUtil.removeBOMAndTrailingDelimiters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -119,9 +127,28 @@ class Counter51UtilsTest {
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);
   }
 
+  @Test
+  void testWriteReportAsCsv() throws IOException {
+    Path sampleDRJsonPath = getSampleReportPath(DR);
+    Path sampleDRTsvPath = getSampleReportPath(DR, "tsv");
+
+    ObjectNode report = readFileAsObjectNode(sampleDRJsonPath.toFile());
+
+    StringWriter stringWriter = new StringWriter();
+    writeReportAsCsv(report, stringWriter);
+    List<String> actualLines = getLinesFromString(stringWriter.toString(), "\r\n");
+
+    // replace tabs with commas for comparison
+    List<String> tsv = removeBOMAndTrailingDelimiters(readFileAsLines(sampleDRTsvPath), "\t");
+    List<String> expectedLines = tsv.stream().map(line -> line.replaceAll("\t", ",")).toList();
+
+    assertThatReportLinesAreEqualIgnoringOrder(actualLines, expectedLines);
+  }
+  
   private void assertThatEachPerformanceMetricHasSingleMonthData(JsonNode report) {
     report
         .findValues(PERFORMANCE)
         .forEach(node -> node.fields().forEachRemaining(e -> assertThat(e.getValue()).hasSize(1)));
+
   }
 }
