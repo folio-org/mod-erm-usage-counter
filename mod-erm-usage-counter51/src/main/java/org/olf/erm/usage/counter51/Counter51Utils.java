@@ -24,9 +24,9 @@ public class Counter51Utils {
 
   private static final ReportSplitter reportSplitter = new ReportSplitter();
   private static final ReportMerger reportMerger = new ReportMerger();
-  private static final ReportConverter reportConverter =
-      new ReportConverter(createDefaultObjectMapper());
-  private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter();
+  private static final ObjectMapper objectMapper = createDefaultObjectMapper();
+  private static final ReportConverter reportConverter = new ReportConverter(objectMapper);
+  private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter(objectMapper);
 
   private Counter51Utils() {}
 

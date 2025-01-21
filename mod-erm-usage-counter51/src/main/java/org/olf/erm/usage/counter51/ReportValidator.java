@@ -27,7 +27,7 @@ class ReportValidator {
     this.objectMapper = objectMapper;
   }
 
-  public ValidationResult validateReportHeader(ObjectNode report, ReportType reportType) {
+  public ValidationResult validateReportHeader(JsonNode report, ReportType reportType) {
     String reportID = getReportId(report);
     if (reportID == null) {
       return new ValidationResult(false, new ReportValidatorException(ERR_NO_REPORT_ID));
@@ -35,7 +35,7 @@ class ReportValidator {
     return validateByDefintions(report, reportType);
   }
 
-  public ValidationResult validateReportHeader(ObjectNode report) {
+  public ValidationResult validateReportHeader(JsonNode report) {
     String reportID = getReportId(report);
     if (reportID == null) {
       return new ValidationResult(false, new ReportValidatorException(ERR_NO_REPORT_ID));
@@ -49,12 +49,12 @@ class ReportValidator {
     }
   }
 
-  private String getReportId(ObjectNode report) {
+  private String getReportId(JsonNode report) {
     String reportID = report.path(REPORT_HEADER).path(REPORT_ID).asText();
     return "".equals(reportID) ? null : reportID;
   }
 
-  private ValidationResult validateByDefintions(ObjectNode report, ReportType reportType) {
+  private ValidationResult validateByDefintions(JsonNode report, ReportType reportType) {
     ValidationResult classValidationResult = validateByClassDefinition(report, reportType);
     if (!classValidationResult.isValid()) {
       return classValidationResult;
@@ -66,7 +66,7 @@ class ReportValidator {
     return validateByReportHeaderReportAttributesDefinition(report, reportType);
   }
 
-  private ValidationResult validateByClassDefinition(ObjectNode report, ReportType reportType) {
+  private ValidationResult validateByClassDefinition(JsonNode report, ReportType reportType) {
     try {
       objectMapper.convertValue(report.path(REPORT_HEADER), getHeaderClass(reportType));
     } catch (Exception e) {
@@ -76,7 +76,7 @@ class ReportValidator {
   }
 
   private ValidationResult validateByReportHeaderAttributes(
-      ObjectNode report, ReportType reportType) {
+      JsonNode report, ReportType reportType) {
     String reportID = reportType.toString();
     if (!report.path(REPORT_HEADER).path(REPORT_ID).asText().equals(reportID)) {
       return new ValidationResult(
@@ -90,7 +90,7 @@ class ReportValidator {
   }
 
   private ValidationResult validateByReportHeaderReportAttributesDefinition(
-      ObjectNode report, ReportType reportType) {
+      JsonNode report, ReportType reportType) {
     JsonNode reportAttributes =
         ofNullable(report.path(REPORT_HEADER).get(REPORT_ATTRIBUTES))
             .orElse(objectMapper.createObjectNode());

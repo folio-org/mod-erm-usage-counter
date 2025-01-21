@@ -15,6 +15,7 @@ import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_ITEM_IDENTIFIE
 
 import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.time.YearMonth;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
+import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
 class ReportCsvConverter {
 
@@ -31,9 +34,18 @@ class ReportCsvConverter {
       DateTimeFormatter.ofPattern("MMM-yyyy");
   private static final DateTimeFormatter yearMonthFormatter =
       DateTimeFormatter.ofPattern("yyyy-MM");
+  private final ReportValidator reportValidator;
+
+  public ReportCsvConverter(ObjectMapper objectMapper) {
+    this.reportValidator = new ReportValidator(objectMapper);
+  }
 
   public void convert(JsonNode reportNode, Appendable appendable, CSVFormat format)
       throws IOException {
+    ValidationResult validationResult = reportValidator.validateReportHeader(reportNode);
+    if (!validationResult.isValid()) {
+      throw new ReportValidatorException(validationResult.getErrorMessage());
+    }
     try (CSVPrinter printer = new CSVPrinter(appendable, format)) {
       printReport(printer, reportNode);
     }
