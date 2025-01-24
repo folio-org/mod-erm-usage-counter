@@ -39,17 +39,21 @@ class ReportSplitter {
         .filter(
             reportItem -> {
               if (reportItem.has(ITEMS)) { // Item report needs special handling
-                return Streams.stream(reportItem.withArray(ITEMS).elements())
-                    .anyMatch(
-                        i ->
-                            !filterAttributePerformance(
-                                    i.withArray(ATTRIBUTE_PERFORMANCE), yearMonth)
-                                .isEmpty());
+                return !filterItems(reportItem.withArray(ITEMS), yearMonth).isEmpty();
               }
               return !filterAttributePerformance(
                       reportItem.withArray(ATTRIBUTE_PERFORMANCE), yearMonth)
                   .isEmpty();
             })
+        .collect(JsonNodeFactory.instance::arrayNode, ArrayNode::add, ArrayNode::addAll);
+  }
+
+  private ArrayNode filterItems(ArrayNode items, YearMonth yearMonth) {
+    return Streams.stream(items.elements())
+        .filter(
+            i ->
+                !filterAttributePerformance(i.withArray(ATTRIBUTE_PERFORMANCE), yearMonth)
+                    .isEmpty())
         .collect(JsonNodeFactory.instance::arrayNode, ArrayNode::add, ArrayNode::addAll);
   }
 
