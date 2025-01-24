@@ -10,6 +10,7 @@ import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
 import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.CREATED;
 import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
+import static org.olf.erm.usage.counter51.JsonProperties.PERFORMANCE;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
@@ -21,6 +22,7 @@ import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -53,7 +55,9 @@ class Counter51UtilsTest {
     ObjectNode expectedReportOriginal = expectedReport.deepCopy();
 
     List<ObjectNode> splitReports = splitReport(expectedReport);
-    assertThat(splitReports).hasSize(12);
+    assertThat(splitReports)
+        .hasSize(12)
+        .allSatisfy(this::assertThatEachPerformanceMetricHasSingleMonthData);
     List<ObjectNode> splitReportsOriginal =
         splitReports.stream().map(ObjectNode::deepCopy).toList();
 
@@ -113,5 +117,11 @@ class Counter51UtilsTest {
 
     assertThatThrownBy(() -> splitReport(report))
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);
+  }
+
+  private void assertThatEachPerformanceMetricHasSingleMonthData(JsonNode report) {
+    report
+        .findValues(PERFORMANCE)
+        .forEach(node -> node.fields().forEachRemaining(e -> assertThat(e.getValue()).hasSize(1)));
   }
 }
