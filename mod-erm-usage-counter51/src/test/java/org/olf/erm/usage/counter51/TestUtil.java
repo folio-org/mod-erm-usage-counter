@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 class TestUtil {
 
-  private static final ObjectMapper objectMapper = Counter51Utils.createDefaultObjectMapper();
+  private static final ObjectMapper objectMapper = Counter51Utils.getDefaultObjectMapper();
   private static final ReportValidator reportValidator = new ReportValidator(objectMapper);
   private static final ReportConverter reportConverter = new ReportConverter(objectMapper);
   static final String SAMPLE_REPORTS_PATH_TEMPLATE = "sample-reports/%s_sample_r51.%s";

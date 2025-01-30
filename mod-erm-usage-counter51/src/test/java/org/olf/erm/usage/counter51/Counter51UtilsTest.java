@@ -4,7 +4,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.olf.erm.usage.counter51.Counter51Utils.createDefaultObjectMapper;
+import static org.olf.erm.usage.counter51.Counter51Utils.getDefaultObjectMapper;
 import static org.olf.erm.usage.counter51.Counter51Utils.mergeReports;
 import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
 import static org.olf.erm.usage.counter51.Counter51Utils.writeReportAsCsv;
@@ -45,16 +45,6 @@ import org.mockito.Mockito;
 class Counter51UtilsTest {
 
   private final ObjectMapper objectMapper = getObjectMapper();
-
-  @Test
-  void testCreateDefaultObjectMapper() {
-    ObjectMapper expected = Mockito.mock(ObjectMapper.class);
-    try (MockedStatic<ObjectMapperFactory> mockedStatic =
-        Mockito.mockStatic(ObjectMapperFactory.class)) {
-      mockedStatic.when(ObjectMapperFactory::createDefault).thenReturn(expected);
-      assertThat(createDefaultObjectMapper()).isEqualTo(expected);
-    }
-  }
 
   @ParameterizedTest
   @EnumSource(ReportType.class)

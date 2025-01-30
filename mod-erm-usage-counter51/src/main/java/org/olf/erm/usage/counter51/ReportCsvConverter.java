@@ -41,7 +41,7 @@ class ReportCsvConverter {
   }
 
   public void convert(JsonNode reportNode, Appendable appendable, CSVFormat format)
-      throws IOException {
+      throws IOException, ReportValidatorException {
     ValidationResult validationResult = reportValidator.validateReportHeader(reportNode);
     if (!validationResult.isValid()) {
       throw new ReportValidatorException(validationResult.getErrorMessage());

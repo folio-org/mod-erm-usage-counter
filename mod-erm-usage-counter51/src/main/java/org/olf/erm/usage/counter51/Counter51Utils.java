@@ -24,20 +24,24 @@ public class Counter51Utils {
 
   private static final ReportSplitter reportSplitter = new ReportSplitter();
   private static final ReportMerger reportMerger = new ReportMerger();
-  private static final ObjectMapper objectMapper = createDefaultObjectMapper();
+  private static final ObjectMapper objectMapper = ObjectMapperFactory.createDefault();
   private static final ReportConverter reportConverter = new ReportConverter(objectMapper);
   private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter(objectMapper);
 
   private Counter51Utils() {}
 
   /**
-   * Converts a given master report into a standard view.
+   * Converts a given COUNTER 5.1 Master Report into a specified Standard View.
    *
-   * @param report The original master report represented as an ObjectNode. This is the JSON
+   * <p>This method leverages the {@link ReportConverter} to transform the JSON structure of the
+   * master report into the desired report type, ensuring that the resulting report adheres to the
+   * specified format and attributes.
+   *
+   * @param report The original master report represented as an {@link ObjectNode}. This is the JSON
    *     structure that needs to be converted.
    * @param reportType The type of report to convert to. This determines the structure and
    *     attributes of the resulting report.
-   * @return An ObjectNode representing the converted report.
+   * @return An {@link ObjectNode} representing the converted report.
    * @throws ReportConverterException if the target report type is not a standard view or if the
    *     master report is considered invalid according to the target report type.
    */
@@ -45,20 +49,51 @@ public class Counter51Utils {
     return reportConverter.convert(report, reportType);
   }
 
+  /**
+   * Converts a given COUNTER 5.1 report represented as a {@link JsonNode} into CSV format and
+   * writes it to the provided {@link Appendable} writer.
+   *
+   * <p>This method utilizes the {@link ReportCsvConverter} to handle the conversion process,
+   * ensuring that the report is valid.
+   *
+   * @param report The COUNTER report to be converted, represented as a {@link JsonNode}.
+   * @param writer The {@link Appendable} writer where the CSV output will be written.
+   * @throws IOException if an I/O error occurs during writing to the provided writer.
+   */
   public static void writeReportAsCsv(JsonNode report, Appendable writer) throws IOException {
     reportCsvConverter.convert(report, writer, CSVFormat.DEFAULT);
   }
 
   /**
-   * Creates a {@link ObjectMapper} instance that is configured with validation support for COUNTER
-   * 5.1 report models.
+   * Converts a given COUNTER 5.1 report object into CSV format and writes it to the provided {@link
+   * Appendable} writer.
    *
-   * <p>See {@link ObjectMapperFactory#createDefault()}.
+   * <p>This method first converts the report object into a {@link JsonNode} using the default
+   * {@link ObjectMapper}, and then delegates the conversion to CSV format to {@link
+   * #writeReportAsCsv(JsonNode, Appendable)}.
    *
-   * @return a configured {@link ObjectMapper} instance.
+   * @param report The COUNTER report object to be converted. This object is transformed into a
+   *     {@link JsonNode} for further processing.
+   * @param writer The {@link Appendable} writer where the CSV output will be written. This writer
+   *     receives the CSV representation of the report.
+   * @throws IOException if an I/O error occurs during writing to the provided writer.
    */
-  public static ObjectMapper createDefaultObjectMapper() {
-    return ObjectMapperFactory.createDefault();
+  public static void writeReportAsCsv(Object report, Appendable writer) throws IOException {
+    JsonNode jsonNode = objectMapper.valueToTree(report);
+    writeReportAsCsv(jsonNode, writer);
+  }
+
+  /**
+   * Retrieves the default {@link ObjectMapper} instance used for handling JSON operations within
+   * the COUNTER 5.1 report models.
+   *
+   * <p>This instance is pre-configured with necessary settings to ensure compatibility and
+   * validation support for the specific JSON structures used in COUNTER 5.1 reports.
+   *
+   * @return the default {@link ObjectMapper} instance.
+   */
+  public static ObjectMapper getDefaultObjectMapper() {
+    return objectMapper;
   }
 
   /**
