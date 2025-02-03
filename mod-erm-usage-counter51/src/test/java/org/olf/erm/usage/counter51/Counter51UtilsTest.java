@@ -16,7 +16,6 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
 import static org.olf.erm.usage.counter51.ReportMerger.MSG_PROPERTIES_DO_NOT_MATCH;
-import static org.olf.erm.usage.counter51.ReportMerger.MSG_REPORT_SPANS_MULTIPLE_MONTHS;
 import static org.olf.erm.usage.counter51.ReportMerger.MergerException.MSG_ERROR_MERGING_REPORT;
 import static org.olf.erm.usage.counter51.ReportSplitter.SplitterException.MSG_ERROR_SPLITTING_REPORT;
 import static org.olf.erm.usage.counter51.ReportType.DR;
@@ -59,7 +58,10 @@ class Counter51UtilsTest {
     List<ObjectNode> splitReportsOriginal =
         splitReports.stream().map(ObjectNode::deepCopy).toList();
 
-    ObjectNode mergedReport = mergeReports(splitReports);
+    // test with multi-month reports
+    ObjectNode m1 = mergeReports(splitReports.subList(0, 6));
+    ObjectNode m2 = mergeReports(splitReports.subList(5, 12));
+    ObjectNode mergedReport = mergeReports(List.of(m2, m1));
 
     assertThatJson(mergedReport)
         .when(IGNORING_ARRAY_ORDER)
@@ -69,24 +71,6 @@ class Counter51UtilsTest {
     // test that input is not modified
     assertThat(expectedReport).isEqualTo(expectedReportOriginal);
     assertThat(splitReports).isEqualTo(splitReportsOriginal);
-  }
-
-  @Test
-  void testMergeReportsThatSpanMultipleMonths() {
-    ObjectNode report1 = objectMapper.createObjectNode();
-    report1
-        .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
-        .put(BEGIN_DATE, "2022-01-01")
-        .put(END_DATE, "2022-03-31");
-
-    ObjectNode report2 = objectMapper.createObjectNode();
-    report2
-        .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
-        .put(BEGIN_DATE, "2022-04-01")
-        .put(END_DATE, "2022-04-30");
-
-    assertThatThrownBy(() -> mergeReports(Arrays.asList(report1, report2)))
-        .hasMessageContaining(MSG_ERROR_MERGING_REPORT + MSG_REPORT_SPANS_MULTIPLE_MONTHS);
   }
 
   @Test
@@ -134,11 +118,10 @@ class Counter51UtilsTest {
 
     assertThatReportLinesAreEqualIgnoringOrder(actualLines, expectedLines);
   }
-  
+
   private void assertThatEachPerformanceMetricHasSingleMonthData(JsonNode report) {
     report
         .findValues(PERFORMANCE)
         .forEach(node -> node.fields().forEachRemaining(e -> assertThat(e.getValue()).hasSize(1)));
-
   }
 }
