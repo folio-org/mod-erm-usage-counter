@@ -4,20 +4,19 @@ import static java.util.Optional.ofNullable;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
+import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_NO_REPORT_ID;
+import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_RELEASE_TEMPLATE;
+import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPORT_ATTRIBUTES_TEMPLATE;
+import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPORT_ID_TEMPLATE;
+import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_UNSUPPORTED_REPORT_ID_TEMPLATE;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.util.Optional;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 class ReportValidator {
 
-  static final String ERR_NO_REPORT_ID = "Could not find 'reportId'";
-  static final String ERR_RELEASE_TEMPLATE = "Expected 'release' to be: '%s'";
-  static final String ERR_REPORT_ATTRIBUTES_TEMPLATE = "Expected 'reportAttributes' to be: %s";
-  static final String ERR_REPORT_ID_TEMPLATE = "Expected 'reportId' to be: %s";
-  static final String ERR_UNSUPPORTED_REPORT_ID_TEMPLATE = "Unsupported 'reportId': %s";
   static final String RELEASE = "5.1";
   private static final String HEADER_CLASS_NAME_TEMPLATE =
       "org.openapitools.counter51client.model.%sReportHeader";
@@ -28,25 +27,23 @@ class ReportValidator {
   }
 
   public ValidationResult validateReportHeader(JsonNode report, ReportType reportType) {
-    String reportID = getReportId(report);
-    if (reportID == null) {
-      return new ValidationResult(false, new ReportValidatorException(ERR_NO_REPORT_ID));
+    String reportId = getReportId(report);
+    if (reportId == null) {
+      return ValidationResult.error(ERR_NO_REPORT_ID);
+    }
+    if (reportType == null) {
+      try {
+        ReportType type = ReportType.valueOf(reportId);
+        return validateByDefintions(report, type);
+      } catch (IllegalArgumentException e) {
+        return ValidationResult.error(ERR_UNSUPPORTED_REPORT_ID_TEMPLATE, reportId);
+      }
     }
     return validateByDefintions(report, reportType);
   }
 
   public ValidationResult validateReportHeader(JsonNode report) {
-    String reportID = getReportId(report);
-    if (reportID == null) {
-      return new ValidationResult(false, new ReportValidatorException(ERR_NO_REPORT_ID));
-    }
-    try {
-      return validateByDefintions(report, ReportType.valueOf(reportID));
-    } catch (IllegalArgumentException e) {
-      return new ValidationResult(
-          false,
-          new ReportValidatorException(ERR_UNSUPPORTED_REPORT_ID_TEMPLATE.formatted(reportID)));
-    }
+    return validateReportHeader(report, null);
   }
 
   private String getReportId(JsonNode report) {
@@ -70,23 +67,21 @@ class ReportValidator {
     try {
       objectMapper.convertValue(report.path(REPORT_HEADER), getHeaderClass(reportType));
     } catch (Exception e) {
-      return new ValidationResult(false, e);
+      return ValidationResult.error(e);
     }
-    return new ValidationResult(true);
+    return ValidationResult.success();
   }
 
   private ValidationResult validateByReportHeaderAttributes(
       JsonNode report, ReportType reportType) {
     String reportID = reportType.toString();
     if (!report.path(REPORT_HEADER).path(REPORT_ID).asText().equals(reportID)) {
-      return new ValidationResult(
-          false, new ReportValidatorException(ERR_REPORT_ID_TEMPLATE.formatted(reportID)));
+      return ValidationResult.error(ERR_REPORT_ID_TEMPLATE, reportID);
     }
     if (!report.path(REPORT_HEADER).path(JsonProperties.RELEASE).asText().equals(RELEASE)) {
-      return new ValidationResult(
-          false, new ReportValidatorException(ERR_RELEASE_TEMPLATE.formatted(RELEASE)));
+      return ValidationResult.error(ERR_RELEASE_TEMPLATE, RELEASE);
     }
-    return new ValidationResult(true);
+    return ValidationResult.success();
   }
 
   private ValidationResult validateByReportHeaderReportAttributesDefinition(
@@ -98,12 +93,10 @@ class ReportValidator {
         objectMapper.convertValue(
             reportType.getProperties().getReportAttributes(), ObjectNode.class);
     if (reportAttributes.equals(expectedReportAttributes)) {
-      return new ValidationResult(true);
+      return ValidationResult.success();
     } else {
-      return new ValidationResult(
-          false,
-          new ReportValidatorException(
-              ERR_REPORT_ATTRIBUTES_TEMPLATE.formatted(expectedReportAttributes.toString())));
+      return ValidationResult.error(
+          ERR_REPORT_ATTRIBUTES_TEMPLATE, expectedReportAttributes.toString());
     }
   }
 
@@ -115,15 +108,25 @@ class ReportValidator {
 
   static class ValidationResult {
     private final boolean isValid;
-    private final Throwable error;
+    private final String errorMessage;
 
-    ValidationResult(boolean isValid, Throwable error) {
+    private ValidationResult(boolean isValid, String errorMessage) {
       this.isValid = isValid;
-      this.error = error;
+      this.errorMessage = errorMessage;
     }
 
-    ValidationResult(boolean isValid) {
-      this(isValid, null);
+    public static ValidationResult success() {
+      return new ValidationResult(true, null);
+    }
+
+    public static ValidationResult error(String message, Object... args) {
+      return new ValidationResult(false, String.format(message, args));
+    }
+
+    public static ValidationResult error(Throwable error) {
+      Throwable rootCause = ExceptionUtils.getRootCause(error);
+      String message = (rootCause != null) ? rootCause.getMessage() : error.getMessage();
+      return new ValidationResult(false, message);
     }
 
     public boolean isValid() {
@@ -131,13 +134,7 @@ class ReportValidator {
     }
 
     public String getErrorMessage() {
-      return Optional.ofNullable(error)
-          .map(
-              err -> {
-                Throwable rootCause = ExceptionUtils.getRootCause(err);
-                return (rootCause != null) ? rootCause.getMessage() : err.getMessage();
-              })
-          .orElse(null);
+      return errorMessage;
     }
   }
 
@@ -146,5 +143,16 @@ class ReportValidator {
     public ReportValidatorException(String message) {
       super(message);
     }
+  }
+
+  static class ErrorMessages {
+
+    private ErrorMessages() {}
+
+    static final String ERR_NO_REPORT_ID = "Could not find 'reportId'";
+    static final String ERR_RELEASE_TEMPLATE = "Expected 'release' to be: '%s'";
+    static final String ERR_REPORT_ATTRIBUTES_TEMPLATE = "Expected 'reportAttributes' to be: %s";
+    static final String ERR_REPORT_ID_TEMPLATE = "Expected 'reportId' to be: %s";
+    static final String ERR_UNSUPPORTED_REPORT_ID_TEMPLATE = "Unsupported 'reportId': %s";
   }
 }
