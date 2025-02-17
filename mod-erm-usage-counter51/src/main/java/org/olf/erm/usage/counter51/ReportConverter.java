@@ -37,7 +37,7 @@ class ReportConverter {
     this.validator = new ReportValidator(objectMapper);
   }
 
-    /**
+  /**
    * Converts a given master report into a standard view.
    *
    * @param report The original master report represented as an ObjectNode. This is the JSON

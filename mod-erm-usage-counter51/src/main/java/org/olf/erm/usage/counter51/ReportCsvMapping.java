@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.function.Function;
 
+@SuppressWarnings("java:S1192") // String literals should not be duplicated
 enum ReportCsvMapping {
   REPORT_HEADER(
       of(
