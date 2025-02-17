@@ -1,21 +1,19 @@
 package org.olf.erm.usage.counter51;
 
 import static java.util.Collections.emptyList;
-import static java.util.Spliterator.ORDERED;
 import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.Delimiter.EQUALS;
 import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.Delimiter.SEMICOLON_SPACE;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.Streams;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 class ReportCsvFieldExtractor {
 
@@ -158,6 +156,6 @@ class ReportCsvFieldExtractor {
   }
 
   private static <T> Stream<T> toStream(Iterator<T> iterator) {
-    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, ORDERED), false);
+    return Streams.stream(iterator);
   }
 }
