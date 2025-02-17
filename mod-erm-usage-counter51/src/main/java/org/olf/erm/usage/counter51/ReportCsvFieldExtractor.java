@@ -50,6 +50,7 @@ class ReportCsvFieldExtractor {
   public static String extractReportingPeriod(JsonNode node) {
     return toStream(node.fields())
         .filter(e -> List.of("Begin_Date", "End_Date").contains(e.getKey()))
+        .sorted(Entry.comparingByKey())
         .map(ReportCsvFieldExtractor::entryToString)
         .filter(s -> !s.isEmpty())
         .collect(Collectors.joining(SEMICOLON_SPACE.getValue()));
