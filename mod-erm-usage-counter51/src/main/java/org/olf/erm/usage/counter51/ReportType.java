@@ -50,4 +50,8 @@ public enum ReportType {
   public boolean isItemReport() {
     return this == IR || this == IR_A1 || this == IR_M1;
   }
+
+  public boolean isStandardView() {
+    return getStandardViews().contains(this);
+  }
 }

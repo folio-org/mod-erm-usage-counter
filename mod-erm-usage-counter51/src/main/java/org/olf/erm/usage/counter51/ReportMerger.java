@@ -14,8 +14,6 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ITEMS;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Streams;
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -25,8 +23,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class ReportMerger {
 
-  public static final String MSG_REPORT_SPANS_MULTIPLE_MONTHS =
-      "At least one report spans multiple months";
   public static final String MSG_PROPERTIES_DO_NOT_MATCH =
       REPORT_HEADER + " properties do not match";
 
@@ -60,20 +56,6 @@ class ReportMerger {
   private void validateReports(Collection<ObjectNode> reports) {
     List<ObjectNode> reportHeaders =
         reports.stream().map(on -> on.withObject(REPORT_HEADER)).map(ObjectNode::deepCopy).toList();
-
-    boolean reportsSpanSingleMonth =
-        reportHeaders.stream()
-            .map(on -> on.withObject(REPORT_FILTERS))
-            .allMatch(
-                on -> {
-                  YearMonth beginDate =
-                      YearMonth.from(LocalDate.parse(on.get(BEGIN_DATE).asText()));
-                  YearMonth endDate = YearMonth.from(LocalDate.parse(on.get(END_DATE).asText()));
-                  return beginDate.equals(endDate);
-                });
-    if (!reportsSpanSingleMonth) {
-      throw new IllegalArgumentException(MSG_REPORT_SPANS_MULTIPLE_MONTHS);
-    }
 
     boolean reportsHaveUniformHeaderProperties =
         reportHeaders.stream().map(this::removeHeaderProperties).distinct().count() == 1;

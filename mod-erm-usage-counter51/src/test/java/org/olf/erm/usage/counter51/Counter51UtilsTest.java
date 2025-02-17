@@ -4,9 +4,9 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.olf.erm.usage.counter51.Counter51Utils.createDefaultObjectMapper;
 import static org.olf.erm.usage.counter51.Counter51Utils.mergeReports;
 import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
+import static org.olf.erm.usage.counter51.Counter51Utils.writeReportAsCsv;
 import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.CREATED;
 import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
@@ -15,38 +15,32 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
 import static org.olf.erm.usage.counter51.ReportMerger.MSG_PROPERTIES_DO_NOT_MATCH;
-import static org.olf.erm.usage.counter51.ReportMerger.MSG_REPORT_SPANS_MULTIPLE_MONTHS;
 import static org.olf.erm.usage.counter51.ReportMerger.MergerException.MSG_ERROR_MERGING_REPORT;
 import static org.olf.erm.usage.counter51.ReportSplitter.SplitterException.MSG_ERROR_SPLITTING_REPORT;
+import static org.olf.erm.usage.counter51.ReportType.DR;
+import static org.olf.erm.usage.counter51.TestUtil.assertThatReportLinesAreEqualIgnoringOrder;
+import static org.olf.erm.usage.counter51.TestUtil.getLinesFromString;
 import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
+import static org.olf.erm.usage.counter51.TestUtil.readFileAsLines;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
+import static org.olf.erm.usage.counter51.TestUtil.removeBOMAndTrailingDelimiters;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 class Counter51UtilsTest {
 
   private final ObjectMapper objectMapper = getObjectMapper();
-
-  @Test
-  void testCreateDefaultObjectMapper() {
-    ObjectMapper expected = Mockito.mock(ObjectMapper.class);
-    try (MockedStatic<ObjectMapperFactory> mockedStatic =
-        Mockito.mockStatic(ObjectMapperFactory.class)) {
-      mockedStatic.when(ObjectMapperFactory::createDefault).thenReturn(expected);
-      assertThat(createDefaultObjectMapper()).isEqualTo(expected);
-    }
-  }
 
   @ParameterizedTest
   @EnumSource(ReportType.class)
@@ -61,7 +55,10 @@ class Counter51UtilsTest {
     List<ObjectNode> splitReportsOriginal =
         splitReports.stream().map(ObjectNode::deepCopy).toList();
 
-    ObjectNode mergedReport = mergeReports(splitReports);
+    // test with multi-month reports
+    ObjectNode m1 = mergeReports(splitReports.subList(0, 6));
+    ObjectNode m2 = mergeReports(splitReports.subList(5, 12));
+    ObjectNode mergedReport = mergeReports(List.of(m2, m1));
 
     assertThatJson(mergedReport)
         .when(IGNORING_ARRAY_ORDER)
@@ -71,24 +68,6 @@ class Counter51UtilsTest {
     // test that input is not modified
     assertThat(expectedReport).isEqualTo(expectedReportOriginal);
     assertThat(splitReports).isEqualTo(splitReportsOriginal);
-  }
-
-  @Test
-  void testMergeReportsThatSpanMultipleMonths() {
-    ObjectNode report1 = objectMapper.createObjectNode();
-    report1
-        .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
-        .put(BEGIN_DATE, "2022-01-01")
-        .put(END_DATE, "2022-03-31");
-
-    ObjectNode report2 = objectMapper.createObjectNode();
-    report2
-        .withObject("/" + REPORT_HEADER + "/" + REPORT_FILTERS)
-        .put(BEGIN_DATE, "2022-04-01")
-        .put(END_DATE, "2022-04-30");
-
-    assertThatThrownBy(() -> mergeReports(Arrays.asList(report1, report2)))
-        .hasMessageContaining(MSG_ERROR_MERGING_REPORT + MSG_REPORT_SPANS_MULTIPLE_MONTHS);
   }
 
   @Test
@@ -117,6 +96,24 @@ class Counter51UtilsTest {
 
     assertThatThrownBy(() -> splitReport(report))
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);
+  }
+
+  @Test
+  void testWriteReportAsCsv() throws IOException {
+    Path sampleDRJsonPath = getSampleReportPath(DR);
+    Path sampleDRTsvPath = getSampleReportPath(DR, "tsv");
+
+    ObjectNode report = readFileAsObjectNode(sampleDRJsonPath.toFile());
+
+    StringWriter stringWriter = new StringWriter();
+    writeReportAsCsv(report, stringWriter);
+    List<String> actualLines = getLinesFromString(stringWriter.toString(), "\r\n");
+
+    // replace tabs with commas for comparison
+    List<String> tsv = removeBOMAndTrailingDelimiters(readFileAsLines(sampleDRTsvPath), "\t");
+    List<String> expectedLines = tsv.stream().map(line -> line.replaceAll("\t", ",")).toList();
+
+    assertThatReportLinesAreEqualIgnoringOrder(actualLines, expectedLines);
   }
 
   private void assertThatEachPerformanceMetricHasSingleMonthData(JsonNode report) {

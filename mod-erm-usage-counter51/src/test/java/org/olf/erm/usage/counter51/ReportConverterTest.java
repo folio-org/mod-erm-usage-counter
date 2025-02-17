@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
+import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
 
 class ReportConverterTest {
 
@@ -53,7 +54,7 @@ class ReportConverterTest {
     ObjectNode report = readFileAsObjectNode(inputReportFilePath.toFile());
 
     assertThatThrownBy(() -> reportConverter.convert(report, TR_J1))
-        .isInstanceOf(ReportConverterException.class)
+        .isInstanceOf(ReportValidatorException.class)
         .hasMessageContaining(ReportConverter.ERR_INVALID_REPORT_TEMPLATE.formatted(""));
   }
 

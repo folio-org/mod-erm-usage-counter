@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
 import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
 class ReportConverter {
@@ -44,8 +45,9 @@ class ReportConverter {
    * @param reportType The type of report to convert to. This determines the structure and
    *     attributes of the resulting report.
    * @return An ObjectNode representing the converted report.
-   * @throws ReportConverterException if the target report type is not a standard view or if the
-   *     master report is considered invalid according to the target report type.
+   * @throws ReportConverterException if the target report type is not a standard view.
+   * @throws ReportValidatorException if the master report is considered invalid according to the
+   *     target report type.
    */
   public ObjectNode convert(ObjectNode report, ReportType reportType) {
     if (!ReportType.getStandardViews().contains(reportType)) {
@@ -66,7 +68,7 @@ class ReportConverter {
 
       return result;
     } else {
-      throw new ReportConverterException(
+      throw new ReportValidatorException(
           ERR_INVALID_REPORT_TEMPLATE.formatted(validationResult.getErrorMessage()));
     }
   }
