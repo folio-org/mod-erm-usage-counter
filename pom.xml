@@ -21,7 +21,7 @@
     <slf4j.version>1.7.36</slf4j.version>
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.9.4</super-csv.beanutils.version>
-    <cxf.version>3.5.5</cxf.version>
+    <cxf.version>4.1.0</cxf.version>
     <vertx.version>4.5.4</vertx.version>
     <jackson.version>2.17.1</jackson.version>
     <spotless.version>2.43.0</spotless.version>

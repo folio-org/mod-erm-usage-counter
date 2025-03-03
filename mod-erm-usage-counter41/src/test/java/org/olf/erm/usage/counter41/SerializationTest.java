@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.io.Resources;
 import io.vertx.core.json.JsonObject;
+import jakarta.xml.bind.JAXB;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.xml.bind.JAXB;
 import org.junit.Test;
 import org.niso.schemas.counter.Report;
 

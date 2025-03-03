@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter41.csv.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.io.Resources;
+import jakarta.xml.bind.JAXB;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -10,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
-import javax.xml.bind.JAXB;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

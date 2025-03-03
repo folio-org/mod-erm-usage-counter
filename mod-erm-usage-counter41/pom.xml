@@ -37,9 +37,9 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jvnet.jaxb2_commons</groupId>
-      <artifactId>jaxb2-basics</artifactId>
-      <version>1.11.1</version>
+      <groupId>org.jvnet.jaxb</groupId>
+      <artifactId>jaxb-plugins</artifactId>
+      <version>4.0.8</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -75,10 +75,10 @@
               <wsdl>${basedir}/src/main/resources/schemas/counter_sushi4_1.wsdl</wsdl>
               <wsdlLocation>classpath:schemas/counter_sushi4_1.wsdl</wsdlLocation>
               <extraargs>
-                <arg>-xjc-XtoString</arg>
-                <arg>-xjc-Xequals</arg>
-                <arg>-xjc-XhashCode</arg>
-                <arg>-xjc-Xsetters</arg>
+                <extraarg>-xjc-XtoString</extraarg>-->
+                <extraarg>-xjc-Xequals</extraarg>-->
+                <extraarg>-xjc-XhashCode</extraarg>-->
+                <extraarg>-xjc-Xsetters</extraarg>
               </extraargs>
               <bindingFiles>
                 <bindingFile>${basedir}/src/main/resources/binding.xml</bindingFile>
@@ -86,13 +86,6 @@
             </wsdlOption>
           </wsdlOptions>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>jaxb2-basics</artifactId>
-            <version>1.11.1</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
