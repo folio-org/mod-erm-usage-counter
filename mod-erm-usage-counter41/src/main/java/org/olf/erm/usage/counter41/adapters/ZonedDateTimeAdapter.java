@@ -1,8 +1,8 @@
 package org.olf.erm.usage.counter41.adapters;
 
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class ZonedDateTimeAdapter extends XmlAdapter<String, ZonedDateTime> {
 

@@ -3,6 +3,7 @@ package org.olf.erm.usage.counter41.csv.mapper.csv2report;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.olf.erm.usage.counter41.csv.mapper.DozerMappingUtil.createDozerBeanMapper;
 
+import jakarta.xml.bind.JAXB;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -17,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import javax.xml.bind.JAXB;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.niso.schemas.counter.DataType;
