@@ -28,11 +28,11 @@ public enum ReportType {
   }
 
   public static List<ReportType> getStandardViews() {
-    return Arrays.stream(ReportType.values()).filter(rt -> rt.toString().contains("_")).toList();
+    return Arrays.stream(ReportType.values()).filter(rt -> rt.name().contains("_")).toList();
   }
 
   public static List<ReportType> getMasterReports() {
-    return Arrays.stream(ReportType.values()).filter(rt -> !rt.toString().contains("_")).toList();
+    return Arrays.stream(ReportType.values()).filter(rt -> !rt.name().contains("_")).toList();
   }
 
   public String getReportName() {
@@ -53,5 +53,9 @@ public enum ReportType {
 
   public boolean isStandardView() {
     return getStandardViews().contains(this);
+  }
+
+  public boolean isMasterReport() {
+    return getMasterReports().contains(this);
   }
 }
