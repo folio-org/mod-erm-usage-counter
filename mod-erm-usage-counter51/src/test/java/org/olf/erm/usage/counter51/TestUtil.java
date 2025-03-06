@@ -18,10 +18,12 @@ class TestUtil {
 
   private static final ObjectMapper objectMapper = Counter51Utils.getDefaultObjectMapper();
   private static final ReportValidator reportValidator = new ReportValidator(objectMapper);
-  private static final ReportConverter reportConverter = new ReportConverter(objectMapper);
+  private static final ReportConverter reportConverter =
+      new ReportConverter(objectMapper, reportValidator);
   static final String SAMPLE_REPORTS_PATH_TEMPLATE = "sample-reports/%s_sample_r51.%s";
   static final String TR_WITH_EXCEPTION = "TR_r51_with_exception.json";
   static final String TR_WITH_INVALID_REPORT_HEADER = "TR_r51_with_invalid_report_header.json";
+  static final String TR_WITH_INVALID_REPORT_ITEMS = "TR_r51_with_invalid_report_items.json";
   static final String DEFAULT_EXTENSION = "json";
 
   static ObjectMapper getObjectMapper() {

@@ -19,13 +19,17 @@ import org.apache.commons.csv.CSVFormat;
 import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
 import org.olf.erm.usage.counter51.ReportMerger.MergerException;
 import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
+import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
+import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
 public class Counter51Utils {
 
   private static final ReportSplitter reportSplitter = new ReportSplitter();
   private static final ReportMerger reportMerger = new ReportMerger();
   private static final ObjectMapper objectMapper = ObjectMapperFactory.createDefault();
-  private static final ReportConverter reportConverter = new ReportConverter(objectMapper);
+  private static final ReportValidator reportValidator = new ReportValidator(objectMapper);
+  private static final ReportConverter reportConverter =
+      new ReportConverter(objectMapper, reportValidator);
   private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter(objectMapper);
 
   private Counter51Utils() {}
@@ -33,9 +37,8 @@ public class Counter51Utils {
   /**
    * Converts a given COUNTER 5.1 Master Report into a specified Standard View.
    *
-   * <p>This method leverages the {@link ReportConverter} to transform the JSON structure of the
-   * master report into the desired report type, ensuring that the resulting report adheres to the
-   * specified format and attributes.
+   * <p>This method transforms the JSON structure of the master report into the desired report type,
+   * ensuring that the resulting report adheres to the specified format and attributes.
    *
    * @param report The original master report represented as an {@link ObjectNode}. This is the JSON
    *     structure that needs to be converted.
@@ -53,8 +56,7 @@ public class Counter51Utils {
    * Converts a given COUNTER 5.1 report represented as a {@link JsonNode} into CSV format and
    * writes it to the provided {@link Appendable} writer.
    *
-   * <p>This method utilizes the {@link ReportCsvConverter} to handle the conversion process,
-   * ensuring that the report is valid.
+   * <p>This method ensures that the report is valid and converts it to CSV format.
    *
    * @param report The COUNTER report to be converted, represented as a {@link JsonNode}.
    * @param writer The {@link Appendable} writer where the CSV output will be written.
@@ -69,13 +71,11 @@ public class Counter51Utils {
    * Appendable} writer.
    *
    * <p>This method first converts the report object into a {@link JsonNode} using the default
-   * {@link ObjectMapper}, and then delegates the conversion to CSV format to {@link
-   * #writeReportAsCsv(JsonNode, Appendable)}.
+   * {@link ObjectMapper}, and then converts it to CSV format.
    *
    * @param report The COUNTER report object to be converted. This object is transformed into a
    *     {@link JsonNode} for further processing.
-   * @param writer The {@link Appendable} writer where the CSV output will be written. This writer
-   *     receives the CSV representation of the report.
+   * @param writer The {@link Appendable} writer where the CSV output will be written.
    * @throws IOException if an I/O error occurs during writing to the provided writer.
    */
   public static void writeReportAsCsv(Object report, Appendable writer) throws IOException {
@@ -99,9 +99,7 @@ public class Counter51Utils {
   /**
    * Splits a COUNTER report into multiple COUNTER reports that each span a single month.
    *
-   * <p>See {@link ReportSplitter#splitReport(ObjectNode)}
-   *
-   * @param report the COUNTER report that should be splitted.
+   * @param report the COUNTER report that should be split.
    * @return list of single-month COUNTER reports.
    * @throws SplitterException if an error occurs during splitting.
    */
@@ -119,8 +117,6 @@ public class Counter51Utils {
    *       <em>Created_By</em>, <em>Report_Filters.Begin_Date</em> and
    *       <em>Report_Filters.End_Date</em>
    * </ul>
-   *
-   * See {@link ReportMerger#mergeReports(List)}
    *
    * @param reports the list of COUNTER reports to be merged.
    * @return a merged COUNTER report containing the combined data from all reports.
@@ -173,5 +169,32 @@ public class Counter51Utils {
    */
   public static ReportType getReportType(JsonNode reportNode) {
     return ReportType.valueOf(reportNode.at("/Report_Header/Report_ID").asText());
+  }
+
+  /**
+   * Validates a COUNTER report against a specified report type.
+   *
+   * <p>This method performs validation on the given COUNTER report to ensure it adheres to the
+   * structure and rules defined for the specified report type. The validation process includes:
+   *
+   * <ol>
+   *   <li>Validating the report header against the specified report type.
+   *   <li>Checking the overall structure and content of the report.
+   * </ol>
+   *
+   * <p>If the report is valid, the method completes without throwing an exception. If any part of
+   * the validation fails, a {@link ReportValidatorException} is thrown with details about the
+   * specific validation failure.
+   *
+   * @param report The COUNTER report to be validated, represented as a {@link JsonNode}.
+   * @param reportType The {@link ReportType} against which the report should be validated.
+   * @throws ReportValidatorException if the report is not valid according to the specified report
+   *     type. The exception message contains details about the specific validation failure.
+   */
+  public static void validate(JsonNode report, ReportType reportType) {
+    ValidationResult headerValidationResult = reportValidator.validateReport(report, reportType);
+    if (!headerValidationResult.isValid()) {
+      throw new ReportValidatorException(headerValidationResult.getErrorMessage());
+    }
   }
 }
