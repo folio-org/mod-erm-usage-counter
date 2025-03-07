@@ -18,73 +18,85 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 class ReportValidator {
 
   static final String RELEASE = "5.1";
-  private static final String HEADER_CLASS_NAME_TEMPLATE =
-      "org.openapitools.counter51client.model.%sReportHeader";
+  private static final String REPORT_CLASS_NAME_TEMPLATE =
+      "org.openapitools.counter51client.model.%s";
   private final ObjectMapper objectMapper;
 
   public ReportValidator(ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
   }
 
-  public ValidationResult validateReportHeader(JsonNode report, ReportType reportType) {
+  public ValidationResult validateReport(JsonNode report, ReportType reportType) {
+    return validateByDefintions(report, reportType);
+  }
+
+  public ValidationResult validateReport(JsonNode report) {
+    return validateByDefintions(report, null);
+  }
+
+  private String getReportId(JsonNode report) {
+    return report.path(REPORT_HEADER).path(REPORT_ID).asText();
+  }
+
+  private String getReportRelease(JsonNode report) {
+    return report.path(REPORT_HEADER).path(JsonProperties.RELEASE).asText();
+  }
+
+  private ValidationResult validateByDefintions(JsonNode report, ReportType reportType) {
     String reportId = getReportId(report);
-    if (reportId == null) {
+
+    if ("".equals(reportId)) {
       return ValidationResult.error(ERR_NO_REPORT_ID);
     }
+
     if (reportType == null) {
       try {
-        ReportType type = ReportType.valueOf(reportId);
-        return validateByDefintions(report, type);
+        reportType = ReportType.valueOf(reportId);
       } catch (IllegalArgumentException e) {
         return ValidationResult.error(ERR_UNSUPPORTED_REPORT_ID_TEMPLATE, reportId);
       }
     }
-    return validateByDefintions(report, reportType);
-  }
 
-  public ValidationResult validateReportHeader(JsonNode report) {
-    return validateReportHeader(report, null);
-  }
-
-  private String getReportId(JsonNode report) {
-    String reportID = report.path(REPORT_HEADER).path(REPORT_ID).asText();
-    return "".equals(reportID) ? null : reportID;
-  }
-
-  private ValidationResult validateByDefintions(JsonNode report, ReportType reportType) {
-    ValidationResult classValidationResult = validateByClassDefinition(report, reportType);
+    ValidationResult classValidationResult = validateClassDefinition(report, reportType);
     if (!classValidationResult.isValid()) {
       return classValidationResult;
     }
-    ValidationResult headerValidationResult = validateByReportHeaderAttributes(report, reportType);
-    if (!headerValidationResult.isValid()) {
-      return headerValidationResult;
+    ValidationResult reportIdValidationResult = validateReportId(reportId, reportType);
+    if (!reportIdValidationResult.isValid()) {
+      return reportIdValidationResult;
     }
-    return validateByReportHeaderReportAttributesDefinition(report, reportType);
+    ValidationResult reportReleaseValidationResult = validateReportRelease(report);
+    if (!reportReleaseValidationResult.isValid()) {
+      return reportReleaseValidationResult;
+    }
+    return validateReportHeaderReportAttributes(report, reportType);
   }
 
-  private ValidationResult validateByClassDefinition(JsonNode report, ReportType reportType) {
+  private ValidationResult validateClassDefinition(JsonNode report, ReportType reportType) {
     try {
-      objectMapper.convertValue(report.path(REPORT_HEADER), getHeaderClass(reportType));
+      objectMapper.convertValue(report, getReportClass(reportType));
     } catch (Exception e) {
       return ValidationResult.error(e);
     }
     return ValidationResult.success();
   }
 
-  private ValidationResult validateByReportHeaderAttributes(
-      JsonNode report, ReportType reportType) {
-    String reportID = reportType.toString();
-    if (!report.path(REPORT_HEADER).path(REPORT_ID).asText().equals(reportID)) {
-      return ValidationResult.error(ERR_REPORT_ID_TEMPLATE, reportID);
+  private ValidationResult validateReportId(String reportId, ReportType reportType) {
+    String expectedReportID = reportType.toString();
+    if (!expectedReportID.equals(reportId)) {
+      return ValidationResult.error(ERR_REPORT_ID_TEMPLATE, expectedReportID);
     }
-    if (!report.path(REPORT_HEADER).path(JsonProperties.RELEASE).asText().equals(RELEASE)) {
+    return ValidationResult.success();
+  }
+
+  private ValidationResult validateReportRelease(JsonNode report) {
+    if (!RELEASE.equals(getReportRelease(report))) {
       return ValidationResult.error(ERR_RELEASE_TEMPLATE, RELEASE);
     }
     return ValidationResult.success();
   }
 
-  private ValidationResult validateByReportHeaderReportAttributesDefinition(
+  private ValidationResult validateReportHeaderReportAttributes(
       JsonNode report, ReportType reportType) {
     JsonNode reportAttributes =
         ofNullable(report.path(REPORT_HEADER).get(REPORT_ATTRIBUTES))
@@ -100,9 +112,9 @@ class ReportValidator {
     }
   }
 
-  private Class<?> getHeaderClass(ReportType reportType) throws ClassNotFoundException {
+  private Class<?> getReportClass(ReportType reportType) throws ClassNotFoundException {
     String reportName = reportType.toString().replace("_", "");
-    String headerClassName = HEADER_CLASS_NAME_TEMPLATE.formatted(reportName);
+    String headerClassName = REPORT_CLASS_NAME_TEMPLATE.formatted(reportName);
     return Class.forName(headerClassName);
   }
 
@@ -147,12 +159,12 @@ class ReportValidator {
 
   static class ErrorMessages {
 
-    private ErrorMessages() {}
-
     static final String ERR_NO_REPORT_ID = "Could not find 'reportId'";
     static final String ERR_RELEASE_TEMPLATE = "Expected 'release' to be: '%s'";
     static final String ERR_REPORT_ATTRIBUTES_TEMPLATE = "Expected 'reportAttributes' to be: %s";
     static final String ERR_REPORT_ID_TEMPLATE = "Expected 'reportId' to be: %s";
     static final String ERR_UNSUPPORTED_REPORT_ID_TEMPLATE = "Unsupported 'reportId': %s";
+
+    private ErrorMessages() {}
   }
 }

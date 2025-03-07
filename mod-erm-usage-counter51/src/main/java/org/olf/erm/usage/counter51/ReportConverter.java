@@ -32,9 +32,9 @@ class ReportConverter {
   private final ObjectMapper objectMapper;
   private final ReportValidator validator;
 
-  public ReportConverter(ObjectMapper objectMapper) {
+  public ReportConverter(ObjectMapper objectMapper, ReportValidator validator) {
     this.objectMapper = objectMapper;
-    this.validator = new ReportValidator(objectMapper);
+    this.validator = validator;
   }
 
   /**
@@ -56,7 +56,7 @@ class ReportConverter {
     }
 
     ValidationResult validationResult =
-        validator.validateReportHeader(report, reportType.getParentReportType());
+        validator.validateReport(report, reportType.getParentReportType());
 
     if (validationResult.isValid()) {
       JsonNode reportHeader = createReportHeader(report.withObject(REPORT_HEADER), reportType);

@@ -13,6 +13,7 @@ import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPO
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPORT_ID_TEMPLATE;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_UNSUPPORTED_REPORT_ID_TEMPLATE;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_HEADER;
+import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_REPORT_ITEMS;
 import static org.olf.erm.usage.counter51.TestUtil.getReportValidator;
 import static org.olf.erm.usage.counter51.TestUtil.getResourcePath;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
@@ -38,10 +39,10 @@ class ReportValidatorTest {
     ObjectNode report = readFileAsObjectNode(reportFile);
     ObjectNode reportClone = report.deepCopy();
 
-    ValidationResult method1Result = reportValidator.validateReportHeader(report);
+    ValidationResult method1Result = reportValidator.validateReport(report);
     assertThat(method1Result.isValid()).isTrue();
 
-    ValidationResult method2Result = reportValidator.validateReportHeader(report, reportType);
+    ValidationResult method2Result = reportValidator.validateReport(report, reportType);
     assertThat(method2Result.isValid()).isTrue();
 
     assertThat(reportClone).isEqualTo(report);
@@ -52,7 +53,7 @@ class ReportValidatorTest {
     ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
     report.withObject(REPORT_HEADER).put(RELEASE, "5.0");
 
-    assertThat(reportValidator.validateReportHeader(report))
+    assertThat(reportValidator.validateReport(report))
         .satisfies(
             res -> {
               assertThat(res.isValid()).isFalse();
@@ -67,10 +68,10 @@ class ReportValidatorTest {
     String invalidReportID = "TR_2";
     report.withObject(REPORT_HEADER).put(REPORT_ID, invalidReportID);
 
-    assertThat(reportValidator.validateReportHeader(report))
+    assertThat(reportValidator.validateReport(report))
         .satisfies(
             isInvalidWithMessage(ERR_UNSUPPORTED_REPORT_ID_TEMPLATE.formatted(invalidReportID)));
-    assertThat(reportValidator.validateReportHeader(report, TR))
+    assertThat(reportValidator.validateReport(report, TR))
         .satisfies(isInvalidWithMessage(ERR_REPORT_ID_TEMPLATE.formatted(TR)));
   }
 
@@ -79,9 +80,9 @@ class ReportValidatorTest {
     ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
     report.withObject(REPORT_HEADER).remove(REPORT_ID);
 
-    assertThat(reportValidator.validateReportHeader(report))
+    assertThat(reportValidator.validateReport(report))
         .satisfies(isInvalidWithMessage(ERR_NO_REPORT_ID));
-    assertThat(reportValidator.validateReportHeader(report, TR))
+    assertThat(reportValidator.validateReport(report, TR))
         .satisfies(isInvalidWithMessage(ERR_NO_REPORT_ID));
   }
 
@@ -90,17 +91,28 @@ class ReportValidatorTest {
     ObjectNode report =
         readFileAsObjectNode(getResourcePath(TR_WITH_INVALID_REPORT_HEADER).toFile());
 
-    assertThat(reportValidator.validateReportHeader(report))
+    assertThat(reportValidator.validateReport(report))
         .satisfies(isInvalidWithMessage(ERR_REPORT_ATTRIBUTES_TEMPLATE.formatted("")));
-    assertThat(reportValidator.validateReportHeader(report, TR))
+    assertThat(reportValidator.validateReport(report, TR))
         .satisfies(isInvalidWithMessage(ERR_REPORT_ATTRIBUTES_TEMPLATE.formatted("")));
+  }
+
+  @Test
+  void testInvalidReportItems() throws IOException {
+    ObjectNode report =
+        readFileAsObjectNode(getResourcePath(TR_WITH_INVALID_REPORT_ITEMS).toFile());
+
+    assertThat(reportValidator.validateReport(report))
+        .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
   }
 
   @Test
   void testInvalidClassDefinition() throws IOException {
     ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
 
-    assertThat(reportValidator.validateReportHeader(report, TR_J1))
+    assertThat(reportValidator.validateReport(report, TR_J1))
         .satisfies(isInvalidWithMessage(REPORT_ATTRIBUTES));
   }
 
