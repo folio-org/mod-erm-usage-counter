@@ -5,9 +5,7 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_NO_REPORT_ID;
-import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_RELEASE_TEMPLATE;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPORT_ATTRIBUTES_TEMPLATE;
-import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_REPORT_ID_TEMPLATE;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_UNSUPPORTED_REPORT_ID_TEMPLATE;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 class ReportValidator {
-
-  static final String RELEASE = "5.1";
   private static final String REPORT_CLASS_NAME_TEMPLATE =
       "org.openapitools.counter51client.model.%s";
   private final ObjectMapper objectMapper;
@@ -27,22 +23,18 @@ class ReportValidator {
   }
 
   public ValidationResult validateReport(JsonNode report, ReportType reportType) {
-    return validateByDefintions(report, reportType);
+    return validate(report, reportType);
   }
 
   public ValidationResult validateReport(JsonNode report) {
-    return validateByDefintions(report, null);
+    return validate(report, null);
   }
 
   private String getReportId(JsonNode report) {
     return report.path(REPORT_HEADER).path(REPORT_ID).asText();
   }
 
-  private String getReportRelease(JsonNode report) {
-    return report.path(REPORT_HEADER).path(JsonProperties.RELEASE).asText();
-  }
-
-  private ValidationResult validateByDefintions(JsonNode report, ReportType reportType) {
+  private ValidationResult validate(JsonNode report, ReportType reportType) {
     String reportId = getReportId(report);
 
     if ("".equals(reportId)) {
@@ -61,14 +53,6 @@ class ReportValidator {
     if (!classValidationResult.isValid()) {
       return classValidationResult;
     }
-    ValidationResult reportIdValidationResult = validateReportId(reportId, reportType);
-    if (!reportIdValidationResult.isValid()) {
-      return reportIdValidationResult;
-    }
-    ValidationResult reportReleaseValidationResult = validateReportRelease(report);
-    if (!reportReleaseValidationResult.isValid()) {
-      return reportReleaseValidationResult;
-    }
     return validateReportHeaderReportAttributes(report, reportType);
   }
 
@@ -77,21 +61,6 @@ class ReportValidator {
       objectMapper.convertValue(report, getReportClass(reportType));
     } catch (Exception e) {
       return ValidationResult.error(e);
-    }
-    return ValidationResult.success();
-  }
-
-  private ValidationResult validateReportId(String reportId, ReportType reportType) {
-    String expectedReportID = reportType.toString();
-    if (!expectedReportID.equals(reportId)) {
-      return ValidationResult.error(ERR_REPORT_ID_TEMPLATE, expectedReportID);
-    }
-    return ValidationResult.success();
-  }
-
-  private ValidationResult validateReportRelease(JsonNode report) {
-    if (!RELEASE.equals(getReportRelease(report))) {
-      return ValidationResult.error(ERR_RELEASE_TEMPLATE, RELEASE);
     }
     return ValidationResult.success();
   }
@@ -160,9 +129,7 @@ class ReportValidator {
   static class ErrorMessages {
 
     static final String ERR_NO_REPORT_ID = "Could not find 'reportId'";
-    static final String ERR_RELEASE_TEMPLATE = "Expected 'release' to be: '%s'";
     static final String ERR_REPORT_ATTRIBUTES_TEMPLATE = "Expected 'reportAttributes' to be: %s";
-    static final String ERR_REPORT_ID_TEMPLATE = "Expected 'reportId' to be: %s";
     static final String ERR_UNSUPPORTED_REPORT_ID_TEMPLATE = "Unsupported 'reportId': %s";
 
     private ErrorMessages() {}

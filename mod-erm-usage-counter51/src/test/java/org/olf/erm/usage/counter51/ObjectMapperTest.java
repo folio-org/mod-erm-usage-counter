@@ -10,6 +10,7 @@ import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VALIDATION_FAILED_MSG;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +74,7 @@ class ObjectMapperTest {
       assertThatThrownBy(
               () ->
                   objectMapper.readValue(getSampleReportPath(ReportType.TR_J1).toFile(), TR.class))
-          .hasMessageContaining(VALIDATION_FAILED_MSG);
+          .isInstanceOf(ValueInstantiationException.class);
     }
   }
 }
