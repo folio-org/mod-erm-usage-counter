@@ -25,8 +25,8 @@
     },
     "Exceptions": [
       {
-        "Code": 3031,
-        "Message": "Usage Not Ready for Requested Dates",
+        "Code": 2000,
+        "Message": "Requestor Not Authorized to Access Service",
         "Help_URL": "http://example.com",
         "Data": "string"
       }
