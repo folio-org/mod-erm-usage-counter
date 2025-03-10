@@ -3,13 +3,16 @@ package org.olf.erm.usage.counter51;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_EXCEPTION;
+import static org.olf.erm.usage.counter51.TestUtil.TR_WITH_INVALID_EXCEPTION;
 import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 import static org.olf.erm.usage.counter51.TestUtil.getResourcePath;
 import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 import static org.olf.erm.usage.counter51.ValidationBeanDeserializerModifier.VALIDATION_FAILED_MSG;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +36,15 @@ class ObjectMapperTest {
   @Test
   void testDeserializationForReportWithException() throws IOException, ClassNotFoundException {
     testDeserialization(getResourcePath(TR_WITH_EXCEPTION).toFile(), ReportType.TR);
+  }
+
+  @Test
+  void testDeserializationForReportWithInvalidException() {
+    assertThatThrownBy(
+            () ->
+                testDeserialization(
+                    getResourcePath(TR_WITH_INVALID_EXCEPTION).toFile(), ReportType.TR))
+        .isInstanceOf(JsonMappingException.class);
   }
 
   private void testDeserialization(File file, ReportType reportType)
@@ -73,7 +85,7 @@ class ObjectMapperTest {
       assertThatThrownBy(
               () ->
                   objectMapper.readValue(getSampleReportPath(ReportType.TR_J1).toFile(), TR.class))
-          .hasMessageContaining(VALIDATION_FAILED_MSG);
+          .isInstanceOf(ValueInstantiationException.class);
     }
   }
 }
