@@ -1,3 +1,15 @@
+## 5.0.0
+* [MODEUSCNT-48](https://folio-org.atlassian.net/browse/MODEUSCNT-48) Add models and client for COUNTER 5.1
+* [MODEUSCNT-49](https://folio-org.atlassian.net/browse/MODEUSCNT-49) Add utility methods to split/merge COUNTER 5.1 reports
+* [MODEUSCNT-50](https://folio-org.atlassian.net/browse/MODEUSCNT-50) Adjust/Fix COUNTER 5.1 models
+* [MODEUSCNT-51](https://folio-org.atlassian.net/browse/MODEUSCNT-51) Counter 5.1: Add ability to convert Master Reports into Standard Views
+* [MODEUSCNT-52](https://folio-org.atlassian.net/browse/MODEUSCNT-52) Counter 5.1: Add ability to convert reports to CSV/XLSX
+* [MODEUSCNT-53](https://folio-org.atlassian.net/browse/MODEUSCNT-53) Counter 5.1: IR reports are not split correctly
+* [MODEUSCNT-59](https://folio-org.atlassian.net/browse/MODEUSCNT-59) Update to mod-erm-usage-counter Java 21
+* [MODEUSCNT-55](https://folio-org.atlassian.net/browse/MODEUSCNT-55) Update Apache CXF to v4.1.0
+* [MODEUSCNT-56](https://folio-org.atlassian.net/browse/MODEUSCNT-56) Enhance Counter 5.1 Report Validation
+* [MODEUSCNT-58](https://folio-org.atlassian.net/browse/MODEUSCNT-58) Update openapi-generator to v7.12.0
+
 ## 4.1.0
 * [MODEUSCNT-47](https://folio-org.atlassian.net/browse/MODEUSCNT-47) Update dependencies for Q release
 
