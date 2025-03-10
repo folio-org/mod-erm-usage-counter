@@ -3,7 +3,7 @@
   <parent>
     <artifactId>mod-erm-usage-counter</artifactId>
     <groupId>org.olf</groupId>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -14,15 +14,10 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
     </dependency>
-    <dependency> <!-- remove if included in poi-ooxml, added because of CVE-2024-26308 CVE-2024-25710 -->
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.26.1</version>
-    </dependency>
     <dependency>
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-ooxml</artifactId>
-      <version>5.2.5</version>
+      <version>5.4.0</version>
     </dependency>
 
   </dependencies>

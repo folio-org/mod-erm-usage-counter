@@ -5,7 +5,7 @@
   <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter</artifactId>
   <packaging>pom</packaging>
-  <version>4.2.0-SNAPSHOT</version>
+  <version>5.0.0-SNAPSHOT</version>
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
@@ -16,16 +16,16 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.release>21</maven.compiler.release>
     <junit.version>4.13.2</junit.version>
-    <slf4j.version>1.7.36</slf4j.version>
+    <slf4j.version>2.0.17</slf4j.version>
     <super-csv.version>2.4.0</super-csv.version>
-    <super-csv.beanutils.version>1.9.4</super-csv.beanutils.version>
+    <super-csv.beanutils.version>1.10.1</super-csv.beanutils.version>
     <cxf.version>4.1.0</cxf.version>
-    <vertx.version>4.5.4</vertx.version>
-    <jackson.version>2.17.1</jackson.version>
-    <spotless.version>2.43.0</spotless.version>
-    <google-java-format.version>1.24.0</google-java-format.version>
+    <vertx.version>4.5.13</vertx.version>
+    <jackson.version>2.18.3</jackson.version>
+    <spotless.version>2.44.3</spotless.version>
+    <google-java-format.version>1.25.2</google-java-format.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
@@ -34,12 +34,12 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>32.0.1-jre</version>
+        <version>33.4.0-jre</version>
       </dependency>
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.15.1</version>
+        <version>2.18.0</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -50,6 +50,13 @@
         <groupId>com.fasterxml.jackson</groupId>
         <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-stack-depchain</artifactId>
+        <version>${vertx.version}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -76,7 +83,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version>
+      <version>3.27.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>

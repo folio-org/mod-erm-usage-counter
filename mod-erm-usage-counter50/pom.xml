@@ -3,15 +3,15 @@
   <parent>
     <artifactId>mod-erm-usage-counter</artifactId>
     <groupId>org.olf</groupId>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>mod-erm-usage-counter50</artifactId>
 
   <properties>
-    <openapi.generator.version>6.2.1</openapi.generator.version>
-    <swagger-annotations-version>1.5.22</swagger-annotations-version>
+    <openapi.generator.version>6.6.0</openapi.generator.version>
+    <swagger-annotations-version>1.6.15</swagger-annotations-version>
   </properties>
 
   <dependencies>
@@ -33,12 +33,10 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-rx-java</artifactId>
-      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web-client</artifactId>
-      <version>${vertx.version}</version>
     </dependency>
     <dependency>
       <groupId>io.swagger</groupId>
