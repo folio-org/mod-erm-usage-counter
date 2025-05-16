@@ -1,14 +1,14 @@
 package org.olf.erm.usage.counter51;
 
 import static java.util.List.of;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.Delimiter.SEMICOLON_SPACE;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractAuthors;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractExceptions;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractIdentifiers;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractKeyValuePairs;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractReportingPeriod;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractValues;
+import static org.olf.erm.usage.counter51.Delimiter.SEMICOLON_SPACE;
 import static org.olf.erm.usage.counter51.ReportCsvMappingItem.create;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractAuthors;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractExceptions;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractIdentifiers;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractKeyValuePairs;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractReportingPeriod;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractValues;
 import static org.olf.erm.usage.counter51.ReportType.DR;
 import static org.olf.erm.usage.counter51.ReportType.DR_D1;
 import static org.olf.erm.usage.counter51.ReportType.DR_D2;

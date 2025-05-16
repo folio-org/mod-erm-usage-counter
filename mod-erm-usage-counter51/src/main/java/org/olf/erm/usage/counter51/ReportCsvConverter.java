@@ -1,10 +1,6 @@
 package org.olf.erm.usage.counter51;
 
 import static java.util.Collections.emptyList;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractMetricTypes;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractPlatform;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractUsageData;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractValuesViaMapping;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.METRIC_TYPES;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.PARENT_ITEM_DESCRIPTION;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.PLATFORM;
@@ -12,6 +8,10 @@ import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_ITEM_DESCRIPTION;
 import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_ITEM_IDENTIFIERS;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractMetricTypes;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractPlatform;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractUsageData;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractValuesViaMapping;
 
 import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
