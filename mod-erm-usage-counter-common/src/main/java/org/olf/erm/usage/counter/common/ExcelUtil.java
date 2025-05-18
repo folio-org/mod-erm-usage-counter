@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -41,20 +42,24 @@ public class ExcelUtil {
                 .mapToObj(
                     rn -> {
                       Row row = sheet.getRow(rn);
-                      int lastCellNum = row.getLastCellNum() - 1;
-                      return IntStream.rangeClosed(0, lastCellNum)
-                          .mapToObj(
-                              cn -> {
-                                Cell cell = row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                                if (cell.getCellType() == CellType.NUMERIC) {
-                                  return String.valueOf((int) cell.getNumericCellValue());
-                                } else {
-                                  return cell.getStringCellValue().isEmpty()
-                                      ? null
-                                      : cell.getStringCellValue();
-                                }
-                              })
-                          .collect(Collectors.toList());
+                      if (row != null) {
+                        int lastCellNum = row.getLastCellNum() - 1;
+                        return IntStream.rangeClosed(0, lastCellNum)
+                            .mapToObj(
+                                cn -> {
+                                  Cell cell = row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                                  if (cell.getCellType() == CellType.NUMERIC) {
+                                    return String.valueOf((int) cell.getNumericCellValue());
+                                  } else {
+                                    return cell.getStringCellValue().isEmpty()
+                                        ? null
+                                        : cell.getStringCellValue();
+                                  }
+                                })
+                            .collect(Collectors.toList());
+                      } else {
+                        return Collections.<String>emptyList();
+                      }
                     })
                 .collect(Collectors.toList());
 

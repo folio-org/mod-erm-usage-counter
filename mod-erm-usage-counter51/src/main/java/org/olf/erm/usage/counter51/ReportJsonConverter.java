@@ -200,7 +200,8 @@ class ReportJsonConverter {
 
   private ObjectNode buildHeaderJsonStructure(
       List<List<String>> headerRows, ReportJsonMappingItem headerMapping) {
-    List<String> headerData = headerRows.stream().map(row -> row.get(1)).toList();
+    List<String> headerData =
+        headerRows.stream().map(row -> row.size() > 1 ? row.get(1) : "").toList();
 
     return objectMapper
         .createObjectNode()

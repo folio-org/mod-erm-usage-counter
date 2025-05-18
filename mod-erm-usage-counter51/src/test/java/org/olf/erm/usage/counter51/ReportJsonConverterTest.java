@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter51;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.olf.erm.usage.counter.common.ExcelUtil.toCSV;
 import static org.olf.erm.usage.counter51.Counter51Utils.getDefaultObjectMapper;
 import static org.olf.erm.usage.counter51.ReportJsonConverter.REPORTING_PERIOD_TOTAL;
 import static org.olf.erm.usage.counter51.ReportType.IR;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import org.apache.commons.csv.CSVFormat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,8 +26,9 @@ import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
 
 class ReportJsonConverterTest {
 
-  static final String EXTENSION_TSV = "tsv";
   static final String EXTENSION_JSON = "json";
+  static final String EXTENSION_TSV = "tsv";
+  static final String EXTENSION_XLSX = "xlsx";
   private final ObjectMapper objectMapper = getDefaultObjectMapper();
   private final ReportJsonConverter converter = new ReportJsonConverter(objectMapper);
 
@@ -37,6 +40,25 @@ class ReportJsonConverterTest {
     Path tsvPath = getSampleReportPath(reportType, EXTENSION_TSV);
     Path jsonPath = getSampleReportPath(reportType, EXTENSION_JSON);
     JsonNode actual = converter.convert(Files.newBufferedReader(tsvPath), CSVFormat.TDF);
+    JsonNode expected = objectMapper.readTree(jsonPath.toFile());
+
+    if (reportType == IR) {
+      // IR sample has a different collection order
+      assertThat(actual).usingRecursiveComparison().ignoringCollectionOrder().isEqualTo(expected);
+    } else {
+      assertThat(actual).isEqualTo(expected);
+    }
+  }
+
+  @ParameterizedTest
+  @EnumSource(
+      value = ReportType.class,
+      names = {"TR", "IR", "PR", "DR"})
+  void testConvertXlsxToJson(ReportType reportType) throws IOException {
+    Path tsvPath = getSampleReportPath(reportType, EXTENSION_XLSX);
+    Path jsonPath = getSampleReportPath(reportType, EXTENSION_JSON);
+    String csv = toCSV(Files.newInputStream(tsvPath, StandardOpenOption.READ));
+    JsonNode actual = converter.convert(new StringReader(csv), CSVFormat.RFC4180);
     JsonNode expected = objectMapper.readTree(jsonPath.toFile());
 
     if (reportType == IR) {
