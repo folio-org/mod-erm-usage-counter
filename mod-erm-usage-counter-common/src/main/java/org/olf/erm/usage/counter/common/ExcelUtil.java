@@ -4,12 +4,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -20,16 +22,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.io.CsvListWriter;
-import org.supercsv.prefs.CsvPreference;
 
 public class ExcelUtil {
 
   private ExcelUtil() {}
-
-  private static final CsvPreference CSV_PREF =
-      new CsvPreference.Builder('"', ',', "\r\n").ignoreEmptyLines(false).build();
 
   public static String toCSV(InputStream inputStream) throws IOException {
     try (Workbook wb = WorkbookFactory.create(inputStream)) {
@@ -53,7 +49,9 @@ public class ExcelUtil {
                                 if (cell.getCellType() == CellType.NUMERIC) {
                                   return String.valueOf((int) cell.getNumericCellValue());
                                 } else {
-                                  return cell.getStringCellValue();
+                                  return cell.getStringCellValue().isEmpty()
+                                      ? null
+                                      : cell.getStringCellValue();
                                 }
                               })
                           .collect(Collectors.toList());
@@ -61,12 +59,11 @@ public class ExcelUtil {
                 .collect(Collectors.toList());
 
         StringWriter stringWriter = new StringWriter();
-        CsvListWriter csvListWriter = new CsvListWriter(stringWriter, CSV_PREF);
-        for (List<String> result : results) {
-          csvListWriter.write(result);
+        try (CSVPrinter printer = new CSVPrinter(stringWriter, CSVFormat.RFC4180)) {
+            printer.printRecords(results);
         }
-        csvListWriter.close();
-        return StringUtils.removeEnd(stringWriter.toString(), CSV_PREF.getEndOfLineSymbols());
+        return StringUtils.removeEnd(
+            stringWriter.toString(), CSVFormat.RFC4180.getRecordSeparator());
       } else {
         throw new IOException("No rows found in sheet.");
       }
@@ -82,8 +79,8 @@ public class ExcelUtil {
    * @throws IOException
    */
   public static InputStream fromCSV(String csvString) throws IOException {
-    csvString = csvString.concat(CSV_PREF.getEndOfLineSymbols());
-    CsvListReader csvListReader = new CsvListReader(new StringReader(csvString), CSV_PREF);
+    csvString = csvString.concat(CSVFormat.RFC4180.getRecordSeparator());
+    CSVParser csvParser = CSVParser.parse(csvString, CSVFormat.RFC4180);
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -99,21 +96,20 @@ public class ExcelUtil {
       CellStyle numberCellStyle = wb.createCellStyle();
       numberCellStyle.setDataFormat((short) 1);
 
-      List<String> columns;
       int rowNo = 0;
-      while ((columns = csvListReader.read()) != null) {
-        Row row = sheet.createRow(rowNo++);
-        AtomicInteger cellNo = new AtomicInteger();
-        columns.forEach(
-            s -> {
-              Cell cell = row.createCell(cellNo.getAndIncrement());
-              try {
-                cell.setCellValue(Integer.parseInt(s));
-                cell.setCellStyle(numberCellStyle);
-              } catch (NumberFormatException e) {
-                cell.setCellValue(s);
-              }
-            });
+      for (CSVRecord record : csvParser.getRecords()) {
+        List<String> row = record.toList();
+        Row sheetRow = sheet.createRow(rowNo++);
+        int sheetCellNo = 0;
+        for (String s : row) {
+          Cell cell = sheetRow.createCell(sheetCellNo++);
+          try {
+            cell.setCellValue(Integer.parseInt(s));
+            cell.setCellStyle(numberCellStyle);
+          } catch (NumberFormatException e) {
+            cell.setCellValue(s);
+          }
+        }
       }
 
       wb.write(baos);
