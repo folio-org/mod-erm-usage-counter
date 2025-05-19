@@ -47,9 +47,10 @@ import org.openapitools.counter51client.model.ItemID;
  */
 class ReportFieldProcessor {
 
-  public static final Pattern EXCEPTION_PATTERN = Pattern.compile("^(.*?): (.*?)(?: \\((.*)\\))?$");
+  public static final Pattern EXCEPTION_PATTERN =
+      Pattern.compile("^([^:]+): ([^()]+)(?: \\(([^)]+)\\))?$");
 
-  public static final Pattern AUTHOR_PATTERN = Pattern.compile("^(.*?)(?: \\(([^)]+)\\))?$");
+  public static final Pattern AUTHOR_PATTERN = Pattern.compile("^([^()]+)(?: \\(([^)]+)\\))?$");
 
   private static final ObjectMapper objectMapper = Counter51Utils.getDefaultObjectMapper();
   static final List<String> ARRAY_KEYS_REPORT_ATTRIBUTES = List.of(ATTRIBUTES_TO_SHOW);
@@ -60,6 +61,8 @@ class ReportFieldProcessor {
           REPORT_FILTERS_DATA_TYPE,
           REPORT_FILTERS_METRIC_TYPE,
           YOP);
+
+  private ReportFieldProcessor() {}
 
   public static List<String> extractMetricTypes(JsonNode node) {
     return toStream(node.fieldNames()).toList();
@@ -147,15 +150,15 @@ class ReportFieldProcessor {
       String doi,
       String proprietary,
       String isbn,
-      String print_issn,
-      String online_issn,
+      String printIssn,
+      String onlineIssn,
       String uri) {
     return new NodeBuilder()
         .putOptional(ItemID.JSON_PROPERTY_D_O_I, doi)
         .putOptional(ItemID.JSON_PROPERTY_PROPRIETARY, proprietary)
         .putOptional(ItemID.JSON_PROPERTY_I_S_B_N, isbn)
-        .putOptional(ItemID.JSON_PROPERTY_ONLINE_I_S_S_N, online_issn)
-        .putOptional(ItemID.JSON_PROPERTY_PRINT_I_S_S_N, print_issn)
+        .putOptional(ItemID.JSON_PROPERTY_ONLINE_I_S_S_N, onlineIssn)
+        .putOptional(ItemID.JSON_PROPERTY_PRINT_I_S_S_N, printIssn)
         .putOptional(ItemID.JSON_PROPERTY_U_R_I, uri)
         .build();
   }
@@ -222,11 +225,6 @@ class ReportFieldProcessor {
     }
 
     return Stream.concat(Stream.of(total), monthlyValues.stream()).map(String::valueOf).toList();
-  }
-
-  public static List<String> extractValuesViaMapping(
-      JsonNode node, ReportType reportType, ReportCsvMapping mapping) {
-    return mapping.getMappingFunctions(reportType).stream().map(f -> f.apply(node)).toList();
   }
 
   public static String extractAuthors(JsonNode node) {

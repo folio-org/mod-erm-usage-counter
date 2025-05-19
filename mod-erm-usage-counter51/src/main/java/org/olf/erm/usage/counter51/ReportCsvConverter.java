@@ -11,7 +11,6 @@ import static org.olf.erm.usage.counter51.ReportCsvMapping.REPORT_ITEM_IDENTIFIE
 import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractMetricTypes;
 import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractPlatform;
 import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractUsageData;
-import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractValuesViaMapping;
 
 import com.fasterxml.jackson.core.JsonPointer;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -143,6 +142,11 @@ class ReportCsvConverter {
                 usageData));
       }
     }
+  }
+
+  private static List<String> extractValuesViaMapping(
+      JsonNode node, ReportType reportType, ReportCsvMapping mapping) {
+    return mapping.getMappingFunctions(reportType).stream().map(f -> f.apply(node)).toList();
   }
 
   private List<String> getFormattedMonths(List<YearMonth> months, DateTimeFormatter formatter) {

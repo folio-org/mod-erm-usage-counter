@@ -170,9 +170,7 @@ class ReportJsonConverter {
       // Base case: return the list of ungrouped columns
       List<Integer> columnsToRemove =
           columnGroups.stream().flatMap(arr -> Arrays.stream(arr).boxed()).toList();
-      return data.stream()
-          .map(row -> removeColumns(row, columnsToRemove))
-          .collect(Collectors.toList());
+      return data.stream().map(row -> removeColumns(row, columnsToRemove)).toList();
     }
 
     int[] columnsToGroupBy = columnGroups.get(depth);

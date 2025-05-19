@@ -210,7 +210,7 @@ Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Deta
 """)
   void testCreateKeyValuePairs(String input, String expected) {
     JsonNode result = createKeyValuePairs(input);
-    assertThat(result.toString()).isEqualTo(expected);
+    assertThat(result).hasToString(expected);
   }
 
   @ParameterizedTest
@@ -225,7 +225,7 @@ Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Deta
   void testCreateIdentifiers(String input, String knownNamespacesStr, String expected) {
     List<String> knownNamespaces = Arrays.stream(knownNamespacesStr.split(";")).toList();
     JsonNode result = createIdentifiers(input, knownNamespaces);
-    assertThat(result.toString()).isEqualTo(expected);
+    assertThat(result).hasToString(expected);
   }
 
   @ParameterizedTest
@@ -244,7 +244,7 @@ Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Deta
 """)
   void testCreateExceptions(String input, String expected) {
     JsonNode result = createExceptions(input);
-    assertThat(result.toString()).isEqualTo(expected);
+    assertThat(result).hasToString(expected);
   }
 
   @ParameterizedTest
@@ -262,7 +262,7 @@ Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Deta
           """)
   void testCreateAuthors(String input, String expected) {
     JsonNode result = createAuthors(input);
-    assertThat(result.toString()).isEqualTo(expected);
+    assertThat(result).hasToString(expected);
   }
 
   private JsonNode stringToJsonNode(String s) {

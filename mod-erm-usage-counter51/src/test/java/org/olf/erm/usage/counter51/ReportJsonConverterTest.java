@@ -10,6 +10,7 @@ import static org.olf.erm.usage.counter51.TestUtil.getSampleReportPath;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
@@ -70,10 +71,11 @@ class ReportJsonConverterTest {
   }
 
   @Test
-  void testConvertUnsupportedReport() {
+  void testConvertUnsupportedReport() throws IOException {
     Path tsvPath = getSampleReportPath(ReportType.TR_J1, EXTENSION_TSV);
 
-    assertThatThrownBy(() -> converter.convert(Files.newBufferedReader(tsvPath), CSVFormat.TDF))
+    BufferedReader reader = Files.newBufferedReader(tsvPath);
+    assertThatThrownBy(() -> converter.convert(reader, CSVFormat.TDF))
         .isInstanceOf(UnsupportedReportException.class);
   }
 
@@ -81,7 +83,8 @@ class ReportJsonConverterTest {
   void testUnknowReport() {
     String sampleReport = "first row\nReport_ID,";
 
-    assertThatThrownBy(() -> converter.convert(new StringReader(sampleReport), CSVFormat.RFC4180))
+    StringReader reader = new StringReader(sampleReport);
+    assertThatThrownBy(() -> converter.convert(reader, CSVFormat.RFC4180))
         .isInstanceOf(UnknownReportException.class);
   }
 
@@ -97,7 +100,8 @@ class ReportJsonConverterTest {
 
     assertThat(input).contains(targetStr);
     assertThat(modifiedInput).contains(replacementStr);
-    assertThatThrownBy(() -> converter.convert(new StringReader(modifiedInput), CSVFormat.TDF))
+    StringReader reader = new StringReader(modifiedInput);
+    assertThatThrownBy(() -> converter.convert(reader, CSVFormat.TDF))
         .isInstanceOf(ReportValidatorException.class);
   }
 
@@ -105,7 +109,8 @@ class ReportJsonConverterTest {
   void testNoReportID() {
     String sampleReport = "first row\nsecond row";
 
-    assertThatThrownBy(() -> converter.convert(new StringReader(sampleReport), CSVFormat.RFC4180))
+    StringReader reader = new StringReader(sampleReport);
+    assertThatThrownBy(() -> converter.convert(reader, CSVFormat.RFC4180))
         .isInstanceOf(ReportProcessingException.class)
         .hasMessageContaining("Report_ID");
   }
@@ -122,7 +127,8 @@ class ReportJsonConverterTest {
 
     assertThat(input).contains(targetStr);
     assertThat(modifiedInput).doesNotContain(targetStr);
-    assertThatThrownBy(() -> converter.convert(new StringReader(modifiedInput), CSVFormat.TDF))
+    StringReader reader = new StringReader(modifiedInput);
+    assertThatThrownBy(() -> converter.convert(reader, CSVFormat.TDF))
         .isInstanceOf(ReportProcessingException.class);
   }
 }

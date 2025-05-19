@@ -32,6 +32,9 @@ class NodeBuilder {
     return this;
   }
 
+  @SuppressWarnings(
+      "java:S6916") // Suppress "Use when instead of a single if inside a pattern match body" as it
+  // has different fall-through behavior
   public NodeBuilder putOptional(String key, Object value) {
     switch (value) {
       case String s -> {
@@ -44,7 +47,9 @@ class NodeBuilder {
       case List<?> l -> {
         if (!l.isEmpty()) node.set(key, getDefaultObjectMapper().valueToTree(l));
       }
-      case null -> {}
+      case null -> {
+        // ignore null values for optional properties
+      }
       default -> throw new IllegalArgumentException(UNSUPPORTED_TYPE_TEMPLATE.formatted(key));
     }
     return this;

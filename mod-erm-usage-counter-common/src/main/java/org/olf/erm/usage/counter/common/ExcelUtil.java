@@ -102,8 +102,8 @@ public class ExcelUtil {
       numberCellStyle.setDataFormat((short) 1);
 
       int rowNo = 0;
-      for (CSVRecord record : csvParser.getRecords()) {
-        List<String> row = record.toList();
+      for (CSVRecord csvRecord : csvParser.getRecords()) {
+        List<String> row = csvRecord.toList();
         Row sheetRow = sheet.createRow(rowNo++);
         int sheetCellNo = 0;
         for (String s : row) {
