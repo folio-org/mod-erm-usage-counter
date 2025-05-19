@@ -47,7 +47,8 @@ public class ExcelUtil {
                         return IntStream.rangeClosed(0, lastCellNum)
                             .mapToObj(
                                 cn -> {
-                                  Cell cell = row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                                  Cell cell =
+                                      row.getCell(cn, MissingCellPolicy.CREATE_NULL_AS_BLANK);
                                   if (cell.getCellType() == CellType.NUMERIC) {
                                     return String.valueOf((int) cell.getNumericCellValue());
                                   } else {
@@ -65,7 +66,7 @@ public class ExcelUtil {
 
         StringWriter stringWriter = new StringWriter();
         try (CSVPrinter printer = new CSVPrinter(stringWriter, CSVFormat.RFC4180)) {
-            printer.printRecords(results);
+          printer.printRecords(results);
         }
         return StringUtils.removeEnd(
             stringWriter.toString(), CSVFormat.RFC4180.getRecordSeparator());
