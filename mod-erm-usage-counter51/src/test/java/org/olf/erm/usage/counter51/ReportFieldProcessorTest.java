@@ -2,18 +2,25 @@ package org.olf.erm.usage.counter51;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractAuthors;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractExceptions;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractIdentifiers;
-import static org.olf.erm.usage.counter51.ReportCsvFieldExtractor.extractUsageData;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.createAuthors;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.createExceptions;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.createIdentifiers;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.createKeyValuePairs;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractAuthors;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractExceptions;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractIdentifiers;
+import static org.olf.erm.usage.counter51.ReportFieldProcessor.extractUsageData;
 import static org.olf.erm.usage.counter51.TestUtil.getObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-class ReportCsvFieldExtractorTest {
+class ReportFieldProcessorTest {
 
   @Test
   void testExtractUsageDataWithMissingMonth() {
@@ -186,6 +193,76 @@ class ReportCsvFieldExtractorTest {
     String expected = "";
     String actual = extractIdentifiers(stringToJsonNode(data));
     assertThat(actual).isEqualTo(expected);
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+      delimiter = '\\',
+      textBlock =
+          """
+          Attributes_To_Show=Authors|Publication_Date|Article_Version\\\
+            {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"]}
+          Include_Parent_Details=True\\ {"Include_Parent_Details":"True"}
+          Empty_Attribute=\\ {}
+          ''\\ {}
+          Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Details=True; Empty_Attribute=\\\
+            {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"],"Include_Parent_Details":"True"}
+          """)
+  void testCreateKeyValuePairs(String input, String expected) {
+    JsonNode result = createKeyValuePairs(input);
+    assertThat(result).hasToString(expected);
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+      delimiter = '\\',
+      textBlock =
+          """
+          ISNI:0000000419369078; ROR:00hx57361; pubsiteA:PrncU\\\
+            ISNI;ROR\\\
+            {"ISNI":["0000000419369078"],"ROR":["00hx57361"],"Proprietary":["pubsiteA:PrncU"]}
+          """)
+  void testCreateIdentifiers(String input, String knownNamespacesStr, String expected) {
+    List<String> knownNamespaces = Arrays.stream(knownNamespacesStr.split(";")).toList();
+    JsonNode result = createIdentifiers(input, knownNamespaces);
+    assertThat(result).hasToString(expected);
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+      delimiter = '\\',
+      textBlock =
+          """
+          3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31)\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"}]
+          3031: Usage Not Ready for Requested Dates\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
+          3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31); 3031: Usage Not Ready for Requested Dates\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"},{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
+          ''\\\
+            []
+          """)
+  void testCreateExceptions(String input, String expected) {
+    JsonNode result = createExceptions(input);
+    assertThat(result).hasToString(expected);
+  }
+
+  @ParameterizedTest
+  @CsvSource(
+      delimiter = '\\',
+      textBlock =
+          """
+          John Smith (ORCID:0000-0001-2345-6789)\\\
+            [{"Name":"John Smith","ORCID":"0000-0001-2345-6789"}]
+          John Smith; Some Org (ROR:05x8v3x98)\\\
+            [{"Name":"John Smith"},{"Name":"Some Org","ROR":"05x8v3x98"}]
+
+          ''\\\
+            []
+          """)
+  void testCreateAuthors(String input, String expected) {
+    JsonNode result = createAuthors(input);
+    assertThat(result).hasToString(expected);
   }
 
   private JsonNode stringToJsonNode(String s) {

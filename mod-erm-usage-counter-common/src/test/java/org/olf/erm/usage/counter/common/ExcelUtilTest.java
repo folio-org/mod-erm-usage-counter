@@ -24,7 +24,7 @@ public class ExcelUtilTest {
     String csvString = getResourceAsString("c4/JR1.csv");
     InputStream fromCSV = ExcelUtil.fromCSV(csvString);
     String toCSV = ExcelUtil.toCSV(fromCSV);
-    assertThat(csvString).isEqualToNormalizingNewlines(toCSV);
+    assertThat(toCSV).isEqualToNormalizingNewlines(csvString);
   }
 
   @Test
@@ -32,7 +32,7 @@ public class ExcelUtilTest {
     String csvString = getResourceAsString("c4/BR1.csv");
     InputStream fromCSV = ExcelUtil.fromCSV(csvString);
     String toCSV = ExcelUtil.toCSV(fromCSV);
-    assertThat(csvString).isEqualToNormalizingNewlines(toCSV);
+    assertThat(toCSV).isEqualToNormalizingNewlines(csvString);
   }
 
   @Test
@@ -40,7 +40,7 @@ public class ExcelUtilTest {
     String csvString = getResourceAsString("c5/PR_1.csv");
     InputStream fromCSV = ExcelUtil.fromCSV(csvString);
     String toCSV = ExcelUtil.toCSV(fromCSV);
-    assertThat(csvString).isEqualToNormalizingNewlines(toCSV);
+    assertThat(toCSV).isEqualToNormalizingNewlines(csvString);
   }
 
   @Test

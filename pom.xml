@@ -21,16 +21,32 @@
     <slf4j.version>2.0.17</slf4j.version>
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.10.1</super-csv.beanutils.version>
+    <commons-csv.version>1.13.0</commons-csv.version>
     <cxf.version>4.1.0</cxf.version>
     <vertx.version>4.5.13</vertx.version>
     <jackson.version>2.18.3</jackson.version>
-    <spotless.version>2.44.3</spotless.version>
-    <google-java-format.version>1.25.2</google-java-format.version>
+    <spotless.version>2.44.4</spotless.version>
+    <google-java-format.version>1.27.0</google-java-format.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>net.sf.supercsv</groupId>
+        <artifactId>super-csv-dozer</artifactId>
+        <version>${super-csv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>${super-csv.beanutils.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-csv</artifactId>
+        <version>${commons-csv.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
@@ -64,16 +80,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <version>${super-csv.beanutils.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.supercsv</groupId>
-      <artifactId>super-csv-dozer</artifactId>
-      <version>${super-csv.version}</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

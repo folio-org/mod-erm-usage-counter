@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
+import java.io.Reader;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
@@ -17,11 +18,18 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.apache.commons.csv.CSVFormat;
 import org.olf.erm.usage.counter51.ReportConverter.ReportConverterException;
+import org.olf.erm.usage.counter51.ReportJsonConverter.ReportProcessingException;
+import org.olf.erm.usage.counter51.ReportJsonConverter.UnknownReportException;
+import org.olf.erm.usage.counter51.ReportJsonConverter.UnsupportedReportException;
 import org.olf.erm.usage.counter51.ReportMerger.MergerException;
 import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
 import org.olf.erm.usage.counter51.ReportValidator.ReportValidatorException;
 import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
+/**
+ * Utility class providing operations for handling, converting, validating, splitting, and merging
+ * COUNTER 5.1 Master Reports.
+ */
 public class Counter51Utils {
 
   private static final ReportSplitter reportSplitter = new ReportSplitter();
@@ -31,6 +39,8 @@ public class Counter51Utils {
   private static final ReportConverter reportConverter =
       new ReportConverter(objectMapper, reportValidator);
   private static final ReportCsvConverter reportCsvConverter = new ReportCsvConverter(objectMapper);
+  private static final ReportJsonConverter reportJsonConverter =
+      new ReportJsonConverter(objectMapper);
 
   private Counter51Utils() {}
 
@@ -47,6 +57,7 @@ public class Counter51Utils {
    * @return An {@link ObjectNode} representing the converted report.
    * @throws ReportConverterException if the target report type is not a standard view or if the
    *     master report is considered invalid according to the target report type.
+   * @throws ReportValidatorException if the report fails validation.
    */
   public static ObjectNode convertReport(ObjectNode report, ReportType reportType) {
     return reportConverter.convert(report, reportType);
@@ -61,9 +72,30 @@ public class Counter51Utils {
    * @param report The COUNTER report to be converted, represented as a {@link JsonNode}.
    * @param writer The {@link Appendable} writer where the CSV output will be written.
    * @throws IOException if an I/O error occurs during writing to the provided writer.
+   * @throws ReportValidatorException if the report fails validation.
    */
   public static void writeReportAsCsv(JsonNode report, Appendable writer) throws IOException {
     reportCsvConverter.convert(report, writer, CSVFormat.DEFAULT);
+  }
+
+  /**
+   * Converts a COUNTER 5.1 report from CSV format into a JSON representation.
+   *
+   * <p>This method reads CSV data from a {@link Reader} using the specified {@link CSVFormat},
+   * processes the data, and generates a structured JSON representation of the report.
+   *
+   * @param reader the {@link Reader} containing the CSV data to be converted
+   * @param csvFormat the {@link CSVFormat} defining the parsing rules for the CSV input
+   * @return a {@link JsonNode} containing the structured COUNTER 5.1 report data
+   * @throws IOException if an error occurs while reading from the provided {@link Reader}
+   * @throws ReportProcessingException if an error occurs during report processing
+   * @throws ReportValidatorException if the generated report fails validation
+   * @throws UnknownReportException if the report type cannot be determined
+   * @throws UnsupportedReportException if the report type is not supported
+   */
+  public static JsonNode createReportFromCsv(Reader reader, CSVFormat csvFormat)
+      throws IOException {
+    return reportJsonConverter.convert(reader, csvFormat);
   }
 
   /**
@@ -77,6 +109,7 @@ public class Counter51Utils {
    *     {@link JsonNode} for further processing.
    * @param writer The {@link Appendable} writer where the CSV output will be written.
    * @throws IOException if an I/O error occurs during writing to the provided writer.
+   * @throws ReportValidatorException if the report fails validation.
    */
   public static void writeReportAsCsv(Object report, Appendable writer) throws IOException {
     JsonNode jsonNode = objectMapper.valueToTree(report);

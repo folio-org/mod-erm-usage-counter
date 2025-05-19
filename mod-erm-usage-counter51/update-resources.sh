@@ -1,11 +1,24 @@
 #!/bin/sh
 
-echo "-- Cloning cop5 repository to /tmp/cop5."
-git clone -b planned https://github.com/Project-Counter/cop5.git /tmp/cop5
+# Constants
+REPO_URL="https://github.com/Project-Counter/cop5.git"
+REPO_BRANCH="planned"
+TEMP_DIR="/tmp/cop5"
+REPORTS_SOURCE_DIR="${TEMP_DIR}/source/_static/report"
+API_SOURCE_PATH="${TEMP_DIR}/api-specification/COUNTER_API.json"
+REPORTS_TARGET_DIR="src/test/resources/sample-reports"
+API_TARGET_DIR="src/main/resources"
+
+echo "-- Cloning cop5 repository to ${TEMP_DIR}."
+git clone -b ${REPO_BRANCH} ${REPO_URL} ${TEMP_DIR}
 
 echo "-- Copying files."
-cp /tmp/cop5/source/_static/report/*.json src/test/resources/sample-reports
-cp /tmp/cop5/source/_static/report/*.tsv src/test/resources/sample-reports
-cp /tmp/cop5/api-specification/COUNTER_API.json src/main/resources
+cp ${REPORTS_SOURCE_DIR}/*.json ${REPORTS_TARGET_DIR}
+cp ${REPORTS_SOURCE_DIR}/*.tsv ${REPORTS_TARGET_DIR}
+find ${REPORTS_SOURCE_DIR} \
+  -regextype posix-extended \
+  -regex ".*/(TR|DR|IR|PR)_sample.*\.xlsx" \
+  -exec cp {} ${REPORTS_TARGET_DIR} \;
+cp ${API_SOURCE_PATH} ${API_TARGET_DIR}
 
 echo "-- Done."
