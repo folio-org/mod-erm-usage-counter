@@ -200,14 +200,14 @@ class ReportFieldProcessorTest {
       delimiter = '\\',
       textBlock =
           """
-Attributes_To_Show=Authors|Publication_Date|Article_Version\\\
-  {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"]}
-Include_Parent_Details=True\\ {"Include_Parent_Details":"True"}
-Empty_Attribute=\\ {}
-''\\ {}
-Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Details=True; Empty_Attribute=\\\
-  {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"],"Include_Parent_Details":"True"}
-""")
+          Attributes_To_Show=Authors|Publication_Date|Article_Version\\\
+            {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"]}
+          Include_Parent_Details=True\\ {"Include_Parent_Details":"True"}
+          Empty_Attribute=\\ {}
+          ''\\ {}
+          Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Details=True; Empty_Attribute=\\\
+            {"Attributes_To_Show":["Authors","Publication_Date","Article_Version"],"Include_Parent_Details":"True"}
+          """)
   void testCreateKeyValuePairs(String input, String expected) {
     JsonNode result = createKeyValuePairs(input);
     assertThat(result).hasToString(expected);
@@ -233,15 +233,15 @@ Attributes_To_Show=Authors|Publication_Date|Article_Version; Include_Parent_Deta
       delimiter = '\\',
       textBlock =
           """
-3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31)\\\
-  [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"}]
-3031: Usage Not Ready for Requested Dates\\\
-  [{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
-3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31); 3031: Usage Not Ready for Requested Dates\\\
-  [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"},{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
-''\\\
-  []
-""")
+          3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31)\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"}]
+          3031: Usage Not Ready for Requested Dates\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
+          3031: Usage Not Ready for Requested Dates (usage is only available to 2024-08-31); 3031: Usage Not Ready for Requested Dates\\\
+            [{"Code":"3031","Message":"Usage Not Ready for Requested Dates","Data":"usage is only available to 2024-08-31"},{"Code":"3031","Message":"Usage Not Ready for Requested Dates"}]
+          ''\\\
+            []
+          """)
   void testCreateExceptions(String input, String expected) {
     JsonNode result = createExceptions(input);
     assertThat(result).hasToString(expected);
