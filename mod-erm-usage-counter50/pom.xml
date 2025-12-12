@@ -11,7 +11,6 @@
 
   <properties>
     <openapi.generator.version>6.6.0</openapi.generator.version>
-    <swagger-annotations-version>1.6.15</swagger-annotations-version>
   </properties>
 
   <dependencies>
@@ -41,16 +40,7 @@
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-web-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.swagger</groupId>
-      <artifactId>swagger-annotations</artifactId>
-      <version>${swagger-annotations-version}</version>
+      <artifactId>vertx-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -75,9 +65,17 @@
                 ${project.basedir}/src/main/resources/counter-sushi_5_0_api/COUNTER-counter-sushi_5_0_api-5.0.3-swagger.yaml
               </inputSpec>
               <generatorName>java</generatorName>
-              <library>vertx</library>
+              <library>native</library>
+              <generateApis>false</generateApis>
+              <generateApiTests>false</generateApiTests>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateModels>true</generateModels>
+              <generateModelTests>false</generateModelTests>
+              <generateModelDocumentation>false</generateModelDocumentation>
+              <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
                 <openApiNullable>false</openApiNullable>
+                <serializationLibrary>jackson</serializationLibrary>
                 <additionalModelTypeAnnotations>
                   <![CDATA[@JsonInclude(JsonInclude.Include.NON_NULL)]]>
                 </additionalModelTypeAnnotations>
@@ -99,8 +97,6 @@
                   COUNTER_item_performance_Period=COUNTERItemPerformancePeriod
                 </inlineSchemaNameMapping>
               </inlineSchemaNameMappings>
-              <generateApiTests>false</generateApiTests>
-              <generateModelTests>false</generateModelTests>
             </configuration>
           </execution>
         </executions>
