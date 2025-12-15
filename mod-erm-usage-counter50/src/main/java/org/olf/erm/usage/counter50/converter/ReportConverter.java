@@ -7,8 +7,8 @@ import org.olf.erm.usage.counter50.converter.tr.TRB3Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ3Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ4Converter;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
 
 public class ReportConverter {
 

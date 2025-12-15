@@ -2,8 +2,8 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers.TypeEnum;
+import org.openapitools.counter50.model.COUNTERPublisherIdentifiers;
+import org.openapitools.counter50.model.COUNTERPublisherIdentifiers.TypeEnum;
 
 public final class PublisherIDProcessor {
 

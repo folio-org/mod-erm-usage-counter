@@ -6,11 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERDatabaseUsage;
-import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERItemPerformancePeriod;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERDatabaseUsage;
+import org.openapitools.counter50.model.COUNTERItemPerformance;
+import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 
 public class DRReportsSplitter extends AbstractReportsSplitter<COUNTERDatabaseReport> {
 

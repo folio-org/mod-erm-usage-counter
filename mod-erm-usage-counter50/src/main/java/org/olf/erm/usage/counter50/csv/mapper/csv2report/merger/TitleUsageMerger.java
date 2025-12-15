@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
 
 public class TitleUsageMerger extends AbstractMerger<COUNTERTitleUsage> {
 

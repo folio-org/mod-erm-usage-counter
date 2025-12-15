@@ -4,8 +4,8 @@ import com.google.common.base.Splitter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERItemContributors;
-import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
+import org.openapitools.counter50.model.COUNTERItemContributors;
+import org.openapitools.counter50.model.COUNTERItemContributors.TypeEnum;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 

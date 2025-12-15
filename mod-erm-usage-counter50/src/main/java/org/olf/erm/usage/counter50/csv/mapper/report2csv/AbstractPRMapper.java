@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.csv.cellprocessor.MetricTypeProcessor;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PerformanceProcessor;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERPlatformUsage;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERPlatformUsage;
 
 abstract class AbstractPRMapper extends AbstractReportToCsvMapper<COUNTERPlatformReport> {
 

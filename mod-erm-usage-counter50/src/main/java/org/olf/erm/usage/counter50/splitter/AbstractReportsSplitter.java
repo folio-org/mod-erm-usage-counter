@@ -1,8 +1,8 @@
 package org.olf.erm.usage.counter50.splitter;
 
 import java.util.List;
-import org.openapitools.client.model.COUNTERItemPerformancePeriod;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 
 public abstract class AbstractReportsSplitter<T> {
 

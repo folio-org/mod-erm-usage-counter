@@ -1,7 +1,7 @@
 package org.olf.erm.usage.counter50;
 
-import static org.openapitools.client.model.COUNTERTitleReport.JSON_PROPERTY_REPORT_HEADER;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+import static org.openapitools.counter50.model.COUNTERTitleReport.JSON_PROPERTY_REPORT_HEADER;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
 
 import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.EncodeException;
@@ -26,12 +26,12 @@ import org.olf.erm.usage.counter50.splitter.DRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.IRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.PRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.TRReportsSplitter;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.SUSHIReportHeader;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

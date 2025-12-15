@@ -2,14 +2,14 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.openapitools.client.model.COUNTERPublisherIdentifiers.TypeEnum.ISNI;
-import static org.openapitools.client.model.COUNTERPublisherIdentifiers.TypeEnum.PROPRIETARY;
+import static org.openapitools.counter50.model.COUNTERPublisherIdentifiers.TypeEnum.ISNI;
+import static org.openapitools.counter50.model.COUNTERPublisherIdentifiers.TypeEnum.PROPRIETARY;
 
 import org.junit.Test;
 import org.olf.erm.usage.counter50.csv.cellprocessor.ParsePublisherID.PublisherIDParseException;
-import org.openapitools.client.model.COUNTERItemContributors;
-import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers;
+import org.openapitools.counter50.model.COUNTERItemContributors;
+import org.openapitools.counter50.model.COUNTERItemContributors.TypeEnum;
+import org.openapitools.counter50.model.COUNTERPublisherIdentifiers;
 
 public class CellProcessorsTest {
 

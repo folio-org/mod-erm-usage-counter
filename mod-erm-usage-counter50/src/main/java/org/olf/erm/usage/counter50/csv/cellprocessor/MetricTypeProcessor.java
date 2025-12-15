@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
+import org.openapitools.counter50.model.COUNTERItemPerformance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 
 public final class MetricTypeProcessor {
 

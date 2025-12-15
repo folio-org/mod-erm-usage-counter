@@ -9,14 +9,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import org.olf.erm.usage.counter50.converter.ConverterUtils;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.COUNTERTitleUsage;
-import org.openapitools.client.model.COUNTERTitleUsage.AccessMethodEnum;
-import org.openapitools.client.model.COUNTERTitleUsage.AccessTypeEnum;
-import org.openapitools.client.model.COUNTERTitleUsage.DataTypeEnum;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.COUNTERTitleUsage.AccessMethodEnum;
+import org.openapitools.counter50.model.COUNTERTitleUsage.AccessTypeEnum;
+import org.openapitools.counter50.model.COUNTERTitleUsage.DataTypeEnum;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class TRJ4Converter extends TRConverterBase {
 

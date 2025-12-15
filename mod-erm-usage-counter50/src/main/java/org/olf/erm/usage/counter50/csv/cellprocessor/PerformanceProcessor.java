@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
 
 public final class PerformanceProcessor {
 

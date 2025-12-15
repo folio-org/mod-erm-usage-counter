@@ -74,6 +74,7 @@
               <generateModelDocumentation>false</generateModelDocumentation>
               <generateSupportingFiles>false</generateSupportingFiles>
               <configOptions>
+                <modelPackage>org.openapitools.counter50.model</modelPackage>
                 <openApiNullable>false</openApiNullable>
                 <serializationLibrary>jackson</serializationLibrary>
                 <additionalModelTypeAnnotations>

@@ -1,10 +1,10 @@
 package org.olf.erm.usage.counter50.merger;
 
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
 
 public final class MergerFactory {
 

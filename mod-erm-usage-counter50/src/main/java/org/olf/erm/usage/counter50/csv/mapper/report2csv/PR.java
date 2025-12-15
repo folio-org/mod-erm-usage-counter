@@ -2,8 +2,8 @@ package org.olf.erm.usage.counter50.csv.mapper.report2csv;
 
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERPlatformUsage;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERPlatformUsage;
 
 public class PR extends AbstractPRMapper {
 

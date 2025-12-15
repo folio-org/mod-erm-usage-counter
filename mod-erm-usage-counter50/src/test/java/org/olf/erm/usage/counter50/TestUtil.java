@@ -3,17 +3,17 @@ package org.olf.erm.usage.counter50;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
-import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.SUSHIOrgIdentifiers;
-import org.openapitools.client.model.SUSHIReportHeader;
-import org.openapitools.client.model.SUSHIReportHeaderReportAttributes;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers;
+import org.openapitools.counter50.model.COUNTERItemPerformance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.SUSHIOrgIdentifiers;
+import org.openapitools.counter50.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportAttributes;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 
 public class TestUtil {
 

@@ -6,8 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import org.junit.Test;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class ReportsMergerTest {
 

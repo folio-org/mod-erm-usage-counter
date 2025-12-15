@@ -1,28 +1,28 @@
 package org.olf.erm.usage.counter50.csv.mapper.csv2report;
 
 import static java.util.Objects.requireNonNull;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_CREATED_BY;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_EXCEPTIONS;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_I_D;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_NAME;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_RELEASE;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_ATTRIBUTES;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_NAME;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_CREATED;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_CREATED_BY;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_EXCEPTIONS;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_I_D;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_INSTITUTION_NAME;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_RELEASE;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_ATTRIBUTES;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_NAME;
 
 import com.google.common.base.Splitter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.openapitools.client.model.SUSHIErrorModel;
-import org.openapitools.client.model.SUSHIErrorModel.SeverityEnum;
-import org.openapitools.client.model.SUSHIOrgIdentifiers;
-import org.openapitools.client.model.SUSHIOrgIdentifiers.TypeEnum;
-import org.openapitools.client.model.SUSHIReportHeader;
-import org.openapitools.client.model.SUSHIReportHeaderReportAttributes;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.SUSHIErrorModel;
+import org.openapitools.counter50.model.SUSHIErrorModel.SeverityEnum;
+import org.openapitools.counter50.model.SUSHIOrgIdentifiers;
+import org.openapitools.counter50.model.SUSHIOrgIdentifiers.TypeEnum;
+import org.openapitools.counter50.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportAttributes;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

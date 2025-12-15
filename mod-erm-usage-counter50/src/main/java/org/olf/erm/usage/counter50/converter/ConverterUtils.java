@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
-import org.openapitools.client.model.SUSHIReportHeader;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERItemPerformance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance.MetricTypeEnum;
+import org.openapitools.counter50.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 
 public class ConverterUtils {
 

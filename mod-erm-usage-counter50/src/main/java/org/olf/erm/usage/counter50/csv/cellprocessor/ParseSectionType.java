@@ -1,6 +1,6 @@
 package org.olf.erm.usage.counter50.csv.cellprocessor;
 
-import org.openapitools.client.model.COUNTERTitleUsage.SectionTypeEnum;
+import org.openapitools.counter50.model.COUNTERTitleUsage.SectionTypeEnum;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 

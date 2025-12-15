@@ -5,9 +5,9 @@ import static org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor
 
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERDatabaseUsage;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERDatabaseUsage;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers;
 
 public class DRD1 extends AbstractDRMapper {
 

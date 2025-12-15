@@ -26,11 +26,11 @@ import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvToReportMapper;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.TRCsvToReport;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.SUSHIErrorModel;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.SUSHIErrorModel;
 
 @RunWith(Enclosed.class)
 public class MapperTest {

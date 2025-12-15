@@ -1,8 +1,8 @@
 package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.Collections;
-import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemAttributes.TypeEnum;
+import org.openapitools.counter50.model.COUNTERItemAttributes;
+import org.openapitools.counter50.model.COUNTERItemAttributes.TypeEnum;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 
