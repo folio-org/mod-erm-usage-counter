@@ -12,6 +12,7 @@
     <module>mod-erm-usage-counter50-client</module>
     <module>mod-erm-usage-counter-common</module>
     <module>mod-erm-usage-counter51</module>
+    <module>mod-erm-usage-counter51-client</module>
   </modules>
 
   <properties>
