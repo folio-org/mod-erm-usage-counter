@@ -18,10 +18,10 @@
     <junit-bom.version>5.12.0</junit-bom.version>
     <json-unit-assertj.version>4.1.0</json-unit-assertj.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
-    <client.package>org.openapitools.counter51client</client.package>
-    <client.directory>
+    <openapi-generator.package>org.openapitools.counter51client</openapi-generator.package>
+    <openapi-generator.directory>
       ${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/counter51client
-    </client.directory>
+    </openapi-generator.directory>
   </properties>
 
   <dependencyManagement>
@@ -160,8 +160,7 @@
               <configOptions>
                 <library>native</library>
                 <supportUrlQuery>false</supportUrlQuery>
-                <apiPackage>${client.package}.api</apiPackage>
-                <modelPackage>${client.package}.model</modelPackage>
+                <modelPackage>${openapi-generator.package}.model</modelPackage>
                 <additionalModelTypeAnnotations>
                   <![CDATA[@JsonInclude(JsonInclude.Include.NON_NULL)]]>
                 </additionalModelTypeAnnotations>
@@ -170,13 +169,23 @@
                 <containerDefaultToNull>true</containerDefaultToNull>
                 <openApiNullable>false</openApiNullable>
               </configOptions>
+              <generateApis>false</generateApis>
               <generateApiDocumentation>false</generateApiDocumentation>
               <generateApiTests>false</generateApiTests>
+              <generateModels>true</generateModels>
               <generateModelDocumentation>false</generateModelDocumentation>
               <generateModelTests>false</generateModelTests>
-              <apisToGenerate>
-                ServerStatus,MemberList,ReportList,PrPlatformReport,DrDatabaseReport,TrTitleReport,IrItemReport
-              </apisToGenerate>
+              <!--
+                Counter 5.1 OpenAPI spec uses oneOf/anyOf composition patterns (e.g., PRReportItemAllOfAttributePerformance)
+                which require these utility classes for proper deserialization:
+                - JSON.java: Provides JSON.isInstanceOf() and JSON.registerDescendants() methods used by oneOf/anyOf
+                  deserializers to determine which schema variant to instantiate
+                - AbstractOpenApiSchema.java: Base class for all oneOf/anyOf wrapper classes, provides schema
+                  management and instance tracking
+                - RFC3339DateFormat.java: Date format utility used by JSON.java for date/time serialization
+              -->
+              <generateSupportingFiles>true</generateSupportingFiles>
+              <supportingFilesToGenerate>JSON.java,AbstractOpenApiSchema.java,RFC3339DateFormat.java</supportingFilesToGenerate>
               <modelNameMappings>
                 <!-- clashes with java.lang.Exception in generated code -->
                 <modelNameMapping>Exception=CounterException</modelNameMapping>
@@ -197,7 +206,33 @@
             </goals>
             <configuration>
               <target>
-                <replace token="^10\\.[1-9][0-9]{2}[0-9.]*_/.+$" value="^10\\.[1-9][0-9]{2}[0-9.]*/.+$" dir="${client.directory}/model" includes="*.java" failOnNoReplacements="true" />
+                <!-- Fix DOI regex pattern -->
+                <replace token="^10\\.[1-9][0-9]{2}[0-9.]*_/.+$" value="^10\\.[1-9][0-9]{2}[0-9.]*/.+$" dir="${openapi-generator.directory}/model" includes="*.java" failOnNoReplacements="true" />
+              </target>
+            </configuration>
+          </execution>
+          <execution>
+            <id>remove-unused-imports</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <!-- Remove unused ApiClient import from generated models -->
+                <replaceregexp match="import ${openapi-generator.package}\.ApiClient;\s*(\r?\n)" replace="" flags="g" byline="false">
+                  <fileset dir="${openapi-generator.directory}/model" includes="*.java"/>
+                </replaceregexp>
+                <!-- Verify removal was successful (no files should still contain the import) -->
+                <fail message="ApiClient import removal incomplete - import still found in generated files">
+                  <condition>
+                    <resourcecount when="gt" count="0">
+                      <fileset dir="${openapi-generator.directory}/model">
+                        <contains text="import ${openapi-generator.package}.ApiClient;"/>
+                      </fileset>
+                    </resourcecount>
+                  </condition>
+                </fail>
               </target>
             </configuration>
           </execution>
