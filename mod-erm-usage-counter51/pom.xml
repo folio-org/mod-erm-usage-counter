@@ -18,9 +18,9 @@
     <junit-bom.version>5.12.0</junit-bom.version>
     <json-unit-assertj.version>4.1.0</json-unit-assertj.version>
     <commons-lang3.version>3.17.0</commons-lang3.version>
-    <openapi-generator.package>org.openapitools.counter51client</openapi-generator.package>
+    <openapi-generator.package>org.openapitools.counter51</openapi-generator.package>
     <openapi-generator.directory>
-      ${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/counter51client
+      ${project.build.directory}/generated-sources/openapi/src/main/java/org/openapitools/counter51
     </openapi-generator.directory>
   </properties>
 

@@ -20,11 +20,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.openapitools.counter51client.model.TR;
+import org.openapitools.counter51.model.TR;
 
 class ObjectMapperTest {
   private static final ObjectMapper objectMapper = getObjectMapper();
-  private static final String PACKAGE_PREFIX = "org.openapitools.counter51client.model.";
+  private static final String PACKAGE_PREFIX = "org.openapitools.counter51.model.";
 
   @ParameterizedTest
   @EnumSource(ReportType.class)

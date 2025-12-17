@@ -36,8 +36,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.openapitools.counter51client.model.AuthorsInner;
-import org.openapitools.counter51client.model.ItemID;
+import org.openapitools.counter51.model.AuthorsInner;
+import org.openapitools.counter51.model.ItemID;
 
 /**
  * Utility class for processing COUNTER 5.1 report fields. This class provides methods for
