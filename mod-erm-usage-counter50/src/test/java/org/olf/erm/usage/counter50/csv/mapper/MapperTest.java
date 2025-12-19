@@ -6,7 +6,6 @@ import static org.olf.erm.usage.counter50.TestUtil.sort;
 
 import com.google.common.collect.Streams;
 import com.google.common.io.Resources;
-import io.vertx.core.json.Json;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -178,7 +177,8 @@ public class MapperTest {
       String jsonString =
           Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
       Object expectedReport =
-          Json.decodeValue(jsonString, MapperTest.getCounterClass(actualReport));
+          Counter5Utils.getDefaultObjectMapper()
+              .readValue(jsonString, MapperTest.getCounterClass(actualReport));
 
       assertThat(actualReport).extracting("reportHeader.customerID").isNull();
       assertThat(actualReport)
@@ -236,7 +236,9 @@ public class MapperTest {
 
       String expectedReportStr =
           Resources.toString(Resources.getResource(input + ".json"), StandardCharsets.UTF_8);
-      Object expected = Json.decodeValue(expectedReportStr, getCounterClass(actual));
+      Object expected =
+          Counter5Utils.getDefaultObjectMapper()
+              .readValue(expectedReportStr, getCounterClass(actual));
 
       assertThat(actual)
           .usingRecursiveComparison()

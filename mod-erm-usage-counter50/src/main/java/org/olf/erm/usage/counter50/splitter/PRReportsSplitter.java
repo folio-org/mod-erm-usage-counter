@@ -1,6 +1,5 @@
 package org.olf.erm.usage.counter50.splitter;
 
-import io.vertx.core.json.Json;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,7 +19,8 @@ public class PRReportsSplitter extends AbstractReportsSplitter<COUNTERPlatformRe
     yms.forEach(
         ym -> {
           COUNTERPlatformReport clone =
-              Json.decodeValue(Json.encode(report), COUNTERPlatformReport.class);
+              Counter5Utils.getDefaultObjectMapper()
+                  .convertValue(report, COUNTERPlatformReport.class);
 
           COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
           period.setBeginDate(ym.atDay(1).format(DateTimeFormatter.ISO_DATE));

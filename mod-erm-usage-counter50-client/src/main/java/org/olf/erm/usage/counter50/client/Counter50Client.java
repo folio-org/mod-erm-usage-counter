@@ -1,8 +1,6 @@
 package org.olf.erm.usage.counter50.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -10,6 +8,7 @@ import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
+import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.counter50.model.COUNTERDatabaseReport;
 import org.openapitools.counter50.model.COUNTERItemReport;
 import org.openapitools.counter50.model.COUNTERPlatformReport;
@@ -21,7 +20,7 @@ import org.openapitools.counter50.model.COUNTERTitleReport;
  */
 public class Counter50Client implements AutoCloseable {
 
-  private static final ObjectMapper MAPPER = createObjectMapper();
+  private static final ObjectMapper MAPPER = Counter5Utils.getDefaultObjectMapper();
 
   protected final WebClient client;
   protected final boolean ownsClient;
@@ -83,13 +82,6 @@ public class Counter50Client implements AutoCloseable {
   public Counter50Client(
       Vertx vertx, WebClientOptions options, String baseUrl, Counter50Auth auth) {
     this(WebClient.create(vertx, options), baseUrl, auth, true);
-  }
-
-  private static ObjectMapper createObjectMapper() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    return mapper;
   }
 
   /**
