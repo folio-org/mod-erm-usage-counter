@@ -3,10 +3,7 @@ package org.olf.erm.usage.counter51.client;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.client.HttpRequest;
 
-/**
- * SUSHI authentication configuration.
- * Supports API key and/or Requestor ID authentication.
- */
+/** SUSHI authentication configuration. Supports API key and/or Requestor ID authentication. */
 public class Counter51Auth {
 
   private final String apiKey;
@@ -23,10 +20,7 @@ public class Counter51Auth {
     this.requestorId = requestorId;
   }
 
-  /**
-   * Apply authentication to HTTP request.
-   * Adds api_key and/or requestor_id query parameters.
-   */
+  /** Apply authentication to HTTP request. Adds api_key and/or requestor_id query parameters. */
   public void applyAuth(HttpRequest<Buffer> request) {
     if (apiKey != null && !apiKey.isEmpty()) {
       request.addQueryParam("api_key", apiKey);

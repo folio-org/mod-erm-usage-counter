@@ -10,7 +10,6 @@ import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import java.util.List;
 import org.olf.erm.usage.counter51.Counter51Utils;
-import org.openapitools.counter51.model.CounterException;
 import org.openapitools.counter51.model.DR;
 import org.openapitools.counter51.model.IR;
 import org.openapitools.counter51.model.Member;
@@ -155,14 +154,7 @@ public class Counter51Client implements AutoCloseable {
   public Future<DR> getReportsDR(
       String customerId, String beginDate, String endDate, String platform) {
     return makeRequest(
-        "/reports/dr",
-        customerId,
-        beginDate,
-        endDate,
-        platform,
-        "Access_Method",
-        null,
-        DR.class);
+        "/reports/dr", customerId, beginDate, endDate, platform, "Access_Method", null, DR.class);
   }
 
   /**
@@ -177,14 +169,7 @@ public class Counter51Client implements AutoCloseable {
   public Future<PR> getReportsPR(
       String customerId, String beginDate, String endDate, String platform) {
     return makeRequest(
-        "/reports/pr",
-        customerId,
-        beginDate,
-        endDate,
-        platform,
-        "Access_Method",
-        null,
-        PR.class);
+        "/reports/pr", customerId, beginDate, endDate, platform, "Access_Method", null, PR.class);
   }
 
   /**

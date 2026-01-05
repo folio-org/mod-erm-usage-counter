@@ -102,7 +102,8 @@ public class CsvHeaderToReportHeader {
               if (split.length < 3) {
                 log.error(
                     String.format(
-                        "Exception needs to have at least 3 entries: code, severity, message. Got exception: %s",
+                        "Exception needs to have at least 3 entries: code, severity, message. Got"
+                            + " exception: %s",
                         s));
               } else {
                 sushiErrorModel.setSeverity(SeverityEnum.fromValue(split[0].trim()));

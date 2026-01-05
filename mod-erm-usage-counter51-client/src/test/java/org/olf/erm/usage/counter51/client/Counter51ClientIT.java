@@ -60,8 +60,7 @@ class Counter51ClientIT {
           "Registry_Record": "https://registry.countermetrics.org/platform/00000000-0000-0000-0000-000000000000"
         }
         """,
-        reportName,
-        reportId);
+        reportName, reportId);
   }
 
   @Test
@@ -119,7 +118,8 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
@@ -155,7 +155,8 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Item Report", "IR"));
+        """
+            .formatted(validReportHeader("Item Report", "IR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/ir"))
@@ -189,7 +190,8 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Database Report", "DR"));
+        """
+            .formatted(validReportHeader("Database Report", "DR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/dr"))
@@ -220,7 +222,8 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Platform Report", "PR"));
+        """
+            .formatted(validReportHeader("Platform Report", "PR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/pr"))
@@ -327,11 +330,13 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo(expectedPath))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     String testUrl = wmInfo.getHttpBaseUrl() + urlSuffix;
     client = new Counter51Client(vertx, testUrl, null);
@@ -355,12 +360,14 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
             .withQueryParam("platform", equalTo("TestPlatform"))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     client = new Counter51Client(vertx, wmInfo.getHttpBaseUrl(), null);
 
@@ -385,11 +392,13 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     client = new Counter51Client(vertx, wmInfo.getHttpBaseUrl(), null);
 
@@ -414,11 +423,13 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     client = new Counter51Client(vertx, wmInfo.getHttpBaseUrl(), null);
 
@@ -443,11 +454,13 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     client = new Counter51Client(vertx, wmInfo.getHttpBaseUrl(), null);
 
@@ -473,11 +486,13 @@ class Counter51ClientIT {
           "Report_Header": %s,
           "Report_Items": []
         }
-        """.formatted(validReportHeader("Title Report", "TR"));
+        """
+            .formatted(validReportHeader("Title Report", "TR"));
 
     stubFor(
         get(urlPathEqualTo("/r51/reports/tr"))
-            .willReturn(ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
+            .willReturn(
+                ok().withHeader("Content-Type", "application/json").withBody(responseJson)));
 
     Counter51Auth auth = new Counter51Auth("", "");
     client = new Counter51Client(vertx, wmInfo.getHttpBaseUrl(), auth);
@@ -642,7 +657,8 @@ class Counter51ClientIT {
                 members -> {
                   assertThat(members).isNotNull();
                   verify(
-                      getRequestedFor(urlPathEqualTo("/r51/members")).withoutQueryParam("platform"));
+                      getRequestedFor(urlPathEqualTo("/r51/members"))
+                          .withoutQueryParam("platform"));
                   ctx.completeNow();
                 }));
   }
@@ -767,7 +783,9 @@ class Counter51ClientIT {
             ctx.succeeding(
                 reports -> {
                   assertThat(reports).isNotNull();
-                  verify(getRequestedFor(urlPathEqualTo("/r51/reports")).withoutQueryParam("platform"));
+                  verify(
+                      getRequestedFor(urlPathEqualTo("/r51/reports"))
+                          .withoutQueryParam("platform"));
                   ctx.completeNow();
                 }));
   }

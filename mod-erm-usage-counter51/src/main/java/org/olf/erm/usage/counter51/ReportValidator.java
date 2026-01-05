@@ -14,8 +14,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 class ReportValidator {
-  private static final String REPORT_CLASS_NAME_TEMPLATE =
-      "org.openapitools.counter51.model.%s";
+  private static final String REPORT_CLASS_NAME_TEMPLATE = "org.openapitools.counter51.model.%s";
   private final ObjectMapper objectMapper;
 
   public ReportValidator(ObjectMapper objectMapper) {

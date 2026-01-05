@@ -342,8 +342,7 @@ class Counter50ClientIT {
             ctx.succeeding(
                 report -> {
                   verify(
-                      getRequestedFor(urlPathEqualTo("/reports/tr"))
-                          .withoutQueryParam("platform"));
+                      getRequestedFor(urlPathEqualTo("/reports/tr")).withoutQueryParam("platform"));
                   ctx.completeNow();
                 }));
   }
@@ -363,8 +362,7 @@ class Counter50ClientIT {
             ctx.succeeding(
                 report -> {
                   verify(
-                      getRequestedFor(urlPathEqualTo("/reports/tr"))
-                          .withoutQueryParam("platform"));
+                      getRequestedFor(urlPathEqualTo("/reports/tr")).withoutQueryParam("platform"));
                   ctx.completeNow();
                 }));
   }
