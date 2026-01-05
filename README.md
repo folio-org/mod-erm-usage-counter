@@ -29,7 +29,7 @@ The client modules expose a simplified API that covers common use cases while hi
 
 **Methods (both clients)**: `getReportsTR`, `getReportsIR`, `getReportsDR`, `getReportsPR`
 
-**Additional methods (`counter51-client`)**: `getStatus()`, `getMembers)`, `getReports()`
+**Additional methods (`counter51-client`)**: `getStatus()`, `getMembers()`, `getReports()`
 
 **Exposed Parameters:**
 
