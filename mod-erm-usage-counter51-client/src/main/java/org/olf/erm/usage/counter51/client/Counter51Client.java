@@ -9,6 +9,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.WebClientOptions;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.olf.erm.usage.counter51.Counter51Utils;
 import org.openapitools.counter51.model.DR;
 import org.openapitools.counter51.model.IR;
@@ -25,6 +26,7 @@ import org.openapitools.counter51.model.TR;
 public class Counter51Client implements AutoCloseable {
 
   private static final ObjectMapper MAPPER = createObjectMapper();
+  private static final Pattern TRAILING_SLASHES_PATTERN = Pattern.compile("/+$");
 
   protected final WebClient client;
   protected final boolean ownsClient;
@@ -44,7 +46,7 @@ public class Counter51Client implements AutoCloseable {
     this.client = client;
     this.ownsClient = ownsClient;
     // Remove all trailing slashes
-    String normalizedUrl = baseUrl.replaceAll("/+$", "");
+    String normalizedUrl = TRAILING_SLASHES_PATTERN.matcher(baseUrl).replaceAll("");
     // Add /r51 suffix if not already present (case-insensitive check)
     if (!normalizedUrl.toLowerCase().endsWith("/r51")) {
       normalizedUrl += "/r51";
@@ -278,6 +280,7 @@ public class Counter51Client implements AutoCloseable {
             });
   }
 
+  @SuppressWarnings("java:S107") // Ignore parameter count in favor of reduced complexity
   protected <T> Future<T> makeRequest(
       String path,
       String customerId,

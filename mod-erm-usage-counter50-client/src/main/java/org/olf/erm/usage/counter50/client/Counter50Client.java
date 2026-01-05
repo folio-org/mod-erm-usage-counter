@@ -172,6 +172,7 @@ public class Counter50Client implements AutoCloseable {
         COUNTERPlatformReport.class);
   }
 
+  @SuppressWarnings("java:S107") // Ignore parameter count in favor of reduced complexity
   protected <T> Future<T> makeRequest(
       String path,
       String customerId,
