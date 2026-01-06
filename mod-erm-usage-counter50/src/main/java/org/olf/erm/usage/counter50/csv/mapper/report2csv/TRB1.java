@@ -5,9 +5,9 @@ import static org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor
 
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.COUNTERItemIdentifiers.TypeEnum;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers.TypeEnum;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
 
 public class TRB1 extends AbstractTRMapper {
 

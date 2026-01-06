@@ -19,10 +19,10 @@ import org.olf.erm.usage.counter50.csv.mapper.report2csv.TRB3;
 import org.olf.erm.usage.counter50.csv.mapper.report2csv.TRJ1;
 import org.olf.erm.usage.counter50.csv.mapper.report2csv.TRJ3;
 import org.olf.erm.usage.counter50.csv.mapper.report2csv.TRJ4;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
 
 public final class MapperFactory {
 

@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 import org.olf.erm.usage.counter50.csv.mapper.csv2report.CsvHeaderToReportHeader.CsvHeaderParseException;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class CsvHeaderToReportHeaderTest {
 

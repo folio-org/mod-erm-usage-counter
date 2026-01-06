@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERItemUsage;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERItemUsage;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class IRReportsMerger extends ReportsMerger<COUNTERItemReport> {
 

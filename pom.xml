@@ -5,12 +5,14 @@
   <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter</artifactId>
   <packaging>pom</packaging>
-  <version>5.1.0-SNAPSHOT</version>
+  <version>6.0.0-SNAPSHOT</version>
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
+    <module>mod-erm-usage-counter50-client</module>
     <module>mod-erm-usage-counter-common</module>
     <module>mod-erm-usage-counter51</module>
+    <module>mod-erm-usage-counter51-client</module>
   </modules>
 
   <properties>
@@ -18,6 +20,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.release>21</maven.compiler.release>
     <junit.version>4.13.2</junit.version>
+    <junit5.version>5.10.1</junit5.version>
+    <wiremock.version>3.3.1</wiremock.version>
     <slf4j.version>2.0.17</slf4j.version>
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.11.0</super-csv.beanutils.version>
@@ -76,16 +80,30 @@
         <scope>import</scope>
         <type>pom</type>
       </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>${junit5.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.vintage</groupId>
+        <artifactId>junit-vintage-engine</artifactId>
+        <version>${junit5.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.wiremock</groupId>
+        <artifactId>wiremock</artifactId>
+        <version>${wiremock.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
@@ -112,6 +130,19 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.4.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>3.4.0</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

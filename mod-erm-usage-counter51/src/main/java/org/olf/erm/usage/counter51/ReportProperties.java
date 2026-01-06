@@ -7,21 +7,21 @@ import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
 
 import java.util.List;
 import java.util.Map;
-import org.openapitools.counter51client.model.DRReportAttributes;
-import org.openapitools.counter51client.model.DRReportFilters;
-import org.openapitools.counter51client.model.IRReportAttributes;
-import org.openapitools.counter51client.model.IRReportFilters;
-import org.openapitools.counter51client.model.ItemParentItem;
-import org.openapitools.counter51client.model.ItemReportItem;
-import org.openapitools.counter51client.model.PRReportAttributes;
-import org.openapitools.counter51client.model.PRReportFilters;
-import org.openapitools.counter51client.model.TRReportAttributes;
-import org.openapitools.counter51client.model.TRReportAttributes.AttributesToShowEnum;
-import org.openapitools.counter51client.model.TRReportFilters;
-import org.openapitools.counter51client.model.TRReportFilters.AccessMethodEnum;
-import org.openapitools.counter51client.model.TRReportFilters.AccessTypeEnum;
-import org.openapitools.counter51client.model.TRReportFilters.DataTypeEnum;
-import org.openapitools.counter51client.model.TRReportFilters.MetricTypeEnum;
+import org.openapitools.counter51.model.DRReportAttributes;
+import org.openapitools.counter51.model.DRReportFilters;
+import org.openapitools.counter51.model.IRReportAttributes;
+import org.openapitools.counter51.model.IRReportFilters;
+import org.openapitools.counter51.model.ItemParentItem;
+import org.openapitools.counter51.model.ItemReportItem;
+import org.openapitools.counter51.model.PRReportAttributes;
+import org.openapitools.counter51.model.PRReportFilters;
+import org.openapitools.counter51.model.TRReportAttributes;
+import org.openapitools.counter51.model.TRReportAttributes.AttributesToShowEnum;
+import org.openapitools.counter51.model.TRReportFilters;
+import org.openapitools.counter51.model.TRReportFilters.AccessMethodEnum;
+import org.openapitools.counter51.model.TRReportFilters.AccessTypeEnum;
+import org.openapitools.counter51.model.TRReportFilters.DataTypeEnum;
+import org.openapitools.counter51.model.TRReportFilters.MetricTypeEnum;
 
 enum ReportProperties {
   TR_J1(

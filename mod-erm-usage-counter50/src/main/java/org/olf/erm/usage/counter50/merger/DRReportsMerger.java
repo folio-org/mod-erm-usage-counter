@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERDatabaseUsage;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERDatabaseUsage;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class DRReportsMerger extends ReportsMerger<COUNTERDatabaseReport> {
 

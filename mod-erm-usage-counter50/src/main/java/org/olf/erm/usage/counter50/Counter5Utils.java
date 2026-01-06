@@ -1,12 +1,13 @@
 package org.olf.erm.usage.counter50;
 
-import static org.openapitools.client.model.COUNTERTitleReport.JSON_PROPERTY_REPORT_HEADER;
-import static org.openapitools.client.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
+import static org.openapitools.counter50.model.COUNTERTitleReport.JSON_PROPERTY_REPORT_HEADER;
+import static org.openapitools.counter50.model.SUSHIReportHeader.JSON_PROPERTY_REPORT_I_D;
 
-import io.vertx.core.json.DecodeException;
-import io.vertx.core.json.EncodeException;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -26,12 +27,12 @@ import org.olf.erm.usage.counter50.splitter.DRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.IRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.PRReportsSplitter;
 import org.olf.erm.usage.counter50.splitter.TRReportsSplitter;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.SUSHIReportHeader;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,25 @@ public class Counter5Utils {
 
   private static final List<String> PREFIXES = List.of("PR", "DR", "TR", "IR");
 
+  private static final ObjectMapper OBJECT_MAPPER =
+      new ObjectMapper()
+          .registerModule(new JavaTimeModule())
+          .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
   private Counter5Utils() {}
+
+  /**
+   * Retrieves the default {@link ObjectMapper} instance used for handling JSON operations within
+   * the COUNTER 5.0 report models.
+   *
+   * <p>This instance is pre-configured with necessary settings to ensure compatibility with the
+   * specific JSON structures used in COUNTER 5.0 reports.
+   *
+   * @return the default {@link ObjectMapper} instance.
+   */
+  public static ObjectMapper getDefaultObjectMapper() {
+    return OBJECT_MAPPER;
+  }
 
   /**
    * Returns {@link SUSHIReportHeader} from json encoded counter 5 report.
@@ -53,9 +72,10 @@ public class Counter5Utils {
   public static SUSHIReportHeader getSushiReportHeader(String jsonContent)
       throws Counter5UtilsException {
     try {
-      JsonObject header = new JsonObject(jsonContent).getJsonObject(JSON_PROPERTY_REPORT_HEADER);
-      return Json.decodeValue(Json.encode(header), SUSHIReportHeader.class);
-    } catch (DecodeException | EncodeException e) {
+      JsonNode rootNode = getDefaultObjectMapper().readTree(jsonContent);
+      JsonNode headerNode = rootNode.get(JSON_PROPERTY_REPORT_HEADER);
+      return getDefaultObjectMapper().treeToValue(headerNode, SUSHIReportHeader.class);
+    } catch (JsonProcessingException e) {
       throw new Counter5UtilsException(
           String.format("Error parsing SushiReportHeader: %s", e.getMessage()), e);
     }
@@ -214,25 +234,26 @@ public class Counter5Utils {
   public static Object fromJSON(String json) throws Counter5UtilsException {
     Object result = null;
     try {
-      JsonObject jsonObject = new JsonObject(json);
+      JsonNode jsonNode = getDefaultObjectMapper().readTree(json);
       String reportID =
-          jsonObject
-              .getJsonObject(JSON_PROPERTY_REPORT_HEADER)
-              .getString(JSON_PROPERTY_REPORT_I_D)
+          jsonNode
+              .get(JSON_PROPERTY_REPORT_HEADER)
+              .get(JSON_PROPERTY_REPORT_I_D)
+              .asText()
               .toUpperCase();
       if (reportID.startsWith("TR")) {
-        result = Json.decodeValue(json, COUNTERTitleReport.class);
+        result = getDefaultObjectMapper().readValue(json, COUNTERTitleReport.class);
       } else if (reportID.startsWith("PR")) {
-        result = Json.decodeValue(json, COUNTERPlatformReport.class);
+        result = getDefaultObjectMapper().readValue(json, COUNTERPlatformReport.class);
       } else if (reportID.startsWith("IR")) {
-        result = Json.decodeValue(json, COUNTERItemReport.class);
+        result = getDefaultObjectMapper().readValue(json, COUNTERItemReport.class);
       } else if (reportID.startsWith("DR")) {
-        result = Json.decodeValue(json, COUNTERDatabaseReport.class);
+        result = getDefaultObjectMapper().readValue(json, COUNTERDatabaseReport.class);
       } else {
         throw new Counter5UtilsException(
             String.format("Error converting report. Unknown report type: %s", reportID));
       }
-    } catch (DecodeException | Counter5UtilsException e) {
+    } catch (JsonProcessingException | Counter5UtilsException e) {
       LOG.error(e.getMessage(), e);
     }
     return result;

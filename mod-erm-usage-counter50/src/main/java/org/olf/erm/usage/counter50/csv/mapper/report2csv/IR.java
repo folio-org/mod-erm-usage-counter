@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.csv.cellprocessor.PublisherIDProcessor;
-import org.openapitools.client.model.COUNTERItemAttributes;
-import org.openapitools.client.model.COUNTERItemContributors;
-import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
-import org.openapitools.client.model.COUNTERItemDates;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
-import org.openapitools.client.model.COUNTERItemParent;
-import org.openapitools.client.model.COUNTERItemReport;
-import org.openapitools.client.model.COUNTERItemUsage;
+import org.openapitools.counter50.model.COUNTERItemAttributes;
+import org.openapitools.counter50.model.COUNTERItemContributors;
+import org.openapitools.counter50.model.COUNTERItemContributors.TypeEnum;
+import org.openapitools.counter50.model.COUNTERItemDates;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers;
+import org.openapitools.counter50.model.COUNTERItemParent;
+import org.openapitools.counter50.model.COUNTERItemReport;
+import org.openapitools.counter50.model.COUNTERItemUsage;
 
 @SuppressWarnings("java:S125")
 public class IR extends AbstractIRMapper {

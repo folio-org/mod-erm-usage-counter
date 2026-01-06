@@ -17,9 +17,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.Counter5Utils.Counter5UtilsException;
-import org.openapitools.client.model.COUNTERItemPerformanceInstance;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.COUNTERItemPerformanceInstance;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
 
 @RunWith(Parameterized.class)
 public class TRConverterTest {

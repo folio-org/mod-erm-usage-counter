@@ -2,12 +2,12 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.Collections;
 import java.util.List;
-import org.openapitools.client.model.COUNTERItemComponent;
-import org.openapitools.client.model.COUNTERItemComponent.DataTypeEnum;
-import org.openapitools.client.model.COUNTERItemContributors;
-import org.openapitools.client.model.COUNTERItemContributors.TypeEnum;
-import org.openapitools.client.model.COUNTERItemDates;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
+import org.openapitools.counter50.model.COUNTERItemComponent;
+import org.openapitools.counter50.model.COUNTERItemComponent.DataTypeEnum;
+import org.openapitools.counter50.model.COUNTERItemContributors;
+import org.openapitools.counter50.model.COUNTERItemContributors.TypeEnum;
+import org.openapitools.counter50.model.COUNTERItemDates;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 

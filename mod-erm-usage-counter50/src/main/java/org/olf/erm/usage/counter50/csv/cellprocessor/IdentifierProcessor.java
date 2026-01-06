@@ -2,7 +2,7 @@ package org.olf.erm.usage.counter50.csv.cellprocessor;
 
 import java.util.List;
 import java.util.Objects;
-import org.openapitools.client.model.COUNTERItemIdentifiers;
+import org.openapitools.counter50.model.COUNTERItemIdentifiers;
 
 public final class IdentifierProcessor {
 

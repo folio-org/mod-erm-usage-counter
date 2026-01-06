@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERPlatformReport;
-import org.openapitools.client.model.COUNTERPlatformUsage;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.COUNTERPlatformReport;
+import org.openapitools.counter50.model.COUNTERPlatformUsage;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
 public class PRReportsMerger extends ReportsMerger<COUNTERPlatformReport> {
 

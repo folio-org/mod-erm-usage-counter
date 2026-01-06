@@ -1,14 +1,14 @@
 package org.olf.erm.usage.counter50.converter;
 
-import io.vertx.core.json.Json;
+import org.olf.erm.usage.counter50.Counter5Utils;
 import org.olf.erm.usage.counter50.converter.dr.DRD1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB3Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ3Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRJ4Converter;
-import org.openapitools.client.model.COUNTERDatabaseReport;
-import org.openapitools.client.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERDatabaseReport;
+import org.openapitools.counter50.model.COUNTERTitleReport;
 
 public class ReportConverter {
 
@@ -34,7 +34,8 @@ public class ReportConverter {
   }
 
   public COUNTERTitleReport convert(COUNTERTitleReport report, String reportID) {
-    COUNTERTitleReport clone = Json.decodeValue(Json.encode(report), COUNTERTitleReport.class);
+    COUNTERTitleReport clone =
+        Counter5Utils.getDefaultObjectMapper().convertValue(report, COUNTERTitleReport.class);
 
     Converter<COUNTERTitleReport> converter;
     switch (reportID.toLowerCase()) {
@@ -62,7 +63,7 @@ public class ReportConverter {
 
   public COUNTERDatabaseReport convert(COUNTERDatabaseReport report, String reportID) {
     COUNTERDatabaseReport clone =
-        Json.decodeValue(Json.encode(report), COUNTERDatabaseReport.class);
+        Counter5Utils.getDefaultObjectMapper().convertValue(report, COUNTERDatabaseReport.class);
 
     if ("dr_d1".equalsIgnoreCase(reportID)) {
       return new DRD1Converter().convert(clone);

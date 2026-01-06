@@ -1,16 +1,15 @@
 package org.olf.erm.usage.counter50.splitter;
 
-import io.vertx.core.json.Json;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.olf.erm.usage.counter50.Counter5Utils;
-import org.openapitools.client.model.COUNTERItemPerformance;
-import org.openapitools.client.model.COUNTERItemPerformancePeriod;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.COUNTERTitleUsage;
-import org.openapitools.client.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.COUNTERItemPerformance;
+import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
 
 public class TRReportsSplitter extends AbstractReportsSplitter<COUNTERTitleReport> {
 
@@ -21,7 +20,7 @@ public class TRReportsSplitter extends AbstractReportsSplitter<COUNTERTitleRepor
     yms.forEach(
         ym -> {
           COUNTERTitleReport clone =
-              Json.decodeValue(Json.encode(report), COUNTERTitleReport.class);
+              Counter5Utils.getDefaultObjectMapper().convertValue(report, COUNTERTitleReport.class);
 
           COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
           period.setBeginDate(ym.atDay(1).format(DateTimeFormatter.ISO_DATE));

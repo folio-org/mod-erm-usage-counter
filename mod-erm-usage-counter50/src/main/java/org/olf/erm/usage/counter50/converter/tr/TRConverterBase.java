@@ -12,8 +12,8 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import org.olf.erm.usage.counter50.converter.Converter;
 import org.olf.erm.usage.counter50.converter.ConverterUtils;
-import org.openapitools.client.model.COUNTERTitleReport;
-import org.openapitools.client.model.COUNTERTitleUsage;
+import org.openapitools.counter50.model.COUNTERTitleReport;
+import org.openapitools.counter50.model.COUNTERTitleUsage;
 
 public abstract class TRConverterBase implements Converter<COUNTERTitleReport> {
 

@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.olf.erm.usage.counter50.csv.mapper.MapperException;
-import org.openapitools.client.model.SUSHIReportHeader;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.supercsv.io.CsvListReader;

@@ -6,8 +6,8 @@ import com.google.common.base.Splitter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers;
-import org.openapitools.client.model.COUNTERPublisherIdentifiers.TypeEnum;
+import org.openapitools.counter50.model.COUNTERPublisherIdentifiers;
+import org.openapitools.counter50.model.COUNTERPublisherIdentifiers.TypeEnum;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.util.CsvContext;
 
