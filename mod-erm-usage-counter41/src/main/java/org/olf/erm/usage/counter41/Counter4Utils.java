@@ -229,7 +229,8 @@ public class Counter4Utils {
 
     if (!Stream.of(clonedReports).allMatch(r -> r.getCustomer().size() == 1)) {
       throw new ReportMergeException(
-          "At least one report contains invalid customer definitions (expecting one customer per report)");
+          "At least one report contains invalid customer definitions (expecting one customer per"
+              + " report)");
     }
 
     // check that provided reports have the same attributes

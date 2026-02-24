@@ -160,7 +160,6 @@
         <artifactId>spotless-maven-plugin</artifactId>
         <version>${spotless.version}</version>
         <configuration>
-          <ratchetFrom>origin/master</ratchetFrom>
           <java>
             <googleJavaFormat>
               <version>${google-java-format.version}</version>
@@ -170,6 +169,16 @@
             </googleJavaFormat>
           </java>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>
+              compile
+            </phase>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
