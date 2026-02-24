@@ -175,7 +175,7 @@
               <goal>check</goal>
             </goals>
             <phase>
-              compile
+              verify
             </phase>
           </execution>
         </executions>
