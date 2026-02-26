@@ -11,6 +11,8 @@ import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_UNSU
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.Comparator;
+import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 class ReportValidator {
@@ -72,12 +74,33 @@ class ReportValidator {
     ObjectNode expectedReportAttributes =
         objectMapper.convertValue(
             reportType.getProperties().getReportAttributes(), ObjectNode.class);
-    if (reportAttributes.equals(expectedReportAttributes)) {
+    if (normalize(reportAttributes).equals(normalize(expectedReportAttributes))) {
       return ValidationResult.success();
     } else {
       return ValidationResult.error(
           ERR_REPORT_ATTRIBUTES_TEMPLATE, expectedReportAttributes.toString());
     }
+  }
+
+  /**
+   * Normalizes report attributes by sorting array values, so that element order does not affect
+   * equality comparisons.
+   */
+  private static ObjectNode normalize(JsonNode node) {
+    ObjectNode result = node.deepCopy();
+    node.fields()
+        .forEachRemaining(
+            entry -> {
+              if (entry.getValue().isArray()) {
+                result
+                    .putArray(entry.getKey())
+                    .addAll(
+                        StreamSupport.stream(entry.getValue().spliterator(), false)
+                            .sorted(Comparator.comparing(JsonNode::toString))
+                            .toList());
+              }
+            });
+    return result;
   }
 
   private Class<?> getReportClass(ReportType reportType) throws ClassNotFoundException {
