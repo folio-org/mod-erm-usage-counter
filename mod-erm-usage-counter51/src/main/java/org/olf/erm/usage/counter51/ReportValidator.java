@@ -83,10 +83,10 @@ class ReportValidator {
   }
 
   /**
-   * Normalizes report attributes by sorting array values, so that element order does not affect
-   * equality comparisons.
+   * Normalizes a JSON object by sorting array values, so that element order does not affect
+   * equality comparisons. Recurses into nested objects.
    */
-  private static ObjectNode normalize(JsonNode node) {
+  static ObjectNode normalize(JsonNode node) {
     ObjectNode result = node.deepCopy();
     node.fields()
         .forEachRemaining(
@@ -98,6 +98,8 @@ class ReportValidator {
                         StreamSupport.stream(entry.getValue().spliterator(), false)
                             .sorted(Comparator.comparing(JsonNode::toString))
                             .toList());
+              } else if (entry.getValue().isObject()) {
+                result.set(entry.getKey(), normalize(entry.getValue()));
               }
             });
     return result;
