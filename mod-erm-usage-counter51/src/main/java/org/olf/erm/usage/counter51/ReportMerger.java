@@ -58,7 +58,12 @@ class ReportMerger {
         reports.stream().map(on -> on.withObject(REPORT_HEADER)).map(ObjectNode::deepCopy).toList();
 
     boolean reportsHaveUniformHeaderProperties =
-        reportHeaders.stream().map(this::removeHeaderProperties).distinct().count() == 1;
+        reportHeaders.stream()
+                .map(this::removeHeaderProperties)
+                .map(ReportValidator::normalize)
+                .distinct()
+                .count()
+            == 1;
     if (!reportsHaveUniformHeaderProperties) {
       throw new IllegalArgumentException(MSG_PROPERTIES_DO_NOT_MATCH);
     }

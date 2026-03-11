@@ -1,10 +1,15 @@
 package org.olf.erm.usage.counter50.merger;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.counter50.model.SUSHIErrorModel;
@@ -46,7 +51,7 @@ public abstract class ReportsMerger<T> {
             .map(SUSHIReportHeader::getReportAttributes)
             .filter(Objects::nonNull)
             .flatMap(Collection::stream)
-            .distinct()
+            .filter(distinctByNormalized(ReportsMerger::normalizeReportAttribute))
             .collect(Collectors.toList());
     result.setReportAttributes(reportAttributes.isEmpty() ? null : reportAttributes);
 
@@ -71,7 +76,7 @@ public abstract class ReportsMerger<T> {
                 f ->
                     !(f.getName().equalsIgnoreCase("begin_date")
                         || f.getName().equalsIgnoreCase("end_date")))
-            .distinct()
+            .filter(distinctByNormalized(ReportsMerger::normalizeReportFilter))
             .collect(Collectors.toList());
 
     List<LocalDate> allDates =
@@ -92,5 +97,35 @@ public abstract class ReportsMerger<T> {
     filtersWithoutDates.add(beginFilter);
     filtersWithoutDates.add(endFilter);
     return filtersWithoutDates;
+  }
+
+  private static <T> Predicate<T> distinctByNormalized(UnaryOperator<T> normalizer) {
+    Set<T> seen = new LinkedHashSet<>();
+    return t -> seen.add(normalizer.apply(t));
+  }
+
+  private static String normalizePipeDelimitedValue(String value) {
+    if (value == null || !value.contains("|")) {
+      return value;
+    }
+    String[] segments = value.split("\\|");
+    Arrays.sort(segments);
+    return String.join("|", segments);
+  }
+
+  private static SUSHIReportHeaderReportAttributes normalizeReportAttribute(
+      SUSHIReportHeaderReportAttributes attr) {
+    SUSHIReportHeaderReportAttributes normalized = new SUSHIReportHeaderReportAttributes();
+    normalized.setName(attr.getName());
+    normalized.setValue(normalizePipeDelimitedValue(attr.getValue()));
+    return normalized;
+  }
+
+  private static SUSHIReportHeaderReportFilters normalizeReportFilter(
+      SUSHIReportHeaderReportFilters filter) {
+    SUSHIReportHeaderReportFilters normalized = new SUSHIReportHeaderReportFilters();
+    normalized.setName(filter.getName());
+    normalized.setValue(normalizePipeDelimitedValue(filter.getValue()));
+    return normalized;
   }
 }

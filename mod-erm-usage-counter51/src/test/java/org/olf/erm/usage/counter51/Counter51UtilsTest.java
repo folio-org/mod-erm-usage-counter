@@ -7,10 +7,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.olf.erm.usage.counter51.Counter51Utils.mergeReports;
 import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
 import static org.olf.erm.usage.counter51.Counter51Utils.writeReportAsCsv;
+import static org.olf.erm.usage.counter51.JsonProperties.ATTRIBUTES_TO_SHOW;
 import static org.olf.erm.usage.counter51.JsonProperties.BEGIN_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.CREATED;
 import static org.olf.erm.usage.counter51.JsonProperties.END_DATE;
 import static org.olf.erm.usage.counter51.JsonProperties.PERFORMANCE;
+import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
@@ -28,12 +30,14 @@ import static org.olf.erm.usage.counter51.TestUtil.removeBOMAndTrailingDelimiter
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -88,6 +92,33 @@ class Counter51UtilsTest {
 
     assertThatThrownBy(() -> mergeReports(Arrays.asList(report1, report2)))
         .hasMessage(MSG_ERROR_MERGING_REPORT + MSG_PROPERTIES_DO_NOT_MATCH);
+  }
+
+  @ParameterizedTest
+  @EnumSource(
+      value = ReportType.class,
+      names = {"TR", "DR", "IR", "PR"})
+  void testMergeReportsWithReorderedReportAttributes(ReportType reportType) throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(reportType).toFile());
+    List<ObjectNode> splitReports = splitReport(report);
+
+    ArrayNode attributesToShow =
+        (ArrayNode)
+            splitReports
+                .get(0)
+                .path(REPORT_HEADER)
+                .path(REPORT_ATTRIBUTES)
+                .path(ATTRIBUTES_TO_SHOW);
+
+    List<JsonNode> reversedElements =
+        StreamSupport.stream(attributesToShow.spliterator(), false).toList().reversed();
+    attributesToShow.removeAll().addAll(reversedElements);
+
+    ObjectNode mergedReport = mergeReports(splitReports);
+    assertThatJson(mergedReport)
+        .when(IGNORING_ARRAY_ORDER)
+        .whenIgnoringPaths(REPORT_HEADER + "." + CREATED)
+        .isEqualTo(report);
   }
 
   @Test
