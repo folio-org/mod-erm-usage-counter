@@ -1,3 +1,14 @@
+## 6.0.0
+* [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON
+* [MODEUSCNT-62](https://folio-org.atlassian.net/browse/MODEUSCNT-62) Upgrade commons-beanutils from 1.10.1 to 1.11.0 fixing CVE-2025-48734
+* [MODEUSCNT-65](https://folio-org.atlassian.net/browse/MODEUSCNT-65) Separate COUNTER client models from HTTP client implementation
+* [MODEUSCNT-67](https://folio-org.atlassian.net/browse/MODEUSCNT-67) Update dependencies to address multiple CVEs
+* [MODEUSCNT-64](https://folio-org.atlassian.net/browse/MODEUSCNT-64) Upgrade Vert.x dependency to v5.0.6
+* [MODEUSCNT-68](https://folio-org.atlassian.net/browse/MODEUSCNT-68) Migrate from Jenkins to Github Workflows
+* [MODEUSCNT-69](https://folio-org.atlassian.net/browse/MODEUSCNT-69) Use order-insensitive comparison for R5.1 report attribute arrays
+* [MODEUSCNT-70](https://folio-org.atlassian.net/browse/MODEUSCNT-70) Use order-insensitive comparison in report merging logic
+* [MODEUSCNT-71](https://folio-org.atlassian.net/browse/MODEUSCNT-71) Bump Vert.x to 5.0.10 and Jackson to 2.21.2
+
 ## 5.0.0
 * [MODEUSCNT-48](https://folio-org.atlassian.net/browse/MODEUSCNT-48) Add models and client for COUNTER 5.1
 * [MODEUSCNT-49](https://folio-org.atlassian.net/browse/MODEUSCNT-49) Add utility methods to split/merge COUNTER 5.1 reports
