@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.olf</groupId>
     <artifactId>mod-erm-usage-counter</artifactId>
-    <version>6.0.0-SNAPSHOT</version>
+    <version>6.0.0</version>
   </parent>
 
   <artifactId>mod-erm-usage-counter51</artifactId>
@@ -206,14 +206,14 @@
               <target>
                 <!-- Remove unused ApiClient import from generated models -->
                 <replaceregexp match="import ${openapi-generator.package}\.ApiClient;\s*(\r?\n)" replace="" flags="g" byline="false">
-                  <fileset dir="${openapi-generator.directory}/model" includes="*.java"/>
+                  <fileset dir="${openapi-generator.directory}/model" includes="*.java" />
                 </replaceregexp>
                 <!-- Verify removal was successful (no files should still contain the import) -->
                 <fail message="ApiClient import removal incomplete - import still found in generated files">
                   <condition>
                     <resourcecount when="gt" count="0">
                       <fileset dir="${openapi-generator.directory}/model">
-                        <contains text="import ${openapi-generator.package}.ApiClient;"/>
+                        <contains text="import ${openapi-generator.package}.ApiClient;" />
                       </fileset>
                     </resourcecount>
                   </condition>
