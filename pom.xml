@@ -5,7 +5,7 @@
   <groupId>org.olf</groupId>
   <artifactId>mod-erm-usage-counter</artifactId>
   <packaging>pom</packaging>
-  <version>6.0.0-SNAPSHOT</version>
+  <version>6.1.0-SNAPSHOT</version>
   <modules>
     <module>mod-erm-usage-counter41</module>
     <module>mod-erm-usage-counter50</module>
@@ -27,8 +27,8 @@
     <super-csv.beanutils.version>1.11.0</super-csv.beanutils.version>
     <commons-csv.version>1.13.0</commons-csv.version>
     <cxf.version>4.1.4</cxf.version>
-    <vertx.version>5.0.6</vertx.version>
-    <jackson.version>2.18.3</jackson.version>
+    <vertx.version>5.0.10</vertx.version>
+    <jackson.version>2.21.2</jackson.version>
     <spotless.version>2.44.4</spotless.version>
     <google-java-format.version>1.27.0</google-java-format.version>
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
