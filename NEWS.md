@@ -1,3 +1,6 @@
+## 6.1.0 (IN PROGRESS)
+* [MODEUSCNT-72](https://folio-org.atlassian.net/browse/MODEUSCNT-72) Bump Apache CXF from 4.1.4 to 4.1.7 fixing vulnerabilities
+
 ## 6.0.0
 * [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON
 * [MODEUSCNT-62](https://folio-org.atlassian.net/browse/MODEUSCNT-62) Upgrade commons-beanutils from 1.10.1 to 1.11.0 fixing CVE-2025-48734
