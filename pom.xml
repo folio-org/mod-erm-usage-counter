@@ -26,7 +26,7 @@
     <super-csv.version>2.4.0</super-csv.version>
     <super-csv.beanutils.version>1.11.0</super-csv.beanutils.version>
     <commons-csv.version>1.13.0</commons-csv.version>
-    <cxf.version>4.1.4</cxf.version>
+    <cxf.version>4.1.7</cxf.version>
     <vertx.version>5.0.10</vertx.version>
     <jackson.version>2.21.2</jackson.version>
     <spotless.version>2.44.4</spotless.version>
