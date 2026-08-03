@@ -2,6 +2,7 @@ package org.olf.erm.usage.counter51;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.olf.erm.usage.counter51.JsonProperties.ATTRIBUTES_TO_SHOW;
+import static org.olf.erm.usage.counter51.JsonProperties.REGISTRY_RECORD;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
@@ -27,6 +28,7 @@ import org.assertj.core.api.ThrowingConsumer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.olf.erm.usage.counter51.ReportValidator.ValidationResult;
 
 class ReportValidatorTest {
@@ -107,6 +109,40 @@ class ReportValidatorTest {
         .satisfies(res -> assertThat(res.isValid()).isTrue());
     assertThat(reportValidator.validateReport(report, reportType))
         .satisfies(res -> assertThat(res.isValid()).isTrue());
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "https://registry.countermetrics.org/platform/99999999-9999-9999-9999-999999999999",
+        "https://registry.projectcounter.org/platform/99999999-9999-9999-9999-999999999999",
+        "https://registry.countermetrics.org/usage-data-host/99999999-9999-9999-9999-999999999999",
+        "https://registry.projectcounter.org/usage-data-host/99999999-9999-9999-9999-999999999999",
+        ""
+      })
+  void testValidRegistryRecord(String registryRecord) throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    report.withObject(REPORT_HEADER).put(REGISTRY_RECORD, registryRecord);
+
+    assertThat(reportValidator.validateReport(report))
+        .satisfies(res -> assertThat(res.isValid()).isTrue());
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(res -> assertThat(res.isValid()).isTrue());
+  }
+
+  @Test
+  void testInvalidRegistryRecord() throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    report
+        .withObject(REPORT_HEADER)
+        .put(
+            REGISTRY_RECORD,
+            "https://registry.example.org/platform/99999999-9999-9999-9999-999999999999");
+
+    assertThat(reportValidator.validateReport(report))
+        .satisfies(isInvalidWithMessage("registryRecord"));
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(isInvalidWithMessage("registryRecord"));
   }
 
   private ThrowingConsumer<ValidationResult> isInvalidWithMessage(String message) {
