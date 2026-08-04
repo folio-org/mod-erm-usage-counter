@@ -130,14 +130,15 @@ class ReportValidatorTest {
         .satisfies(res -> assertThat(res.isValid()).isTrue());
   }
 
-  @Test
-  void testInvalidRegistryRecord() throws IOException {
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "https://registry.example.org/platform/99999999-9999-9999-9999-999999999999",
+        "https://registry-countermetrics-org/platform/99999999-9999-9999-9999-999999999999"
+      })
+  void testInvalidRegistryRecord(String registryRecord) throws IOException {
     ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
-    report
-        .withObject(REPORT_HEADER)
-        .put(
-            REGISTRY_RECORD,
-            "https://registry.example.org/platform/99999999-9999-9999-9999-999999999999");
+    report.withObject(REPORT_HEADER).put(REGISTRY_RECORD, registryRecord);
 
     assertThat(reportValidator.validateReport(report))
         .satisfies(isInvalidWithMessage("registryRecord"));

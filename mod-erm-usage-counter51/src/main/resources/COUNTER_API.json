@@ -6,7 +6,7 @@
     "info": {
         "title": "COUNTER API",
         "version": "5.1.0.1-modified",
-        "description": "This version of the COUNTER API (formerly sushi) applies to Release 5.1.0.1 of the COUNTER Code of Practice, which can be read online at https://cop5.countermetrics.org/.\n\nThis workspace provides a detailed description of the entire COUNTER API, including the JSON schema for COUNTER Reports and Standard Views of the COUNTER Reports. \n\nIt is expected that reporting services will use only the parts relevant to them, or make local tailored copies relevant to their particular circumstances, for example by removing methods detailing reports they do not support.\n\nIf you have any queries, please contact the Executive Director (code@countermetrics.org).\n\nThis copy deviates from the official 5.1.0.1 release: the Registry_Record pattern additionally permits the registry.projectcounter.org domain, backporting the planned change from Project-Counter/cop5#392 (MODEUSCNT-74).",
+        "description": "This version of the COUNTER API (formerly sushi) applies to Release 5.1.0.1 of the COUNTER Code of Practice, which can be read online at https://cop5.countermetrics.org/.\n\nThis workspace provides a detailed description of the entire COUNTER API, including the JSON schema for COUNTER Reports and Standard Views of the COUNTER Reports. \n\nIt is expected that reporting services will use only the parts relevant to them, or make local tailored copies relevant to their particular circumstances, for example by removing methods detailing reports they do not support.\n\nIf you have any queries, please contact the Executive Director (code@countermetrics.org).\n\nThis copy deviates from the official 5.1.0.1 release: the Registry_Record pattern additionally permits the registry.projectcounter.org domain and matches the dots in the hostname literally, backporting the planned change from Project-Counter/cop5#392 (MODEUSCNT-74).",
         "summary": "COUNTER API for Release 5.1.0.1",
         "license": {
             "name": "CC BY 4.0",
@@ -1281,7 +1281,7 @@
                     },
                     "Registry_Record": {
                         "type": "string",
-                        "pattern": "^(https://registry.(countermetrics|projectcounter).org/(platform|usage-data-host)/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|)$",
+                        "pattern": "^(https://registry\\.(countermetrics|projectcounter)\\.org/(platform|usage-data-host)/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|)$",
                         "description": "The link to the platform’s COUNTER Registry record. Report providers who do not have a Registry record MUST omit this element."
                     },
                     "Note": {
@@ -7426,7 +7426,7 @@
                     },
                     "Registry_Record": {
                         "type": "string",
-                        "pattern": "^(https://registry.(countermetrics|projectcounter).org/(platform|usage-data-host)/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|)$",
+                        "pattern": "^(https://registry\\.(countermetrics|projectcounter)\\.org/(platform|usage-data-host)/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|)$",
                         "description": "The link to the platform’s COUNTER Registry record. Report providers who do not have a Registry record MUST leave the value blank."
                     }
                 },
