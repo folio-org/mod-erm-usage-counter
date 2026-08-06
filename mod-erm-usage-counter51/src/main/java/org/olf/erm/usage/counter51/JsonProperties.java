@@ -11,6 +11,7 @@ public class JsonProperties {
   public static final String EXCEPTIONS = "Exceptions";
   public static final String ITEMS = "Items";
   public static final String PERFORMANCE = "Performance";
+  public static final String REGISTRY_RECORD = "Registry_Record";
   public static final String RELEASE = "Release";
   public static final String REPORT_ATTRIBUTES = "Report_Attributes";
   public static final String REPORT_FILTERS = "Report_Filters";

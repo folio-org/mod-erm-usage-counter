@@ -1,5 +1,6 @@
 ## 5.0.1
 * [MODEUSCNT-68](https://folio-org.atlassian.net/browse/MODEUSCNT-68) Migrate from Jenkins to Github Workflows
+* [MODEUSCNT-74](https://folio-org.atlassian.net/browse/MODEUSCNT-74) Allow both registry.countermetrics.org and registry.projectcounter.org domains for Registry_Record in COUNTER 5.1 reports
 
 ## 5.0.0
 * [MODEUSCNT-48](https://folio-org.atlassian.net/browse/MODEUSCNT-48) Add models and client for COUNTER 5.1
