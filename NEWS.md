@@ -1,3 +1,6 @@
+## 6.0.1
+* [MODEUSCNT-74](https://folio-org.atlassian.net/browse/MODEUSCNT-74) Allow both registry.countermetrics.org and registry.projectcounter.org domains for Registry_Record in COUNTER 5.1 reports
+
 ## 6.0.0
 * [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON
 * [MODEUSCNT-62](https://folio-org.atlassian.net/browse/MODEUSCNT-62) Upgrade commons-beanutils from 1.10.1 to 1.11.0 fixing CVE-2025-48734
