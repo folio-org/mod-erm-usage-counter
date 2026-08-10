@@ -1,6 +1,7 @@
 package org.olf.erm.usage.counter50.converter;
 
-import org.olf.erm.usage.counter50.Counter5Utils;
+import static org.olf.erm.usage.counter50.internal.CloneUtils.deepCopy;
+
 import org.olf.erm.usage.counter50.converter.dr.DRD1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB1Converter;
 import org.olf.erm.usage.counter50.converter.tr.TRB3Converter;
@@ -34,8 +35,7 @@ public class ReportConverter {
   }
 
   public COUNTERTitleReport convert(COUNTERTitleReport report, String reportID) {
-    COUNTERTitleReport clone =
-        Counter5Utils.getDefaultObjectMapper().convertValue(report, COUNTERTitleReport.class);
+    COUNTERTitleReport clone = deepCopy(report);
 
     Converter<COUNTERTitleReport> converter;
     switch (reportID.toLowerCase()) {
@@ -62,8 +62,7 @@ public class ReportConverter {
   }
 
   public COUNTERDatabaseReport convert(COUNTERDatabaseReport report, String reportID) {
-    COUNTERDatabaseReport clone =
-        Counter5Utils.getDefaultObjectMapper().convertValue(report, COUNTERDatabaseReport.class);
+    COUNTERDatabaseReport clone = deepCopy(report);
 
     if ("dr_d1".equalsIgnoreCase(reportID)) {
       return new DRD1Converter().convert(clone);

@@ -2,6 +2,7 @@
 * [MODEUSCNT-72](https://folio-org.atlassian.net/browse/MODEUSCNT-72) Bump Apache CXF from 4.1.4 to 4.1.7 fixing vulnerabilities
 * [MODEUSCNT-73](https://folio-org.atlassian.net/browse/MODEUSCNT-73) Bump Vert.x from 5.0.10 to 5.1.5 fixing Netty vulnerabilities
 * [MODEUSCNT-74](https://folio-org.atlassian.net/browse/MODEUSCNT-74) Allow both registry.countermetrics.org and registry.projectcounter.org domains for Registry_Record in COUNTER 5.1 reports
+* [MODEUSCNT-66](https://folio-org.atlassian.net/browse/MODEUSCNT-66) Refactor JSON cloning into a reusable method in counter50 splitters and converters
 
 ## 6.0.0
 * [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON
