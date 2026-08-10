@@ -1,5 +1,7 @@
 package org.olf.erm.usage.counter50.splitter;
 
+import static org.olf.erm.usage.counter50.internal.CloneUtils.deepCopy;
+
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -18,9 +20,7 @@ public class PRReportsSplitter extends AbstractReportsSplitter<COUNTERPlatformRe
     List<COUNTERPlatformReport> result = new ArrayList<>();
     yms.forEach(
         ym -> {
-          COUNTERPlatformReport clone =
-              Counter5Utils.getDefaultObjectMapper()
-                  .convertValue(report, COUNTERPlatformReport.class);
+          COUNTERPlatformReport clone = deepCopy(report);
 
           COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
           period.setBeginDate(ym.atDay(1).format(DateTimeFormatter.ISO_DATE));
