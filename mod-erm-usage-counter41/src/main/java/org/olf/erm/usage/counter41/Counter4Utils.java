@@ -15,7 +15,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.YearMonth;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.SerializationUtils;
 import org.niso.schemas.counter.DateRange;
-import org.niso.schemas.counter.Metric;
 import org.niso.schemas.counter.Report;
 import org.niso.schemas.counter.ReportItem;
 import org.niso.schemas.sushi.Exception;
@@ -72,6 +70,7 @@ public class Counter4Utils {
           entry("PR1", "(?:PR1|Platform Report 1)(?: \\(R4\\))?"));
 
   private static final Logger log = LoggerFactory.getLogger(Counter4Utils.class);
+  private static final ReportSplitter reportSplitter = new ReportSplitter();
 
   private Counter4Utils() {}
 
@@ -269,42 +268,22 @@ public class Counter4Utils {
   }
 
   /**
-   * Splits a report that spans multiple months into a list of reports spanning one month each
+   * Splits a report that spans multiple months into a list of reports spanning one month each.
+   *
+   * <p>The report is not copied. Only the report, its customer and its report items are created
+   * anew, together with the lists they hold; every object those lists hold -- the vendor, the
+   * contacts and identifiers, the contributors, dates, attributes and metrics -- is shared with
+   * {@code report}, so that splitting does not need memory proportional to the number of months.
+   * Modifying a split report below that level therefore modifies {@code report}, and possibly a
+   * sibling. Callers that need independent reports have to copy them.
    *
    * @param report Report with multiple months
-   * @return List of Reports with one month only
+   * @return an unmodifiable List of Reports with one month only, in chronological order. {@code
+   *     report} is left unmodified.
+   * @throws ReportSplitException if the report does not hold exactly one customer
    */
   public static List<Report> split(Report report) throws ReportSplitException {
-    if (report.getCustomer().isEmpty()) {
-      throw new ReportSplitException("Report contains no customer");
-    }
-    if (report.getCustomer().size() > 1) {
-      throw new ReportSplitException("Report contains multiple customer entries");
-    }
-
-    List<YearMonth> yearMonths = getYearMonthsFromReport(report);
-    ArrayList<Report> resultList = new ArrayList<>();
-    yearMonths.forEach(
-        ym -> {
-          Report clone = SerializationUtils.clone(report);
-          DateRange dateRange = new DateRange();
-          dateRange.setBegin(ym.atDay(1));
-          dateRange.setEnd(ym.atEndOfMonth());
-
-          List<ReportItem> reportItems = clone.getCustomer().get(0).getReportItems();
-          reportItems.removeIf(
-              ri ->
-                  ri.getItemPerformance().stream()
-                      .map(Metric::getPeriod)
-                      .noneMatch(dr -> dr.equals(dateRange)));
-
-          reportItems.stream()
-              .map(ReportItem::getItemPerformance)
-              .forEach(list -> list.removeIf(metric -> !metric.getPeriod().equals(dateRange)));
-
-          resultList.add(clone);
-        });
-    return resultList;
+    return reportSplitter.split(report);
   }
 
   /**

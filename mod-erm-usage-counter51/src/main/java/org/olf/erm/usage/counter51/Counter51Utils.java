@@ -132,8 +132,15 @@ public class Counter51Utils {
   /**
    * Splits a COUNTER report into multiple COUNTER reports that each span a single month.
    *
+   * <p>The report is not deep-copied. The returned reports are built from shallow copies that share
+   * their content with {@code report}, so that splitting does not need memory proportional to the
+   * number of months. Adding to or removing from one of them cannot be seen by {@code report}, but
+   * modifying a node inside one can. Callers that need independent reports have to {@link
+   * com.fasterxml.jackson.databind.JsonNode#deepCopy() deepCopy} them.
+   *
    * @param report the COUNTER report that should be split.
-   * @return list of single-month COUNTER reports.
+   * @return an unmodifiable list of single-month COUNTER reports, in chronological order. {@code
+   *     report} is left unmodified.
    * @throws SplitterException if an error occurs during splitting.
    */
   public static List<ObjectNode> splitReport(ObjectNode report) {

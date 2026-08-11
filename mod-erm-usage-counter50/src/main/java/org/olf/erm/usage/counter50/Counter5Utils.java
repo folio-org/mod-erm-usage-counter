@@ -296,9 +296,17 @@ public class Counter5Utils {
   /**
    * Splits a COUNTER 5 report into reports of several months.
    *
+   * <p>The report is not copied. Only the report, its header and its report items are created anew,
+   * together with the lists they hold; every object those lists hold -- the identifiers,
+   * exceptions, item components and performance entries -- is shared with {@code report}, so that
+   * splitting does not need memory proportional to the number of months. Modifying a split report
+   * below that level therefore modifies {@code report}, and possibly a sibling. Callers that need
+   * independent reports have to copy them.
+   *
    * @param report Valid types are {@link COUNTERDatabaseReport}, {@link COUNTERTitleReport}, {@link
    *     COUNTERPlatformReport} & {@link COUNTERItemReport}.
-   * @return {@link List} of splitted reports.
+   * @return an unmodifiable {@link List} of splitted reports, in chronological order. {@code
+   *     report} is left unmodified.
    * @throws Counter5UtilsException Throws exception if report is not an instance of classes
    *     specified above.
    */

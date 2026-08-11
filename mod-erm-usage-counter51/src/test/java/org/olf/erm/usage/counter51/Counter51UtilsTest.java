@@ -37,6 +37,7 @@ import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -127,6 +128,110 @@ class Counter51UtilsTest {
 
     assertThatThrownBy(() -> splitReport(report))
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);
+  }
+
+  private ObjectNode createReportItem(String title, Map<String, Map<String, Integer>> performance) {
+    ObjectNode reportItem = objectMapper.createObjectNode().put("Title", title);
+    ObjectNode target =
+        reportItem.putArray("Attribute_Performance").addObject().putObject(PERFORMANCE);
+    performance.forEach(
+        (metricType, counts) -> {
+          ObjectNode metric = target.putObject(metricType);
+          counts.forEach(metric::put);
+        });
+    return reportItem;
+  }
+
+  /**
+   * The sample reports all carry every metric in every month, so they cannot show that report items
+   * and metrics are dropped from the months they hold no usage for.
+   */
+  @Test
+  void testSplitReportWithUsageInSomeMonthsOnly() {
+    ObjectNode report = objectMapper.createObjectNode();
+    report
+        .putObject(REPORT_HEADER)
+        .put(REPORT_ID, "TR")
+        .putObject(REPORT_FILTERS)
+        .put(BEGIN_DATE, "2022-01-01")
+        .put(END_DATE, "2022-02-28");
+    ArrayNode reportItems = report.putArray("Report_Items");
+    reportItems.add(
+        createReportItem("January only", Map.of("Total_Item_Requests", Map.of("2022-01", 1))));
+    reportItems.add(
+        createReportItem("February only", Map.of("Total_Item_Requests", Map.of("2022-02", 2))));
+    reportItems.add(
+        createReportItem(
+            "Both months",
+            Map.of(
+                "Total_Item_Requests", Map.of("2022-01", 3, "2022-02", 4),
+                "Unique_Item_Requests", Map.of("2022-01", 5))));
+
+    List<ObjectNode> splitReports = splitReport(report);
+
+    assertThat(splitReports).hasSize(2);
+    assertThat(titlesOf(splitReports.get(0))).containsExactly("January only", "Both months");
+    assertThat(titlesOf(splitReports.get(1))).containsExactly("February only", "Both months");
+    // Unique_Item_Requests has no February usage and must not survive into the February report
+    assertThatJson(performanceOf(splitReports.get(0), 1))
+        .isEqualTo(
+            "{\"Total_Item_Requests\":{\"2022-01\":3},\"Unique_Item_Requests\":{\"2022-01\":5}}");
+    assertThatJson(performanceOf(splitReports.get(1), 1))
+        .isEqualTo("{\"Total_Item_Requests\":{\"2022-02\":4}}");
+  }
+
+  /**
+   * An attribute performance that holds no usage for the month is kept, with an empty Performance.
+   * Pinned here because the sample reports cannot show it: they carry every metric in every month.
+   */
+  @Test
+  void testSplitReportKeepsAttributePerformancesWithoutUsageOfMonth() {
+    ObjectNode report = objectMapper.createObjectNode();
+    report
+        .putObject(REPORT_HEADER)
+        .put(REPORT_ID, "TR")
+        .putObject(REPORT_FILTERS)
+        .put(BEGIN_DATE, "2022-01-01")
+        .put(END_DATE, "2022-02-28");
+    ObjectNode reportItem = report.putArray("Report_Items").addObject();
+    reportItem.put("Title", "Two attribute performances");
+    ArrayNode attributePerformances = reportItem.putArray("Attribute_Performance");
+    attributePerformances
+        .addObject()
+        .put("Data_Type", "Journal")
+        .putObject(PERFORMANCE)
+        .putObject("Total_Item_Requests")
+        .put("2022-01", 1);
+    attributePerformances
+        .addObject()
+        .put("Data_Type", "Book")
+        .putObject(PERFORMANCE)
+        .putObject("Total_Item_Requests")
+        .put("2022-02", 2);
+
+    List<ObjectNode> splitReports = splitReport(report);
+
+    assertThatJson(splitReports.get(0).at("/Report_Items/0/Attribute_Performance"))
+        .isEqualTo(
+            "[{'Data_Type':'Journal','Performance':{'Total_Item_Requests':{'2022-01':1}}},"
+                + "{'Data_Type':'Book','Performance':{}}]");
+    assertThatJson(splitReports.get(1).at("/Report_Items/0/Attribute_Performance"))
+        .isEqualTo(
+            "[{'Data_Type':'Journal','Performance':{}},"
+                + "{'Data_Type':'Book','Performance':{'Total_Item_Requests':{'2022-02':2}}}]");
+  }
+
+  private List<String> titlesOf(ObjectNode report) {
+    return StreamSupport.stream(report.withArray("Report_Items").spliterator(), false)
+        .map(item -> item.get("Title").asText())
+        .toList();
+  }
+
+  private JsonNode performanceOf(ObjectNode report, int itemIndex) {
+    return report
+        .withArray("Report_Items")
+        .get(itemIndex)
+        .at("/Attribute_Performance/0/Performance");
   }
 
   @Test
