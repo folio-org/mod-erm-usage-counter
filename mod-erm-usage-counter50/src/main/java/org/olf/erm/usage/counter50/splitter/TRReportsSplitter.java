@@ -1,49 +1,60 @@
 package org.olf.erm.usage.counter50.splitter;
 
-import static org.olf.erm.usage.counter50.internal.CloneUtils.deepCopy;
-
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.counter50.model.COUNTERItemPerformance;
-import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
 import org.openapitools.counter50.model.COUNTERTitleReport;
 import org.openapitools.counter50.model.COUNTERTitleUsage;
-import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
+import org.openapitools.counter50.model.SUSHIReportHeader;
 
-public class TRReportsSplitter extends AbstractReportsSplitter<COUNTERTitleReport> {
+public class TRReportsSplitter
+    extends AbstractReportsSplitter<COUNTERTitleReport, COUNTERTitleUsage> {
 
   @Override
+  protected SUSHIReportHeader getReportHeader(COUNTERTitleReport report) {
+    return report.getReportHeader();
+  }
+
+  @Override
+  protected List<COUNTERTitleUsage> getReportItems(COUNTERTitleReport report) {
+    return report.getReportItems();
+  }
+
+  @Override
+  protected List<COUNTERItemPerformance> getPerformance(COUNTERTitleUsage reportItem) {
+    return reportItem.getPerformance();
+  }
+
+  @Override
+  protected COUNTERTitleUsage createReportItemForPeriod(
+      COUNTERTitleUsage reportItem, List<COUNTERItemPerformance> performanceOfPeriod) {
+    return new COUNTERTitleUsage()
+        .title(reportItem.getTitle())
+        .itemID(modifiableCopyOf(reportItem.getItemID()))
+        .platform(reportItem.getPlatform())
+        .publisher(reportItem.getPublisher())
+        .publisherID(modifiableCopyOf(reportItem.getPublisherID()))
+        .dataType(reportItem.getDataType())
+        .sectionType(reportItem.getSectionType())
+        .YOP(reportItem.getYOP())
+        .accessType(reportItem.getAccessType())
+        .accessMethod(reportItem.getAccessMethod())
+        .performance(performanceOfPeriod);
+  }
+
+  @Override
+  protected COUNTERTitleReport createReport(
+      SUSHIReportHeader reportHeader, List<COUNTERTitleUsage> reportItems) {
+    return new COUNTERTitleReport().reportHeader(reportHeader).reportItems(reportItems);
+  }
+
+  /**
+   * Declared so that code compiled against earlier versions keeps linking: the method inherited
+   * from {@link AbstractReportsSplitter} erases to {@code split(Object)} and would not provide
+   * {@code split(COUNTERTitleReport)}.
+   */
+  @SuppressWarnings("java:S1185") // not redundant: see javadoc above
+  @Override
   public List<COUNTERTitleReport> split(COUNTERTitleReport report) {
-    List<YearMonth> yms = Counter5Utils.getYearMonthsFromReportHeader(report.getReportHeader());
-    List<COUNTERTitleReport> result = new ArrayList<>();
-    yms.forEach(
-        ym -> {
-          COUNTERTitleReport clone = deepCopy(report);
-
-          COUNTERItemPerformancePeriod period = new COUNTERItemPerformancePeriod();
-          period.setBeginDate(ym.atDay(1).format(DateTimeFormatter.ISO_DATE));
-          period.setEndDate(ym.atEndOfMonth().format(DateTimeFormatter.ISO_DATE));
-
-          clone
-              .getReportItems()
-              .removeIf(
-                  dbUsage ->
-                      dbUsage.getPerformance().stream()
-                          .map(COUNTERItemPerformance::getPeriod)
-                          .noneMatch(p -> p.equals(period)));
-
-          clone.getReportItems().stream()
-              .map(COUNTERTitleUsage::getPerformance)
-              .forEach(list -> list.removeIf(metric -> !metric.getPeriod().equals(period)));
-
-          List<SUSHIReportHeaderReportFilters> reportFilters =
-              clone.getReportHeader().getReportFilters();
-          clone.getReportHeader().setReportFilters(replaceBeginAndEndDate(reportFilters, period));
-          result.add(clone);
-        });
-    return result;
+    return super.split(report);
   }
 }

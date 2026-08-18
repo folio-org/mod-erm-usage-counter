@@ -195,6 +195,21 @@ public class Counter4UtilsTest {
   }
 
   @Test
+  public void testSplitReportWithMetricWithoutPeriod() {
+    Metric metricOfJanuary = new Metric();
+    metricOfJanuary.setPeriod(Counter4Utils.getDateRangeForYearMonth(YearMonth.of(2022, 1)));
+    ReportItem reportItem = new ReportItem();
+    reportItem.getItemPerformance().add(metricOfJanuary);
+    reportItem.getItemPerformance().add(new Metric());
+    Customer customer = new Customer();
+    customer.getReportItems().add(reportItem);
+    Report report = new Report();
+    report.getCustomer().add(customer);
+
+    assertThatThrownBy(() -> Counter4Utils.split(report)).isInstanceOf(NullPointerException.class);
+  }
+
+  @Test
   public void testSplitAndMergeReport() throws ReportSplitException, ReportMergeException {
     Report report =
         JAXB.unmarshal(
