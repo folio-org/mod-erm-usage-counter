@@ -4,6 +4,7 @@ import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static net.javacrumbs.jsonunit.core.Option.IGNORING_ARRAY_ORDER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.olf.erm.usage.counter51.Counter51Utils.mergeReports;
 import static org.olf.erm.usage.counter51.Counter51Utils.splitReport;
 import static org.olf.erm.usage.counter51.Counter51Utils.writeReportAsCsv;
@@ -16,6 +17,7 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_FILTERS;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
+import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ITEMS;
 import static org.olf.erm.usage.counter51.ReportMerger.MSG_PROPERTIES_DO_NOT_MATCH;
 import static org.olf.erm.usage.counter51.ReportMerger.MergerException.MSG_ERROR_MERGING_REPORT;
 import static org.olf.erm.usage.counter51.ReportSplitter.SplitterException.MSG_ERROR_SPLITTING_REPORT;
@@ -28,6 +30,7 @@ import static org.olf.erm.usage.counter51.TestUtil.readFileAsLines;
 import static org.olf.erm.usage.counter51.TestUtil.readFileAsObjectNode;
 import static org.olf.erm.usage.counter51.TestUtil.removeBOMAndTrailingDelimiters;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -38,10 +41,15 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.olf.erm.usage.counter51.ReportSplitter.SplitterException;
 
 class Counter51UtilsTest {
 
@@ -128,6 +136,98 @@ class Counter51UtilsTest {
 
     assertThatThrownBy(() -> splitReport(report))
         .hasMessageStartingWith(MSG_ERROR_SPLITTING_REPORT);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testSplitReportWithMalformedReportItems(String reportItems, String expectedMessage) {
+    ObjectNode report = createReportWithReportItems(reportItems);
+
+    assertThatThrownBy(() -> splitReport(report))
+        .isInstanceOf(SplitterException.class)
+        .hasMessage(MSG_ERROR_SPLITTING_REPORT + expectedMessage);
+  }
+
+  static Stream<Arguments> testSplitReportWithMalformedReportItems() {
+    return Stream.of(
+        arguments("null", "Expected Report_Items to be an array but was NULL"),
+        arguments("'garbage'", "Expected Report_Items to be an array but was STRING"),
+        arguments("{'Title': 'garbage'}", "Expected Report_Items to be an array but was OBJECT"),
+        arguments("[null]", "Expected an entry of Report_Items to be an object but was NULL"),
+        arguments(
+            "['garbage']", "Expected an entry of Report_Items to be an object but was STRING"),
+        arguments(
+            "[{'Attribute_Performance': null}]",
+            "Expected Attribute_Performance to be an array but was NULL"),
+        arguments(
+            "[{'Attribute_Performance': 'garbage'}]",
+            "Expected Attribute_Performance to be an array but was STRING"),
+        arguments(
+            "[{'Attribute_Performance': ['garbage']}]",
+            "Expected an entry of Attribute_Performance to be an object but was STRING"),
+        arguments(
+            "[{'Attribute_Performance': [{'Performance': 'garbage'}]}]",
+            "Expected Performance to be an object but was STRING"),
+        arguments(
+            "[{'Attribute_Performance': [{'Performance': []}]}]",
+            "Expected Performance to be an object but was ARRAY"),
+        arguments(
+            "[{'Attribute_Performance': [{'Performance': {'Total_Item_Requests': 'garbage'}}]}]",
+            "Expected Performance.Total_Item_Requests to be an object but was STRING"),
+        arguments("[{'Items': null}]", "Expected Items to be an array but was NULL"),
+        arguments("[{'Items': 'garbage'}]", "Expected Items to be an array but was STRING"),
+        arguments(
+            "[{'Items': ['garbage']}]",
+            "Expected an entry of Items to be an object but was STRING"),
+        arguments(
+            "[{'Items': [{'Attribute_Performance': 'garbage'}]}]",
+            "Expected Attribute_Performance to be an array but was STRING"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "[]",
+        "[{'Title': 'Without usage'}]",
+        "[{'Attribute_Performance': []}]",
+        "[{'Attribute_Performance': [{'Performance': null}]}]",
+        "[{'Attribute_Performance': [{'Performance': {}}]}]",
+        "[{'Attribute_Performance': [{'Performance': {'Total_Item_Requests': null}}]}]",
+        "[{'Items': []}]"
+      })
+  void testSplitReportWithoutUsage(String reportItems) {
+    ObjectNode report = createReportWithReportItems(reportItems);
+
+    assertThat(splitReport(report)).hasSize(2);
+  }
+
+  @Test
+  void testSplitReportWithoutReportItems() {
+    ObjectNode report = createReportWithReportItems(null);
+
+    assertThat(splitReport(report))
+        .hasSize(2)
+        .allSatisfy(
+            monthlyReport -> assertThatJson(monthlyReport.get(REPORT_ITEMS)).isEqualTo("[]"));
+  }
+
+  private ObjectNode createReportWithReportItems(String reportItems) {
+    String reportItemsProperty =
+        (reportItems == null) ? "" : ", '%s': %s".formatted(REPORT_ITEMS, reportItems);
+    String report =
+        "{'%s': {'%s': 'TR', '%s': {'%s': '2022-01-01', '%s': '2022-02-28'}}%s}"
+            .formatted(
+                REPORT_HEADER,
+                REPORT_ID,
+                REPORT_FILTERS,
+                BEGIN_DATE,
+                END_DATE,
+                reportItemsProperty);
+    try {
+      return (ObjectNode) objectMapper.readTree(report.replace('\'', '"'));
+    } catch (JsonProcessingException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   private ObjectNode createReportItem(String title, Map<String, Map<String, Integer>> performance) {

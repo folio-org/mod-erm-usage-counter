@@ -4,6 +4,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.counter50.model.COUNTERItemPerformance;
 import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
@@ -51,6 +52,7 @@ public abstract class AbstractReportsSplitter<T, U> {
    *
    * @param report the report to split
    * @return an unmodifiable list holding one report per month, in chronological order
+   * @throws NullPointerException if a performance entry has no Period
    */
   public List<T> split(T report) {
     return getPeriodsCoveredBy(report).stream()
@@ -95,12 +97,19 @@ public abstract class AbstractReportsSplitter<T, U> {
     return reportItemsForPeriod;
   }
 
-  /** Returns those performance entries of the report item that belong to the given month. */
+  /**
+   * Returns those performance entries of the report item that belong to the given month.
+   *
+   * @throws NullPointerException if a performance entry has no Period
+   */
   private List<COUNTERItemPerformance> getPerformanceOfPeriod(
       U reportItem, COUNTERItemPerformancePeriod period) {
     List<COUNTERItemPerformance> performanceOfPeriod = new ArrayList<>();
     for (COUNTERItemPerformance performance : getPerformance(reportItem)) {
-      if (period.equals(performance.getPeriod())) {
+      COUNTERItemPerformancePeriod periodOfPerformance =
+          Objects.requireNonNull(
+              performance.getPeriod(), "Report item has a performance entry without a Period");
+      if (period.equals(periodOfPerformance)) {
         performanceOfPeriod.add(performance);
       }
     }

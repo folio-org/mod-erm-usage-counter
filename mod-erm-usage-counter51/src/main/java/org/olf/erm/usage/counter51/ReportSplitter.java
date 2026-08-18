@@ -26,20 +26,101 @@ import java.util.List;
  */
 class ReportSplitter {
 
+  private static final String MSG_EXPECTED_ARRAY = "Expected %s to be an array but was %s";
+  private static final String MSG_EXPECTED_OBJECT = "Expected %s to be an object but was %s";
+
   /**
    * Splits a COUNTER report into multiple COUNTER reports that each span a single month.
    *
    * @param report the COUNTER report that should be splitted.
    * @return list of single-month COUNTER reports.
-   * @throws SplitterException if an error occurs during splitting.
+   * @throws SplitterException if the report is not shaped the way the COUNTER 5.1 format
+   *     prescribes, or if an error occurs during splitting.
    */
   public List<ObjectNode> splitReport(ObjectNode report) {
     try {
+      validateShapeOf(report);
       return getYearMonths(report).stream()
           .map(yearMonth -> createReportForMonth(report, yearMonth))
           .toList();
+    } catch (SplitterException e) {
+      throw e; // already states why the report was rejected
     } catch (Exception e) {
       throw new SplitterException(e);
+    }
+  }
+
+  /**
+   * Fails the split if the report items are not shaped the way the COUNTER 5.1 format prescribes.
+   * The methods below read the report leniently, so without this a malformed report would be split
+   * into empty or garbled monthly reports rather than be rejected.
+   *
+   * <p>An absent property is not malformed: an absent Report_Items or Performance is carried over
+   * as an empty one. Neither is a Performance or a metric that is {@code null}, which states an
+   * absence of usage.
+   *
+   * <p>Rejects a report with a {@link SplitterException} of its own rather than leaving it to the
+   * catch-all of {@link #splitReport}, which states no more than that something went wrong.
+   */
+  private void validateShapeOf(ObjectNode report) {
+    if (report.has(REPORT_ITEMS)) {
+      validateReportItems(report.get(REPORT_ITEMS), REPORT_ITEMS);
+    }
+  }
+
+  /** Validates the report items of a report, or the items an item report nests below one. */
+  private void validateReportItems(JsonNode reportItems, String propertyName) {
+    requireArray(reportItems, propertyName);
+    reportItems.forEach(reportItem -> validateReportItem(reportItem, entryOf(propertyName)));
+  }
+
+  private void validateReportItem(JsonNode reportItem, String description) {
+    requireObject(reportItem, description);
+    if (reportItem.has(ITEMS)) { // an item report nests its usage one level deeper
+      validateReportItems(reportItem.get(ITEMS), ITEMS);
+    }
+    if (reportItem.has(ATTRIBUTE_PERFORMANCE)) {
+      validateAttributePerformances(reportItem.get(ATTRIBUTE_PERFORMANCE));
+    }
+  }
+
+  private void validateAttributePerformances(JsonNode attributePerformances) {
+    requireArray(attributePerformances, ATTRIBUTE_PERFORMANCE);
+    attributePerformances.forEach(
+        attributePerformance -> {
+          requireObject(attributePerformance, entryOf(ATTRIBUTE_PERFORMANCE));
+          validatePerformance(attributePerformance.path(PERFORMANCE));
+        });
+  }
+
+  private void validatePerformance(JsonNode performance) {
+    if (performance.isMissingNode() || performance.isNull()) {
+      return;
+    }
+    requireObject(performance, PERFORMANCE);
+    performance
+        .properties()
+        .forEach(
+            metric -> {
+              if (!metric.getValue().isNull()) {
+                requireObject(metric.getValue(), PERFORMANCE + "." + metric.getKey());
+              }
+            });
+  }
+
+  private String entryOf(String propertyName) {
+    return "an entry of " + propertyName;
+  }
+
+  private void requireArray(JsonNode node, String description) {
+    if (!node.isArray()) {
+      throw new SplitterException(MSG_EXPECTED_ARRAY.formatted(description, node.getNodeType()));
+    }
+  }
+
+  private void requireObject(JsonNode node, String description) {
+    if (!node.isObject()) {
+      throw new SplitterException(MSG_EXPECTED_OBJECT.formatted(description, node.getNodeType()));
     }
   }
 
@@ -227,6 +308,11 @@ class ReportSplitter {
 
     public SplitterException(Throwable cause) {
       super(MSG_ERROR_SPLITTING_REPORT + cause.getMessage(), cause);
+    }
+
+    /** Used to reject a report that {@code splitReport} cannot make sense of. */
+    public SplitterException(String message) {
+      super(MSG_ERROR_SPLITTING_REPORT + message);
     }
   }
 }
