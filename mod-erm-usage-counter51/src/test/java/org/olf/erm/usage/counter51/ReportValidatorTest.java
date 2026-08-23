@@ -1,11 +1,13 @@
 package org.olf.erm.usage.counter51;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.olf.erm.usage.counter51.JsonProperties.ATTRIBUTES_TO_SHOW;
 import static org.olf.erm.usage.counter51.JsonProperties.REGISTRY_RECORD;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
+import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ITEMS;
 import static org.olf.erm.usage.counter51.ReportType.TR;
 import static org.olf.erm.usage.counter51.ReportType.TR_J1;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_NO_REPORT_ID;
@@ -22,6 +24,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import org.assertj.core.api.ThrowingConsumer;
@@ -82,6 +85,58 @@ class ReportValidatorTest {
         .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
     assertThat(reportValidator.validateReport(report, TR))
         .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
+  }
+
+  @Test
+  void testValidLargeReport() throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    inflateReportItems(report, 2500);
+    ObjectNode reportClone = report.deepCopy();
+
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(res -> assertThat(res.isValid()).isTrue());
+    assertThat(reportClone).isEqualTo(report);
+  }
+
+  @Test
+  void testInvalidReportItemInLargeReport() throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    inflateReportItems(report, 2500);
+    ((ObjectNode) report.withArray(REPORT_ITEMS).get(2400)).put("foo", "bar");
+
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
+  }
+
+  @Test
+  void testMissingReportItems() throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    report.remove(REPORT_ITEMS);
+
+    assertThat(reportValidator.validateReport(report, TR))
+        .satisfies(isInvalidWithMessage("reportItems: must not be null"));
+  }
+
+  @Test
+  void testValidationCostScalesWithReportSize() throws IOException {
+    ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
+    inflateReportItems(report, 20_000);
+
+    // Guards against restoring cascading validation: recursively validating the report root
+    // exceeds this limit for a report of this size.
+    assertTimeoutPreemptively(
+        Duration.ofSeconds(10),
+        () ->
+            assertThat(reportValidator.validateReport(report, TR))
+                .satisfies(res -> assertThat(res.isValid()).isTrue()));
+  }
+
+  private static void inflateReportItems(ObjectNode report, int size) {
+    ArrayNode items = report.withArray(REPORT_ITEMS);
+    int original = items.size();
+    for (int i = items.size(); i < size; i++) {
+      items.add(items.get(i % original).deepCopy());
+    }
   }
 
   @Test

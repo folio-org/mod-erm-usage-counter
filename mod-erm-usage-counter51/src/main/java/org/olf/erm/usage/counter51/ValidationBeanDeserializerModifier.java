@@ -17,6 +17,11 @@ import java.util.Set;
 class ValidationBeanDeserializerModifier extends BeanDeserializerModifier {
 
   public static final String VALIDATION_FAILED_MSG = "Validation failed for object: ";
+
+  // Validation is part of deserialization for generated oneOf models such as header exceptions and
+  // IR report items. Their deserializers try each candidate class, and bean constraints reject
+  // structurally similar but invalid candidates. Without validation, multiple candidates can match
+  // and deserialization fails with "N classes match result, expected 1".
   private final transient Validator validator;
 
   public ValidationBeanDeserializerModifier(Validator validator) {
