@@ -8,6 +8,7 @@ import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ATTRIBUTES;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_HEADER;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ID;
 import static org.olf.erm.usage.counter51.JsonProperties.REPORT_ITEMS;
+import static org.olf.erm.usage.counter51.JsonProperties.TITLE;
 import static org.olf.erm.usage.counter51.ReportType.TR;
 import static org.olf.erm.usage.counter51.ReportType.TR_J1;
 import static org.olf.erm.usage.counter51.ReportValidator.ErrorMessages.ERR_NO_REPORT_ID;
@@ -102,10 +103,10 @@ class ReportValidatorTest {
   void testInvalidReportItemInLargeReport() throws IOException {
     ObjectNode report = readFileAsObjectNode(getSampleReportPath(TR).toFile());
     inflateReportItems(report, 2500);
-    ((ObjectNode) report.withArray(REPORT_ITEMS).get(2400)).put("foo", "bar");
+    ((ObjectNode) report.withArray(REPORT_ITEMS).get(2400)).remove(TITLE);
 
     assertThat(reportValidator.validateReport(report, TR))
-        .satisfies(isInvalidWithMessage("Unrecognized field \"foo\""));
+        .satisfies(isInvalidWithMessage("title: must not be null"));
   }
 
   @Test

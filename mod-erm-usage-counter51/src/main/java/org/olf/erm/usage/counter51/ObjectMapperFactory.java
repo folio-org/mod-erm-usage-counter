@@ -39,7 +39,7 @@ class ObjectMapperFactory {
    * have already been checked. Disabling cascades prevents each parent, especially the report root,
    * from validating the same object graph again.
    */
-  static Validator createValidator() {
+  private static Validator createValidator() {
     try (ValidatorFactory validatorFactory =
         Validation.byDefaultProvider()
             .configure()
