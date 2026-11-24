@@ -5,6 +5,7 @@
 * [MODEUSCNT-66](https://folio-org.atlassian.net/browse/MODEUSCNT-66) Refactor JSON cloning into a reusable method in counter50 splitters and converters
 * [MODEUSCNT-38](https://folio-org.atlassian.net/browse/MODEUSCNT-38) Don't clone reports during split. Splitting no longer returns independent deep copies: a split report shares its sub-objects with the report it was split from, so modifying one in place can change the source and the other split reports. Callers that modify split reports have to copy them first.
 * [MODEUSCNT-77](https://folio-org.atlassian.net/browse/MODEUSCNT-77) Validate beans without cascading during deserialization, fixing validation cost growing quadratically with COUNTER 5.1 report size
+* [MODEUSCNT-75](https://folio-org.atlassian.net/browse/MODEUSCNT-75) Make the COUNTER 5.0 splitter implementation internal. The package `org.olf.erm.usage.counter50.splitter` is removed; split COUNTER 5.0 reports with `Counter5Utils.split`.
 
 ## 6.0.0
 * [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON

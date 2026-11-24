@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter50.splitter;
+package org.olf.erm.usage.counter50;
 
 import java.util.List;
 import org.openapitools.counter50.model.COUNTERItemPerformance;
@@ -6,8 +6,7 @@ import org.openapitools.counter50.model.COUNTERItemReport;
 import org.openapitools.counter50.model.COUNTERItemUsage;
 import org.openapitools.counter50.model.SUSHIReportHeader;
 
-public class IRReportsSplitter
-    extends AbstractReportsSplitter<COUNTERItemReport, COUNTERItemUsage> {
+class IRReportsSplitter extends AbstractReportsSplitter<COUNTERItemReport, COUNTERItemUsage> {
 
   @Override
   protected SUSHIReportHeader getReportHeader(COUNTERItemReport report) {
@@ -49,16 +48,5 @@ public class IRReportsSplitter
   protected COUNTERItemReport createReport(
       SUSHIReportHeader reportHeader, List<COUNTERItemUsage> reportItems) {
     return new COUNTERItemReport().reportHeader(reportHeader).reportItems(reportItems);
-  }
-
-  /**
-   * Declared so that code compiled against earlier versions keeps linking: the method inherited
-   * from {@link AbstractReportsSplitter} erases to {@code split(Object)} and would not provide
-   * {@code split(COUNTERItemReport)}.
-   */
-  @SuppressWarnings("java:S1185") // not redundant: see javadoc above
-  @Override
-  public List<COUNTERItemReport> split(COUNTERItemReport report) {
-    return super.split(report);
   }
 }
