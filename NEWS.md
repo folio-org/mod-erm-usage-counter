@@ -1,10 +1,11 @@
-## 6.1.0 (IN PROGRESS)
+## 7.0.0 (IN PROGRESS)
 * [MODEUSCNT-72](https://folio-org.atlassian.net/browse/MODEUSCNT-72) Bump Apache CXF from 4.1.4 to 4.1.7 fixing vulnerabilities
 * [MODEUSCNT-73](https://folio-org.atlassian.net/browse/MODEUSCNT-73) Bump Vert.x from 5.0.10 to 5.1.5 fixing Netty vulnerabilities
 * [MODEUSCNT-74](https://folio-org.atlassian.net/browse/MODEUSCNT-74) Allow both registry.countermetrics.org and registry.projectcounter.org domains for Registry_Record in COUNTER 5.1 reports
 * [MODEUSCNT-66](https://folio-org.atlassian.net/browse/MODEUSCNT-66) Refactor JSON cloning into a reusable method in counter50 splitters and converters
 * [MODEUSCNT-38](https://folio-org.atlassian.net/browse/MODEUSCNT-38) Don't clone reports during split. Splitting no longer returns independent deep copies: a split report shares its sub-objects with the report it was split from, so modifying one in place can change the source and the other split reports. Callers that modify split reports have to copy them first.
 * [MODEUSCNT-77](https://folio-org.atlassian.net/browse/MODEUSCNT-77) Validate beans without cascading during deserialization, fixing validation cost growing quadratically with COUNTER 5.1 report size
+* [MODEUSCNT-75](https://folio-org.atlassian.net/browse/MODEUSCNT-75) *BREAKING* Make the COUNTER 5.0 splitter implementation internal. The package `org.olf.erm.usage.counter50.splitter` is removed; split COUNTER 5.0 reports with `Counter5Utils.split`.
 
 ## 6.0.0
 * [MODEUSCNT-61](https://folio-org.atlassian.net/browse/MODEUSCNT-61) Create utility to convert COUNTER 5.1 Master Reports (TSV/CSV/XLSX) to JSON

@@ -1,11 +1,10 @@
-package org.olf.erm.usage.counter50.splitter;
+package org.olf.erm.usage.counter50;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.olf.erm.usage.counter50.Counter5Utils;
 import org.openapitools.counter50.model.COUNTERItemPerformance;
 import org.openapitools.counter50.model.COUNTERItemPerformancePeriod;
 import org.openapitools.counter50.model.SUSHIReportHeader;
@@ -22,7 +21,7 @@ import org.openapitools.counter50.model.SUSHIReportHeaderReportFilters;
  * @param <T> the report type
  * @param <U> the report item type
  */
-public abstract class AbstractReportsSplitter<T, U> {
+abstract class AbstractReportsSplitter<T, U> {
 
   /** Returns the header of the given report. */
   protected abstract SUSHIReportHeader getReportHeader(T report);

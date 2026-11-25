@@ -1,4 +1,4 @@
-package org.olf.erm.usage.counter50.splitter;
+package org.olf.erm.usage.counter50;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
